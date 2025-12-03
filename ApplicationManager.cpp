@@ -82,7 +82,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 
 //Add a statement to the list of statements
-void ApplicationManager::AddStatement(Statement *pStat)
+void ApplicationManager::AddStatement(Statement *pStat)//upcasting (will get derived classes' objects only)
 {
 	if(StatCount < MaxCount)
 		StatList[StatCount++] = pStat;
@@ -156,7 +156,7 @@ ApplicationManager::~ApplicationManager()
 {
 	for(int i=0; i<StatCount; i++)
 		delete StatList[i];
-	for(int i=0; i<StatCount; i++)
+	for(int i=0; i<ConnCount; i++)
 		delete ConnList[i];
 	delete pIn;
 	delete pOut;

@@ -4,7 +4,7 @@ Output::Output()
 {
 	//Initialize user interface parameters
 	UI.width = 1510;
-	UI.height = 800;
+	UI.height = 600;
 	UI.wx = 0;
 	UI.wy = 0;
 

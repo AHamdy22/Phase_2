@@ -11,9 +11,12 @@
 using namespace std;
 
 //constructor: set the ApplicationManager pointer inside this action
-AddValueAssign::AddValueAssign(ApplicationManager *pAppManager):Action(pAppManager)
-{}
-
+AddValueAssign::AddValueAssign(ApplicationManager *pAppManager): Action(pAppManager)
+{
+	LHS = "";
+	RHS = 0.0;
+}
+Point p;
 void AddValueAssign::ReadActionParameters()
 {
 	Input *pIn = pManager->GetInput();
@@ -27,7 +30,17 @@ void AddValueAssign::ReadActionParameters()
 
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member
 
+	pOut->PrintMessage("Please enter the left hand side of the operation");
+	pIn->GetPointClicked(p);
+	pOut->ClearStatusBar();
+	LHS = pIn->GetVariable(pOut);
+
 	//TODO: Ask the user in the status bar to enter the RHS and set the data member
+
+	pOut->PrintMessage("Please enter the right hand side of the operation");
+	pIn->GetPointClicked(p);
+	pOut->ClearStatusBar();
+	RHS = pIn->GetValue(pOut);
 
 	//Note: You should validate the LHS to be variable name and RHS to be a value
 	//      Call the appropriate functions for this.
@@ -43,7 +56,7 @@ void AddValueAssign::Execute()
 	Corner.x = Position.x - UI.ASSGN_WDTH/2;
 	Corner.y = Position.y ;
 	
-	ValueAssign *pAssign = new ValueAssign(Corner, "", 0);
+	ValueAssign *pAssign = new ValueAssign(Corner, LHS, RHS);
 	//TODO: should set the LHS and RHS of pAssign statement
 	//      with the data members set and validated before in ReadActionParameters()
 

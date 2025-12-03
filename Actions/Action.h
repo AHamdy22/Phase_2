@@ -2,7 +2,7 @@
 #define ACTION_H
 
 //#include "CMUgraphicsLib\CMUgraphics.h"
-class ApplicationManager; //forward class declaration
+class ApplicationManager; //forward class declaration(can only use pointers of this classes)
 class Input;
 class Output;
 
