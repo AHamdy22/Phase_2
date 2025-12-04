@@ -1,15 +1,13 @@
-#ifndef VALUE_ASSIGN_H
-#define VALUE_ASSIGN_H
+#ifndef START_H
+#define START_H
 
-#include "Statement.h"
+#include "Statements/Statement.h"
 
 //Value Assignment statement class
 //The value assignment statement assigns a value to a variable
-class ValueAssign : public Statement
+class Start : public Statement
 {
 private:
-	string LHS;	//Left Handside of the assignment (name of a variable)
-	double RHS;	//Right Handside (Value)
 
 	Connector* pOutConn;	//Value Assignment Stat. has one Connector to next statement
 	//Each statement type in flowchart has a predefined number of (output) connectors
@@ -20,28 +18,18 @@ private:
 	//      we will begin with start statement then its output connector
 	//      then the connector's destination statement and so on (follow the connectors)
 
-	Point Inlet;	//A point where connections enters this statement 
-	//It's used as the (End) point of the (Input) connectors
 	Point Outlet;	//A point a connection leaves this statement
 	//It's used as the (Start) point of the (Output) connector
 
 	Point LeftCorner;	//left corenr of the statement block.
 
-
-	int stringlength;
-
-	int stringheight;
-
-
-	virtual void UpdateStatementText();
+	void UpdateStatementText();
 
 public:
-	ValueAssign(Point Lcorner, string LeftHS = "", double RightHS = 0);
 
-	void setLHS(const string& L);
-	void setRHS(double R);
+	Start(Point Lcorner);
 
-	virtual void Draw(Output* pOut) const;
+	void Draw(Output* pOut) const;
 
 };
 

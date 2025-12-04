@@ -1,5 +1,8 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
+#include "Actions\..\AddStart.h"
+#include "Actions\..\AddConditional.h"
+#include "Actions\..\AddEnd.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -43,14 +46,20 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
+	    case ADD_CONDITION:
+		    pAct = new AddConditional(this);
+		    break;
+	    case ADD_START:
+		    pAct = new AddStart(this);
+		    break;
+		case ADD_END:
+			pAct = new AddEnd(this);
+			break;
+
 		case ADD_VALUE_ASSIGN:
 			pAct = new AddValueAssign(this);
 			break;
 
-		case ADD_CONDITION:
-			///create AddCondition Action here
-
-			break;
 
 		case SELECT:
 			///create Select Action here
