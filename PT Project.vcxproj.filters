@@ -155,6 +155,21 @@
     <ClCompile Include="GUI\Output.cpp">
       <Filter>GUI Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Read.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddRead.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Write.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddWrite.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AddConnector.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -245,6 +260,21 @@
     </ClInclude>
     <ClInclude Include="GUI\UI_Info.h">
       <Filter>GUI Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Read.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddRead.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Write.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddWrite.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AddConnector.h">
+      <Filter>Action Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

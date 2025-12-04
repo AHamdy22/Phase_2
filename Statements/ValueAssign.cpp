@@ -20,7 +20,7 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 	Inlet.y = LeftCorner.y;
 
 	Outlet.x = Inlet.x;
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;	
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }
 
 void ValueAssign::setLHS(const string &L)

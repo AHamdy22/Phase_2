@@ -214,9 +214,6 @@ void Output::DrawAssign(Point Left, int width, int height, string Text, bool Sel
 	
 }
 
-//TODO: Add similar functions for drawing all other statements.
-//		e.g. DrawDeclareStat(.....), DrawCondtionalStat(......), DrawStart(......), DrawEnd(.......), ...etc
-//		Decide the parameters that should be passed to each of them
 	
 void Output::DrawDeclare(Point Left, int width, int height, string Text, bool Selected)
 {

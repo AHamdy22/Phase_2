@@ -1,5 +1,8 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
+#include "AddRead.h"
+#include "AddWrite.h"
+#include "AddConnector.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -16,7 +19,7 @@ ApplicationManager::ApplicationManager()
 	pClipboard = NULL;
 	
 	//Create an array of Statement pointers and set them to NULL		
-	for(int i=0; i<MaxCount; i++)
+	for(int i = 0; i < MaxCount; i++)
 	{
 		StatList[i] = NULL;	
 		ConnList[i] = NULL;
@@ -50,6 +53,20 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case ADD_CONDITION:
 			///create AddCondition Action here
 
+			break;
+
+		case ADD_READ:
+			pAct = new AddRead(this);
+
+			break;
+
+		case ADD_WRITE:
+			pAct = new AddWrite(this);
+
+			break;
+
+		case ADD_CONNECTOR:
+			pAct = new AddConnector(this);
 			break;
 
 		case SELECT:
