@@ -1,5 +1,8 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
+#include "Actions\..\AddDeclare.h"
+#include "Actions\..\AddVariableAssign.h"
+#include "Actions\..\AddOperatorAssign.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -45,6 +48,18 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	{
 		case ADD_VALUE_ASSIGN:
 			pAct = new AddValueAssign(this);
+			break;
+
+		case ADD_DECLARE_VARIABLE:
+			pAct = new AddDeclare(this);
+			break;
+
+		case ADD_VAR_ASSIGN:
+			pAct = new AddVariableAssign(this);
+			break;
+
+		case ADD_OPER_ASSIGN:
+			pAct = new AddOperatorAssign(this);
 			break;
 
 		case ADD_CONDITION:

@@ -22,6 +22,8 @@ public:
 
 	string GetVariable(Output* p0) const; //Reads a variable name from the user
 
+	string GetDataType(Output* p0) const; //Reads a data type from the user
+
 	char GetArithOperator(Output* p0) const; //Reads an arithmetic operator from the user
 
 	string GetCompOperator(Output* p0) const; //Reads a comparison operator from the user

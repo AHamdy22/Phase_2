@@ -1,10 +1,10 @@
 #include "ValueAssign.h"
 #include <sstream>
-#include <string>
+
 
 using namespace std;
-window w;
-window *pW = &w;
+//window w;
+//window *pW = &w;
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 {
 	// Note: The LeftHS and RightHS should be validated inside (AddValueAssign) action
@@ -16,7 +16,7 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 
 	stringlength = 0;
 	stringheight = 0;
-	pW->GetStringSize(stringlength, stringheight, Text);
+	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
 	
 	pOutConn = NULL;	//No connectors yet
@@ -44,7 +44,7 @@ void ValueAssign::setRHS(double R)
 void ValueAssign::Draw(Output* pOut) const
 {
 	//Call Output::DrawAssign function to draw assignment statement 	
-	pOut->DrawAssign(LeftCorner,  UI.ASSGN_WDTH,  UI.ASSGN_HI, Text, Selected);
+	pOut->DrawAssign(LeftCorner, UI.ASSGN_HI, UI.ASSGN_WDTH, Text, Selected);
 	
 }
 
