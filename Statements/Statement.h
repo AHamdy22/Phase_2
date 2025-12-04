@@ -25,7 +25,7 @@ public:
 	bool IsSelected() const;
 
 	virtual void Draw(Output* pOut) const  = 0 ;	//Draw the statement
-	
+	virtual void InStatement(Point p) const = 0;
 	
 
 	///TODO:The following functions should be supported by the Statement class

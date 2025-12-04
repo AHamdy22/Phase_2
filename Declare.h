@@ -31,8 +31,10 @@ public:
 
 	void setDataType(const string& d);
 	void setVar(const string& v);
+	bool InStatement(Point p) const;
 
 	virtual void Draw(Output* pOut) const;
+
 
 };
 

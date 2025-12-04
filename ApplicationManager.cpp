@@ -109,7 +109,9 @@ Statement *ApplicationManager::GetStatement(Point P) const
 {
 	//If this point P(x,y) belongs to a statement return a pointer to it.
 	//otherwise, return NULL
+	if(StatList[0]->IsSelected())
 
+	StatList[0]->SetSelected(true);
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities

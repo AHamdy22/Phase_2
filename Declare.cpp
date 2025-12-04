@@ -39,6 +39,13 @@ void Declare::setVar(const string& v)
 	UpdateStatementText();
 }
 
+bool Declare::InStatement(Point P) const
+{
+
+	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+}
+
 
 void Declare::Draw(Output* pOut) const
 {
