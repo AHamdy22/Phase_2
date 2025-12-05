@@ -155,6 +155,15 @@
     <ClCompile Include="GUI\Output.cpp">
       <Filter>GUI Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Start.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="End.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="Conditional.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -245,6 +254,15 @@
     </ClInclude>
     <ClInclude Include="GUI\UI_Info.h">
       <Filter>GUI Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Start.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="End.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Conditional.h">
+      <Filter>Statements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

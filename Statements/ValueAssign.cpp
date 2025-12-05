@@ -1,6 +1,7 @@
 #include "ValueAssign.h"
 #include <sstream>
 
+
 using namespace std;
 
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
@@ -12,18 +13,21 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 
 	UpdateStatementText();
 
+	stringlength = 0;
+	stringheight = 0;
+	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
-	
+
 	pOutConn = NULL;	//No connectors yet
 
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH /2;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
 	Outlet.x = Inlet.x;
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;	
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }
 
-void ValueAssign::setLHS(const string &L)
+void ValueAssign::setLHS(const string& L)
 {
 	LHS = L;
 	UpdateStatementText();
@@ -40,7 +44,7 @@ void ValueAssign::Draw(Output* pOut) const
 {
 	//Call Output::DrawAssign function to draw assignment statement 	
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
-	
+
 }
 
 
@@ -49,6 +53,12 @@ void ValueAssign::UpdateStatementText()
 {
 	//Build the statement text: Left handside then equals then right handside
 	ostringstream T;
-	T<<LHS<<" = "<<RHS;	
-	Text = T.str();	 
+	T << LHS << " = " << RHS;
+	Text = T.str();
+}
+bool ValueAssign::InStatement(Point P) const
+{
+	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+
 }
