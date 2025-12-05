@@ -164,6 +164,12 @@
     <ClCompile Include="Conditional.cpp">
       <Filter>Statements</Filter>
     </ClCompile>
+    <ClCompile Include="AddStart.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AddEnd.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -263,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="Conditional.h">
       <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddStart.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AddEnd.h">
+      <Filter>Action Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
