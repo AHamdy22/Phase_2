@@ -95,12 +95,18 @@ Statement *ApplicationManager::GetStatement(Point P) const
 	//If this point P(x,y) belongs to a statement return a pointer to it.
 	//otherwise, return NULL
 
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i]->InStatement(P))
+			return StatList[i];
+	}
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities
 
 	return NULL;
 }
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
 Statement *ApplicationManager::GetSelectedStatement() const
