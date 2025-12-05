@@ -35,16 +35,8 @@ void AddConditional::ReadActionParameters()
 	string stored;
 	pIn->GetPointClicked(P);
 	pOut->ClearStatusBar();
-	while (1) {
-		stored = pIn->GetVariable(pOut);
-		if (IsVariable(stored))
-		{
-			LHS = stored;
-			break;
-		}
-		else
-			pOut->PrintMessage("Please enter valid Variable");
-	}
+	LHS = pIn->GetVariable(pOut);
+	
 
 	//TODO: Ask the user in the status bar to enter the CompOperator and set the data member
 
