@@ -154,7 +154,7 @@ void ApplicationManager::DeleteStatement(Statement * pStat)
 			}
 			StatList[StatCount - 1] = NULL;
 			StatCount--; 
-			return;
+			break;
 		}
 	}
 }
