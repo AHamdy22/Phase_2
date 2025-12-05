@@ -138,6 +138,24 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
+void ApplicationManager::DeleteStatement(Statement * pStat)
+{
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == pStat)
+		{
+			delete StatList[i];
+			for (int j = i; j < StatCount - 1; j++)
+			{
+				StatList[j] = StatList[j + 1];
+			}
+			StatList[StatCount - 1] = NULL;
+			StatCount--; 
+			return;
+		}
+	}
+}
+
 
 //==================================================================================//
 //							Interface Management Functions							//
