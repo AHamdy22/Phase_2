@@ -29,9 +29,6 @@ void AddDeclare::ReadActionParameters()
 		pOut->ClearStatusBar();
 	}
 
-
-
-
 	pOut->PrintMessage("Please enter the data type for the variable declaration");
 	pIn->GetPointClicked(p1);
 	pOut->ClearStatusBar();
@@ -65,8 +62,6 @@ string AddDeclare::GetVar() const
 void AddDeclare::Execute()
 {
 	ReadActionParameters();
-
-
 
 	Point Corner;
 	Corner.x = Position.x;
