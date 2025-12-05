@@ -19,7 +19,7 @@ void Delete::ReadActionParameters()
     Output* pOut = pManager->GetOutput();
 
     //Read the (Position) parameter
-    pOut->PrintMessage("Select Statement: Click to add the statement");
+    pOut->PrintMessage("Delete Statement: Click to add the statement");
 
     //pIn->GetPointClicked(Position);
     //pOut->ClearStatusBar();
