@@ -124,6 +124,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddConditional.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddStart.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
@@ -287,6 +288,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddConditional.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddStart.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
