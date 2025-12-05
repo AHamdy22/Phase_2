@@ -94,6 +94,19 @@ string Input::GetCompOperator(Output* pO) const
 	}
 }
 
+string Input::GetDataType(Output* pO) const
+{
+	pO->PrintMessage("Please enter a data type");
+	string type;
+	while (1)
+	{
+		type = GetString(pO);
+		if (type == "int" || type == "float" || type == "string" || type == "char" || type == "double" || type == "bool")
+			return type;
+		pO->PrintMessage("Please enter a valid data type");
+	}
+}
+
 ActionType Input::GetUserAction() const
 {	
 	// This function reads the position where the user clicks to determine the desired action

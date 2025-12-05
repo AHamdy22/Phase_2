@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddConditional.cpp" />
+    <ClCompile Include="AddDeclare.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddStart.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
@@ -275,6 +276,7 @@
     </ClCompile>
     <ClCompile Include="Conditional.cpp" />
     <ClCompile Include="Connector.cpp" />
+    <ClCompile Include="Declare.cpp" />
     <ClCompile Include="Delete.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="GUI\Input.cpp" />
@@ -291,6 +293,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddConditional.h" />
+    <ClInclude Include="AddDeclare.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddStart.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
@@ -318,6 +321,7 @@
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="Conditional.h" />
     <ClInclude Include="Connector.h" />
+    <ClInclude Include="Declare.h" />
     <ClInclude Include="DEFS.h" />
     <ClInclude Include="Delete.h" />
     <ClInclude Include="End.h" />

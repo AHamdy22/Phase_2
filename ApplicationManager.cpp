@@ -1,6 +1,7 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
 #include "Actions\..\AddStart.h"
+#include "Actions\..\AddDeclare.h"
 #include "Actions\..\Select.h"
 #include "Actions\..\Delete.h"
 #include "Actions\..\AddConditional.h"
@@ -69,6 +70,10 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 	case DEL:
 		pAct = new Delete(this);
+		break;
+
+	case ADD_DECLARE_VARIABLE:
+		pAct = new AddDeclare(this);
 		break;
 
 	case EXIT:

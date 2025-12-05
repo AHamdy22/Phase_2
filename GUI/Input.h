@@ -26,6 +26,8 @@ public:
 
 	string GetCompOperator(Output* p0) const; //Reads a comparison operator from the user
 
+	string GetDataType(Output* pO) const;
+
 	ActionType GetUserAction() const; //Reads the user click and maps it to an action
 
 	~Input();
