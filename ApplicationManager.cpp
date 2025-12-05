@@ -2,6 +2,7 @@
 #include "Actions\AddValueAssign.h"
 #include "Actions\..\AddStart.h"
 #include "Actions\..\Select.h"
+#include "Actions\..\Delete.h"
 #include "Actions\..\AddConditional.h"
 #include "Actions\..\AddEnd.h"
 #include "GUI\Input.h"
@@ -66,6 +67,8 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		pAct = new Select(this);
 		break;
 
+	case DEL:
+		pAct = new Delete(this);
 		break;
 
 	case EXIT:
