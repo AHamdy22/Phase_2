@@ -126,6 +126,33 @@ Statement *ApplicationManager::GetStatement(Point P) const
 	return NULL;
 }
 
+Connector* ApplicationManager::GetConnector(Point P) const
+{
+	//If this point P(x,y) belongs to a statement return a pointer to it.
+	//otherwise, return NULL
+
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i]) // add inConnector
+			return ConnList[i];
+	}
+
+	///Add your code here to search for a statement given a point P(x,y)	
+	///WITHOUT breaking class responsibilities
+
+	return NULL;
+}
+
+Connector* ApplicationManager::GetSelectedConnector() const
+{
+	return pSelectedConn;
+}
+
+void ApplicationManager::SetSelectedConnector(Connector* pStat)
+{
+	pSelectedConn = pStat;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
 Statement *ApplicationManager::GetSelectedStatement() const

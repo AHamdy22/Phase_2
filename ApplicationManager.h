@@ -21,6 +21,10 @@ private:
 
 	Statement *pSelectedStat; //a pointer to the last selected statement
 	                          //you can set and get this pointer
+
+	Connector* pSelectedConn; //a pointer to the last selected connector
+	                          //you can set and get this pointer
+
 	Statement *pClipboard;    //a pointer to the last copied/cut statement
 	                          //you can set and get this pointer
 
@@ -45,6 +49,9 @@ public:
 
 	void AddConnector(Connector* pConn);    //Adds a new Connector to the Flowchart
 	Connector *GetConnector(Point P) const;	//search for a Connector where point P belongs
+	Connector* GetSelectedConnector() const;	 //Returns the selected Statement
+	void SetSelectedConnector(Connector* pStat); //Set the Statement selected by the user
+	void DeleteConnector(Connector* pStat);      //Deletes a statement from the statement list
 
 	// Note: you should use the following 4 functions 
 	//       in order not to break class responsibilities (especially in copy, cut and paste)
