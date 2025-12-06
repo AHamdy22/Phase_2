@@ -153,6 +153,24 @@ void ApplicationManager::SetSelectedConnector(Connector* pStat)
 	pSelectedConn = pStat;
 }
 
+void ApplicationManager::DeleteConnector(Connector* pStat)
+{
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pStat)
+		{
+			delete ConnList[i];
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[ConnCount - 1] = NULL;
+			ConnCount--;
+			break;
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
 Statement *ApplicationManager::GetSelectedStatement() const
