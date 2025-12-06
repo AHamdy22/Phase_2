@@ -133,7 +133,7 @@ Connector* ApplicationManager::GetConnector(Point P) const
 
 	for (int i = 0; i < ConnCount; i++)
 	{
-		if (ConnList[i]) // add inConnector
+		//if (ConnList[i]->InConnector(P)) 
 			return ConnList[i];
 	}
 
