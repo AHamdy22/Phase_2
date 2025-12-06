@@ -38,7 +38,7 @@ void Select::Execute()
         if (prevSelected == clickedStat)
         {
             clickedStat->SetSelected(false);
-            pManager->SetSelectedStatement(nullptr);
+            pManager->SetSelectedStatement(NULL);
         }
         else
         {
