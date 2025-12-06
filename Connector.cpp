@@ -34,6 +34,11 @@ void Connector::setEndPoint(Point P)
 Point Connector::getEndPoint()
 {	return End;	}
 
+void Connector::SetSelected(bool s)
+{
+	Selected = s;
+}
+
 void Connector::Draw(Output* pOut) const
 {
 	///TODO: Call Output to draw a connector from SrcStat to DstStat on the output window

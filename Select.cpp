@@ -65,9 +65,9 @@ void Select::Execute()
         else
         {
             if (prevSelected)
-              //prevSelected->SetSelected(false);
+              prevSelected->SetSelected(false);
 
-              //clickedConn->SetSelected(true);
+              clickedConn->SetSelected(true);
             pManager->SetSelectedConnector(clickedConn);
         }
         pManager->UpdateInterface();
