@@ -59,7 +59,7 @@ void Select::Execute()
         Connector* prevSelected = pManager->GetSelectedConnector();
         if (prevSelected == clickedConn)
         {
-            //clickedConn->SetConnector(false);
+            clickedConn->SetSelected(false);
             pManager->SetSelectedConnector(NULL);
         }
         else
