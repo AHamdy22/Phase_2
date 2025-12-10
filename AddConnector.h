@@ -1,4 +1,7 @@
 #pragma once
+#ifndef ADD_CONNECTOR_H
+#define ADD_CONNECTOR_H
+
 #include "Actions\Action.h"
 #include "Connector.h"
 
