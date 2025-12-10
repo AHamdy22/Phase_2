@@ -1,5 +1,6 @@
 #include "Conditional.h"
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -80,4 +81,61 @@ bool Conditional::InStatement(Point P) const
 {
 	return (P.x >= TopCorner.x - (UI.ASSGN_WDTH / 2) && P.x <= TopCorner.x + (UI.ASSGN_WDTH / 2) &&
 		P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
+}
+
+Point Conditional::getInlet() const
+{
+	return Inlet;
+}
+
+Point Conditional::getOutlet1() const
+{
+	return Outlet1;
+}
+
+Point Conditional::getOutlet2() const
+{
+	return Outlet2;
+}
+
+int Conditional::GetID() const
+{
+	return ID;
+}
+
+string Conditional::GetText() const
+{
+	return Text;
+}
+
+string Conditional::GetType() const
+{
+	return "CONDITIONAL";
+}
+
+void Conditional::Save(ofstream& OutFile)
+{
+	OutFile << "COND " << ID << " " << TopCorner.x << " " << TopCorner.y << " " << LHS << " " << CompOperator << " ";
+	if (VariableRHS == "")
+		OutFile << ValueRHS << " " << "0" << endl; // 0 indicates that RHS is a value
+	else
+		OutFile << "0" << " " << VariableRHS << endl; // 0 indicates that RHS is a variable
+}
+
+void Conditional::Load(ifstream& Infile)
+{
+	string varRHS;
+	double valRHS;
+	Infile >> TopCorner.x >> TopCorner.y >> LHS >> CompOperator >> valRHS >> varRHS;
+	if (varRHS == "0")
+	{
+		ValueRHS = valRHS;
+		VariableRHS = "";
+	}
+	else
+	{
+		ValueRHS = 0;
+		VariableRHS = varRHS;
+	}
+	UpdateStatementText();
 }

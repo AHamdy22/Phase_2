@@ -1,6 +1,6 @@
 #include "Declare.h"
 #include <sstream>
-
+#include <fstream>
 
 using namespace std;
 
@@ -88,4 +88,41 @@ void Declare::UpdateStatementText()
 	ostringstream T;
 	T << DataType << " " << Var;
 	Text = T.str();
+}
+
+
+Point Declare::getInlet() const
+{
+	return Inlet;
+}
+
+Point Declare::getOutlet() const
+{
+	return Outlet;
+}
+
+int Declare::GetID() const
+{
+	return ID;
+}
+
+string Declare::GetText() const
+{
+	return Text;
+}
+
+string Declare::GetType() const
+{
+	return "DECLARE";
+}
+
+void Declare::Save(ofstream& OutFile)
+{
+	OutFile << "DECLARE " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << DataType << " " << Var << endl;
+}
+
+void Declare::Load(ifstream& Infile)
+{
+	Infile >> LeftCorner.x >> LeftCorner.y >> DataType >> Var;
+	UpdateStatementText();
 }

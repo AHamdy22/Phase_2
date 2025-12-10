@@ -56,9 +56,50 @@ void ValueAssign::UpdateStatementText()
 	T << LHS << " = " << RHS;
 	Text = T.str();
 }
+
 bool ValueAssign::InStatement(Point P) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
 
+}
+
+Point ValueAssign::getInlet() const
+{
+	return Inlet;
+}
+
+Point ValueAssign::getOutlet() const
+{
+	return Outlet;
+}
+
+int ValueAssign::GetID() const
+{
+	return ID;
+}
+
+string ValueAssign::GetText() const
+{
+	return Text;
+}
+
+string ValueAssign::GetType() const
+{
+	return "VALUE ASSIGNMENT";
+}
+
+void ValueAssign::Save(std::ofstream& OutFile)
+{
+	OutFile << "VALUE ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
+}
+
+void ValueAssign::Load(std::ifstream& Infile)
+{
+	Infile >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS;
+	UpdateStatementText();
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }

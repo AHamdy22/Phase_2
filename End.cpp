@@ -1,5 +1,6 @@
 #include "End.h"
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -27,4 +28,42 @@ bool End::InStatement(Point P) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.START_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.START_HI);
+}
+
+Point End::getInlet() const
+{
+	return Inlet;
+}
+
+Point End::getOutlet() const
+{
+	Point p;
+	p.x = -1; // No outlet for End statement
+	p.y = -1;
+	return p;
+}
+
+int End::GetID() const
+{
+	return ID;
+}
+
+string End::GetText() const
+{
+	return Text;
+}
+
+string End::GetType() const
+{
+	return "END";
+}
+
+void End::Save(ofstream& OutFile)
+{
+	OutFile << "END " << ID << " " << LeftCorner.x << " " << LeftCorner.y << endl;
+}
+
+void End::Load(ifstream& Infile)
+{
+	// No additional parameters to load for End statement
 }
