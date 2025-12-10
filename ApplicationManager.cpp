@@ -3,6 +3,7 @@
 #include "Actions\..\AddStart.h"
 #include "Actions\..\AddDeclare.h"
 #include "Actions\..\Select.h"
+#include "Actions\..\AddConnectors.h"
 #include "Actions\..\Delete.h"
 #include "Actions\..\AddConditional.h"
 #include "Actions\..\AddEnd.h"
@@ -63,6 +64,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		pAct = new AddValueAssign(this);
 		break;
 
+	case ADD_CONNECTOR:
+		pAct = new AddConnectors(this);
+		break;
 
 	case SELECT:
 		pAct = new Select(this);
@@ -250,3 +254,20 @@ ApplicationManager::~ApplicationManager()
 	delete pOut;
 	
 }
+
+int ApplicationManager::GetStatementCount() const
+{
+	return StatCount;
+}
+
+int ApplicationManager::GetConnectorCount() const
+{
+	return ConnCount;
+}
+
+void ApplicationManager::AddConnector(Connector* pConn)
+{
+	if (ConnCount < MaxCount)
+		ConnList[ConnCount++] = pConn;
+}
+
