@@ -12,7 +12,8 @@ private:
 	Statement *DstStat;	//The destination statement of the connector
 	Point Start;	//Start point of the connector
 	Point End;		//End point of the connector
-	bool Selected;
+	int OutletBranch; // 0 : Normal , 1: yes branch , 2: no branch
+	bool Selected; 
 public:
 	Connector(Statement* Src, Statement* Dst);
 
@@ -27,10 +28,15 @@ public:
 	void setEndPoint(Point P);
 	Point getEndPoint();
 
-	void Draw(Output* pOut) const;
-	
 	void SetSelected(bool s);
 
+	void Draw(Output* pOut) const;
+
+	void setOutletBranch(int branch);
+	int getOutletBranch() const;
+	
+	void Save(ofstream& OutFile);
+	void Load(ifstream& Infile, Statement** StatList, int StatCount);
 };
 
 #endif
