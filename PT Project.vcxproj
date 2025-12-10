@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddConditional.cpp" />
+    <ClCompile Include="AddConnectors.cpp" />
     <ClCompile Include="AddDeclare.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddStart.cpp" />
@@ -293,6 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddConditional.h" />
+    <ClInclude Include="AddConnectors.h" />
     <ClInclude Include="AddDeclare.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddStart.h" />

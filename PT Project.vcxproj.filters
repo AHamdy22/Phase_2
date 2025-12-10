@@ -185,6 +185,9 @@
     <ClCompile Include="AddDeclare.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
+    <ClCompile Include="AddConnectors.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -304,6 +307,9 @@
       <Filter>Statements</Filter>
     </ClInclude>
     <ClInclude Include="AddDeclare.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AddConnectors.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
   </ItemGroup>
