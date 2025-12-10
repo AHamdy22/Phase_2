@@ -45,6 +45,7 @@ public:
 	Point getInlet() const;
 	Point getOutlet1() const;
 	Point getOutlet2() const;
+	Point getOutlet() const;
 
 	int GetID() const;				//returns the statement ID
 	string GetText() const;			//returns the statement text
