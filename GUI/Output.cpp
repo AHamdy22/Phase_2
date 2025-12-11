@@ -28,6 +28,12 @@ Output::Output()
 
 	//Create the output window
 	pWind = CreateWind(UI.width, UI.height, UI.wx, UI.wy);
+
+	if (pWind == nullptr)
+	{
+		return; // Exit if window creation failed
+	}
+
 	//Change the title
 	pWind->ChangeTitle("Design Flow Chart");
 	
@@ -184,6 +190,8 @@ void Output::PrintMessage(string msg)	//Prints a message on status bar
 
 void Output::DrawString(const int iX, const int iY, const string Text)
 {
+	if (pWind == nullptr) return;
+
 	pWind->SetPen(BLACK, 2);
 	pWind->DrawString(iX, iY, Text);
 }
@@ -198,6 +206,8 @@ int stringwidth, stringheight;
 
 void Output::DrawAssign(Point Left, int width, int height, string Text, bool Selected)
 {
+	if (pWind == nullptr) return;
+
 	if(Selected)	//if stat is selected, it should be highlighted
 		pWind->SetPen(UI.HighlightColor,3);	//use highlighting color
 	else
@@ -217,6 +227,8 @@ void Output::DrawAssign(Point Left, int width, int height, string Text, bool Sel
 	
 void Output::DrawDeclare(Point Left, int width, int height, string Text, bool Selected)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -235,6 +247,8 @@ void Output::DrawDeclare(Point Left, int width, int height, string Text, bool Se
 
 void Output::DrawStart(Point Left, int width, int height, string Text, bool Selected)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -255,6 +269,8 @@ void Output::DrawStart(Point Left, int width, int height, string Text, bool Sele
 
 void Output::DrawEnd(Point Left, int width, int height, string Text, bool Selected)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -271,6 +287,8 @@ void Output::DrawEnd(Point Left, int width, int height, string Text, bool Select
 
 void Output::DrawRead(Point Left, int width, int height, string Text, bool Selected=false)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -290,6 +308,8 @@ void Output::DrawRead(Point Left, int width, int height, string Text, bool Selec
 
 void Output::DrawWrite(Point Left, int width, int height, string Text, bool Selected=false)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -309,6 +329,8 @@ void Output::DrawWrite(Point Left, int width, int height, string Text, bool Sele
 
 void Output::DrawCondition(Point Top, int width, int height, string Text, bool Selected = false)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -330,6 +352,8 @@ void Output::DrawCondition(Point Top, int width, int height, string Text, bool S
 
 void Output::DrawConnector(Point start, Point end, direction d, bool Selected)
 {
+	if (pWind == nullptr) return;
+
 	if (Selected)
 		pWind->SetPen(UI.HighlightColor, 3);
 	else
@@ -344,7 +368,7 @@ void Output::DrawConnector(Point start, Point end, direction d, bool Selected)
 		pWind->DrawLine(start.x, start.y, end.x, end.y);
 		pWind->DrawTriangle(end.x, end.y, end.x + 10, end.y - 10, end.x - 10, end.y - 10, FILLED);
 	}
-	else if(d==RIGHT)
+	else if (d == RIGHT)
 	{
 		pWind->DrawLine(start.x, start.y, end.x, end.y);
 		pWind->DrawTriangle(end.x, end.y, end.x - 10, end.y - 10, end.x - 10, end.y + 10, FILLED);

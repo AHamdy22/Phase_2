@@ -2,7 +2,9 @@
 #include "Actions\AddValueAssign.h"
 #include "AddRead.h"
 #include "AddWrite.h"
-#include "AddConnector.h"
+#include "AddConnectors.h"
+#include "Save.h"
+#include "Load.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -52,26 +54,32 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 		case ADD_CONDITION:
 			///create AddCondition Action here
-
 			break;
 
 		case ADD_READ:
 			pAct = new AddRead(this);
-
 			break;
 
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
-
 			break;
 
 		case ADD_CONNECTOR:
-			pAct = new AddConnector(this);
+			pAct = new AddConnectors(this);
 			break;
+
 
 		case SELECT:
 			///create Select Action here
 
+			break;
+
+		case SAVE:
+			pAct = new Save(this);
+			break;
+
+		case LOAD:
+			pAct = new Load(this);
 			break;
 
 		case EXIT:
@@ -106,18 +114,61 @@ void ApplicationManager::AddStatement(Statement *pStat)
 	
 }
 
-////////////////////////////////////////////////////////////////////////////////////
-Statement *ApplicationManager::GetStatement(Point P) const
+Statement* ApplicationManager::GetStatement(int index) const
 {
+	if (index >= 0 && index < StatCount)
+		return StatList[index];
+	return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 	//If this point P(x,y) belongs to a statement return a pointer to it.
 	//otherwise, return NULL
 
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities
+	
+	
 
-	return NULL;
+
+Statement* ApplicationManager::GetStatement(Point p) const
+{
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] != nullptr && StatList[i]->InStatement(p))
+		{
+			return StatList[i];
+		}
+	}
+	return nullptr;
 }
+
+int ApplicationManager::GetStatementCount() const
+{
+	return StatCount;
+}
+
+void ApplicationManager::AddConnector(Connector* pConn)
+{
+	if (ConnCount < MaxCount)
+		ConnList[ConnCount++] = pConn;
+}
+
+Connector* ApplicationManager::GetConnector(int index) const
+{
+	if (index >= 0 && index < ConnCount)
+		return ConnList[index];
+	return nullptr;
+}
+
+int ApplicationManager::GetConnectorCount() const
+{
+	return ConnCount;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
 Statement *ApplicationManager::GetSelectedStatement() const
@@ -158,6 +209,25 @@ void ApplicationManager::UpdateInterface() const
 		ConnList[i]->Draw(pOut);
 
 }
+void ApplicationManager::ClearAll()
+{
+	//Clear statements
+	for (int i = 0; i < StatCount; i++)
+	{
+		delete StatList[i];
+		StatList[i] = nullptr;
+	}
+	StatCount = 0;
+	//Clear connectors
+	for (int i = 0; i < ConnCount; i++)
+	{
+		delete ConnList[i];
+		ConnList[i] = nullptr;
+	}
+	ConnCount = 0;
+	UpdateInterface();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the input
 Input *ApplicationManager::GetInput() const

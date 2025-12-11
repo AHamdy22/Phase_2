@@ -1,11 +1,7 @@
 #include "AddRead.h"
-
 #include "ApplicationManager.h"
-
 #include "GUI\input.h"
 #include "GUI\Output.h"
-
-#include <sstream>
 using namespace std;
 
 AddRead::AddRead(ApplicationManager* pAppManager) :Action(pAppManager)

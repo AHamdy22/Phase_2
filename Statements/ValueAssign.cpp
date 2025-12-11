@@ -1,8 +1,10 @@
 #include "ValueAssign.h"
 #include <sstream>
 
-using namespace std;
 
+using namespace std;
+//window w;
+//window *pW = &w;
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 {
 	// Note: The LeftHS and RightHS should be validated inside (AddValueAssign) action
@@ -12,18 +14,29 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 
 	UpdateStatementText();
 
+	//stringlength = 0;
+	//stringheight = 0;
+	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
-	
+
 	pOutConn = NULL;	//No connectors yet
 
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH /2;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
 	Outlet.x = Inlet.x;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }
 
-void ValueAssign::setLHS(const string &L)
+void ValueAssign::UpdateStatementText()
+{
+	//Build the statement text: Left handside then equals then right handside
+	ostringstream T;
+	T << LHS << " = " << RHS;
+	Text = T.str();
+}
+
+void ValueAssign::setLHS(const string& L)
 {
 	LHS = L;
 	UpdateStatementText();
@@ -38,17 +51,65 @@ void ValueAssign::setRHS(double R)
 
 void ValueAssign::Draw(Output* pOut) const
 {
-	//Call Output::DrawAssign function to draw assignment statement 	
+	//Call Output::DrawAssign function to draw assignment statement
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
-	
+
 }
 
-
-//This function should be called when LHS or RHS changes
-void ValueAssign::UpdateStatementText()
+Point ValueAssign::getInlet() const
 {
-	//Build the statement text: Left handside then equals then right handside
-	ostringstream T;
-	T<<LHS<<" = "<<RHS;	
-	Text = T.str();	 
+	return Inlet;
+}
+
+Point ValueAssign::getOutlet() const
+{
+	return Outlet;
+}
+
+bool ValueAssign::InStatement(Point p) const
+{
+	return (p.x >= LeftCorner.x && p.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+			p.y >= LeftCorner.y && p.y <= LeftCorner.y + UI.ASSGN_HI);
+}
+
+int ValueAssign::GetID() const
+{
+	return ID;
+}
+
+string ValueAssign::GetText() const
+{
+	return Text;
+}
+
+string ValueAssign::GetType() const
+{
+	return "VALUE ASSIGNMENT";
+}
+
+void ValueAssign::Save(std::ofstream& OutFile)
+{
+	OutFile << "VALUE ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
+}
+
+void ValueAssign::Load(std::ifstream& Infile)
+{
+	Infile >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS;
+	UpdateStatementText();
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+
+void ValueAssign::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Inlet.x += x;
+	Inlet.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
 }

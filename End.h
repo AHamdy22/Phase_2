@@ -1,29 +1,29 @@
-#ifndef WRITE_H
-#define WRITE_H
+#ifndef END_H
+#define END_H
 
-#include "Statements\Statement.h"
+#include "Statements/Statement.h"
 
-class Write : public Statement
+class End : public Statement
 {
 private:
-	string VarName; //The name of the variable to be written write
-	Point LeftCorner;	//left corenr of the statement block.
-
 
 	Point Inlet;	//A point where connections enters this statement 
-	Point Outlet;	//A point a connection leaves this statement
+	//It's used as the (End) point of the (Input) connectors
 
-	virtual void UpdateStatementText();
+	Point LeftCorner;	//left corenr of the statement block.
+
+	void UpdateStatementText();
 
 public:
-	Write(Point LCorner, string var = "");
+
+	End(Point Lcorner);
 
 	void Draw(Output* pOut) const;
 
+	bool InStatement(Point P) const;
+
 	Point getInlet() const;
 	Point getOutlet() const;
-
-	bool InStatement(Point p) const;
 
 	int GetID() const;				//returns the statement ID
 	string GetText() const;			//returns the statement text
