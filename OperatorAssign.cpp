@@ -55,10 +55,50 @@ void OperatorAssign::setvalOP2(double p2)
 	UpdateStatementText();
 }
 
+bool OperatorAssign::InStatement(Point P) const
+{
+	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+}
+
 void OperatorAssign::setvarOP2(const string& o2)
 {
 	varOP2 = o2;
 	UpdateStatementText();
+}
+
+Point OperatorAssign::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void OperatorAssign::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void OperatorAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddOperatorAssign* D = new AddOperatorAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	varOP1 = D->GetvarOP1();
+
+	valOP1 = D->GetvalOP1();
+
+	varOP2 = D->GetvarOP2();
+
+	valOP2 = D->GetvalOP2();
+
+	UpdateStatementText();
+
+	delete D;
 }
 
 void OperatorAssign::Draw(Output* pOut) const

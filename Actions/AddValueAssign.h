@@ -30,6 +30,12 @@ public:
 	//Read Assignemt statements position
 	virtual void ReadActionParameters();
 	
+	void SetPosition(Point p);
+
+	string GetLHS() const;
+
+	double GetRHS() const;
+
 	//Create and add an assignemnt statement to the list of statements
 	virtual void Execute() ;
 	

@@ -15,6 +15,7 @@ AddValueAssign::AddValueAssign(ApplicationManager *pAppManager): Action(pAppMana
 {
 	LHS = "";
 	RHS = 0.0;
+	Position.x = -1;
 }
 Point p;
 void AddValueAssign::ReadActionParameters()
@@ -22,11 +23,14 @@ void AddValueAssign::ReadActionParameters()
 	Input *pIn = pManager->GetInput();
 	Output *pOut = pManager->GetOutput();
 	
-	//Read the (Position) parameter
-	pOut->PrintMessage("Value Assignment Statement: Click to add the statement");
+	if(Position.x==-1)
+	{
+		//Read the (Position) parameter
+		pOut->PrintMessage("Value Assignment Statement: Click to add the statement");
 
-	pIn->GetPointClicked(Position);
-	pOut->ClearStatusBar();		
+		pIn->GetPointClicked(Position);
+		pOut->ClearStatusBar();
+	}
 
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member
 
@@ -44,6 +48,21 @@ void AddValueAssign::ReadActionParameters()
 
 	//Note: You should validate the LHS to be variable name and RHS to be a value
 	//      Call the appropriate functions for this.
+}
+
+void AddValueAssign::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddValueAssign::GetLHS() const
+{
+	return LHS;
+}
+
+double AddValueAssign::GetRHS() const
+{
+	return RHS;
 }
 
 void AddValueAssign::Execute()

@@ -16,6 +16,7 @@ AddDeclare::AddDeclare(ApplicationManager* pAppManager) : Action(pAppManager)
 {
 	DataType = "";
 	Var = "";
+	Position.x = -1;
 }
 Point p1;
 void AddDeclare::ReadActionParameters()
@@ -23,11 +24,14 @@ void AddDeclare::ReadActionParameters()
 	Input* pIn = pManager->GetInput();
 	Output* pOut = pManager->GetOutput();
 
-	
-	pOut->PrintMessage("Declare Statement: Click to add the statement");
+	if(Position.x == -1)
+	{
+		pOut->PrintMessage("Declare Statement: Click to add the statement");
 
-	pIn->GetPointClicked(Position);
-	pOut->ClearStatusBar();
+		pIn->GetPointClicked(Position);
+		pOut->ClearStatusBar();
+	}
+
 
 	
 
@@ -46,12 +50,27 @@ void AddDeclare::ReadActionParameters()
 	
 }
 
+void AddDeclare::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddDeclare::GetDataType() const
+{
+	return DataType;
+}
+
+string AddDeclare::GetVar() const
+{
+	return Var;
+}
+
 void AddDeclare::Execute()
 {
 	ReadActionParameters();
 
 
-	//Calculating left corner of assignement statement block
+	
 	Point Corner;
 	Corner.x = Position.x - UI.ASSGN_WDTH / 2;
 	Corner.y = Position.y;
@@ -60,4 +79,6 @@ void AddDeclare::Execute()
 	
 	pManager->AddStatement(pAssign); 
 }
+
+
 

@@ -2,6 +2,8 @@
 #define VALUE_ASSIGN_H
 
 #include "Statement.h"
+#include "..\ApplicationManager.h"
+#include"..\Actions\AddValueAssign.h"
 
 //Value Assignment statement class
 //The value assignment statement assigns a value to a variable
@@ -40,6 +42,14 @@ public:
 	
 	void setLHS(const string &L);
 	void setRHS(double R);
+
+	bool InStatement(Point P) const;
+
+	virtual Point GetPosition() const;
+
+	virtual void SetPosition(Point p);
+
+	void EditStatement(ApplicationManager* pApp, Point p);
 
 	virtual void Draw(Output* pOut) const;
 

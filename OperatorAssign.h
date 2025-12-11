@@ -2,6 +2,8 @@
 #define OPERATOR_ASSIGN_H
 
 #include "Statements\Statement.h"
+#include "ApplicationManager.h"
+#include"Actions\..\AddOperatorAssign.h"
 
 
 class OperatorAssign : public Statement
@@ -36,6 +38,14 @@ public:
 	void setvalOP1(double p1);
 	void setvarOP2(const string& o2);
 	void setvalOP2(double p2);
+
+	bool InStatement(Point P) const;
+
+	virtual Point GetPosition() const;
+
+	virtual void SetPosition(Point p);
+
+	void EditStatement(ApplicationManager* pApp, Point p);
 
 	virtual void Draw(Output* pOut) const;
 

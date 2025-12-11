@@ -124,9 +124,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddConditional.cpp" />
     <ClCompile Include="AddDeclare.cpp" />
+    <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddOperatorAssign.cpp" />
+    <ClCompile Include="AddStart.cpp" />
     <ClCompile Include="AddVariableAssign.cpp" />
+    <ClCompile Include="AddWrite.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -273,12 +277,21 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Conditional.cpp" />
     <ClCompile Include="Connector.cpp" />
+    <ClCompile Include="Copy.cpp" />
+    <ClCompile Include="Cut.cpp" />
     <ClCompile Include="Declare.cpp" />
+    <ClCompile Include="Delete.cpp" />
+    <ClCompile Include="Edit.cpp" />
+    <ClCompile Include="End.cpp" />
     <ClCompile Include="GUI\Input.cpp" />
     <ClCompile Include="GUI\Output.cpp" />
     <ClCompile Include="HelperFn.cpp" />
     <ClCompile Include="OperatorAssign.cpp" />
+    <ClCompile Include="Paste.cpp" />
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Start.cpp" />
     <ClCompile Include="Statements\ValueAssign.cpp" />
     <ClCompile Include="Statements\Statement.cpp" />
     <ClCompile Include="main.cpp">
@@ -286,11 +299,16 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="VariableAssign.cpp" />
+    <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddConditional.h" />
     <ClInclude Include="AddDeclare.h" />
+    <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddOperatorAssign.h" />
+    <ClInclude Include="AddStart.h" />
     <ClInclude Include="AddVariableAssign.h" />
+    <ClInclude Include="AddWrite.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
     <ClInclude Include="CMUgraphicsLib\CMUgraphics.h" />
     <ClInclude Include="CMUgraphicsLib\colors.h" />
@@ -314,17 +332,27 @@
     <ClInclude Include="Actions\Action.h" />
     <ClInclude Include="Actions\AddValueAssign.h" />
     <ClInclude Include="ApplicationManager.h" />
+    <ClInclude Include="Conditional.h" />
     <ClInclude Include="Connector.h" />
+    <ClInclude Include="Copy.h" />
+    <ClInclude Include="Cut.h" />
     <ClInclude Include="Declare.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="Delete.h" />
+    <ClInclude Include="Edit.h" />
+    <ClInclude Include="End.h" />
     <ClInclude Include="GUI\Input.h" />
     <ClInclude Include="GUI\Output.h" />
     <ClInclude Include="GUI\UI_Info.h" />
     <ClInclude Include="HelperFn.h" />
     <ClInclude Include="OperatorAssign.h" />
+    <ClInclude Include="Paste.h" />
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />
     <ClInclude Include="Statements\Statement.h" />
     <ClInclude Include="VariableAssign.h" />
+    <ClInclude Include="Write.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

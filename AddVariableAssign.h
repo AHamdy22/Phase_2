@@ -23,6 +23,12 @@ public:
 	
 	virtual void Execute();
 
+	void SetPosition(Point p);
+
+	string GetLHS() const;
+
+	string GetRHS() const;
+
 };
 
 #endif

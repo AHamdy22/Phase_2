@@ -40,14 +40,47 @@ void ValueAssign::setRHS(double R)
 	UpdateStatementText();
 }
 
+bool ValueAssign::InStatement(Point P) const
+{
+	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+}
+
 
 void ValueAssign::Draw(Output* pOut) const
 {
 	//Call Output::DrawAssign function to draw assignment statement 	
-	pOut->DrawAssign(LeftCorner, UI.ASSGN_HI, UI.ASSGN_WDTH, Text, Selected);
+	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 	
 }
 
+Point ValueAssign::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void ValueAssign::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void ValueAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddValueAssign* D = new AddValueAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	RHS = D->GetRHS();
+
+	UpdateStatementText();
+
+	delete D;
+}
 
 //This function should be called when LHS or RHS changes
 void ValueAssign::UpdateStatementText()

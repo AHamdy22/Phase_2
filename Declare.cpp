@@ -46,6 +46,73 @@ bool Declare::InStatement(Point P) const
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
 }
 
+Point Declare::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void Declare::SetPosition(Point p) 
+{
+	LeftCorner = p;
+}
+
+void Declare::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddDeclare* D = new AddDeclare(pApp);
+	
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	DataType = D->GetDataType();
+
+	Var = D->GetVar();
+
+	UpdateStatementText();
+
+	delete D;
+}
+
+void Declare::GetStatementCut(ApplicationManager* pApp) const
+{
+	Declare* D = new Declare(*this);
+	D->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(D);
+	
+}
+
+
+void Declare::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Declare* d = dynamic_cast<Declare*>(S);
+	if (d)
+	{
+		if(d->IsCopied())
+		{
+			d->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			d = new Declare(*d);
+			p.x -= UI.ASSGN_WDTH / 2;
+			d->SetPosition(p);
+			d->SetSelected(false);
+			pManager->AddStatement(d);
+			pManager->SetClipboard(nullptr);
+		}
+		else
+			{
+			p.x -= UI.ASSGN_WDTH / 2;
+			d->SetPosition(p);
+			d->SetSelected(false);
+			pManager->AddStatement(d);
+			pManager->SetClipboard(nullptr);
+			}
+	}
+	
+}
 
 void Declare::Draw(Output* pOut) const
 {

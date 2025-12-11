@@ -23,6 +23,12 @@ public:
 	virtual void ReadActionParameters();
 
 	
+	void SetPosition(Point p);
+
+	string GetDataType() const;
+
+	string GetVar() const;
+
 	virtual void Execute();
 
 };

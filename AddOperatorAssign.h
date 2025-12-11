@@ -25,6 +25,20 @@ public:
 	virtual void ReadActionParameters();
 
 
+	void SetPosition(Point p);
+
+	string GetLHS() const;
+
+	string GetvarOP1() const;
+
+	double GetvalOP1() const;
+
+	string GetvarOP2() const;
+
+	double GetvalOP2() const;
+
+	char GetOperation() const;
+
 	virtual void Execute();
 
 };

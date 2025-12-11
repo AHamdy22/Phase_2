@@ -964,12 +964,13 @@ void window::DrawPolygon(const int* ipX, const int* ipY, const int iVertices, co
 		break;
 
 	  default:
-		delete ptVertices;
-	    cout << "Fatal Error: You have tried to use an invalid or unimplemented drawstyle!" << endl;
-		break;
+		  delete ptVertices;
+		  cout << "Fatal Error: You have tried to use an invalid or unimplemented drawstyle!" << endl;
+		  break;
+
 	}
 
-	delete ptVertices;
+    delete ptVertices;	
 }
 
 void window::DrawCircle(const int iX, const int iY, const int iRadius, const drawstyle dsStyle) {

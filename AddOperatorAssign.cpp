@@ -15,6 +15,7 @@ AddOperatorAssign::AddOperatorAssign(ApplicationManager* pAppManager) : Action(p
 	valOP1 = 0.0;
 	varOP2 = "";
 	valOP2 = 0.0;
+	Position.x = -1;
 }	
 Point p3;
 void AddOperatorAssign::ReadActionParameters()
@@ -25,12 +26,14 @@ void AddOperatorAssign::ReadActionParameters()
 	string Firstop;
 	string Secondop;
 
+	if(Position.x == -1)
+	{
+		//Read the (Position) parameter
+		pOut->PrintMessage("Operator Assignment Statement: Click to add the statement");
 
-	//Read the (Position) parameter
-	pOut->PrintMessage("Operator Assignment Statement: Click to add the statement");
-
-	pIn->GetPointClicked(Position);
-	pOut->ClearStatusBar();
+		pIn->GetPointClicked(Position);
+		pOut->ClearStatusBar();
+	}
 
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member
 
@@ -44,10 +47,12 @@ void AddOperatorAssign::ReadActionParameters()
 	pOut->PrintMessage("Please enter the first operant of the operation");
 	pIn->GetPointClicked(p3);
 	pOut->ClearStatusBar();
-	Firstop = pIn->GetString(pOut);
+	
 
 	while(1)
 	{
+		Firstop = pIn->GetString(pOut);
+
 		if (IsValue(Firstop))
 		{
 			valOP1 = stod(Firstop);
@@ -70,10 +75,12 @@ void AddOperatorAssign::ReadActionParameters()
 	pOut->PrintMessage("Please enter the second operant of the operation");
 	pIn->GetPointClicked(p3);
 	pOut->ClearStatusBar();
-	Secondop = pIn->GetString(pOut);
+	
 
 	while (1)
 	{
+		Secondop = pIn->GetString(pOut);
+
 		if (IsValue(Secondop))
 		{
 			valOP2 = stod(Secondop);
@@ -89,6 +96,42 @@ void AddOperatorAssign::ReadActionParameters()
 			pOut->PrintMessage("Please enter a valid operant");
 	}
 }
+
+void AddOperatorAssign::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddOperatorAssign::GetLHS() const
+{
+	return LHS;
+}
+
+string AddOperatorAssign::GetvarOP1() const
+{
+	return varOP1;
+}
+
+double AddOperatorAssign::GetvalOP1() const
+{
+	return valOP1;
+}
+
+string AddOperatorAssign::GetvarOP2() const
+{
+	return varOP2;
+}
+
+double AddOperatorAssign::GetvalOP2() const
+{
+	return valOP2;
+}
+
+char AddOperatorAssign::GetOperation() const
+{
+	return Operation;
+}
+
 
 void AddOperatorAssign::Execute()
 {

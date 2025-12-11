@@ -39,6 +39,40 @@ void VariableAssign::setRHS(const string& R)
 	UpdateStatementText();
 }
 
+bool VariableAssign::InStatement(Point P) const
+{
+	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+}
+
+Point VariableAssign::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void VariableAssign::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void VariableAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddVariableAssign* D = new AddVariableAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	RHS = D->GetRHS();
+
+	UpdateStatementText();
+
+	delete D;
+}
+
 void VariableAssign::Draw(Output* pOut) const
 {
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);

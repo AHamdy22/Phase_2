@@ -3,6 +3,16 @@
 #include "Actions\..\AddDeclare.h"
 #include "Actions\..\AddVariableAssign.h"
 #include "Actions\..\AddOperatorAssign.h"
+#include "Actions\..\Select.h"
+#include "Actions\..\AddStart.h"
+#include "Actions\..\AddConditional.h"
+#include "Actions\..\AddEnd.h"
+#include "Actions\..\AddWrite.h"
+#include "Actions\..\Edit.h"
+#include "Actions\..\Delete.h"
+#include "Actions\..\Copy.h"
+#include "Actions\..\Cut.h"
+#include "Actions\..\Paste.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -63,13 +73,43 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 
 		case ADD_CONDITION:
-			///create AddCondition Action here
+			pAct = new AddConditional(this);
+			break;
 
+		case ADD_START:
+			pAct = new AddStart(this);
+			break;
+
+		case ADD_END:
+			pAct = new AddEnd(this);
+			break;
+
+		case ADD_WRITE:
+			pAct = new AddWrite(this);
 			break;
 
 		case SELECT:
-			///create Select Action here
+			pAct = new Select(this);
+			break;
 
+		case EDIT_STAT:
+			pAct = new Edit(this);
+			break;
+
+		case DEL:
+			pAct = new Delete(this);
+			break;
+
+		case COPY:
+			pAct = new Copy(this);
+			break;
+
+		case CUT:
+			pAct = new Cut(this);
+			break;
+
+		case PASTE:
+			pAct = new Paste(this);
 			break;
 
 		case EXIT:
@@ -109,14 +149,22 @@ Statement *ApplicationManager::GetStatement(Point P) const
 {
 	//If this point P(x,y) belongs to a statement return a pointer to it.
 	//otherwise, return NULL
-	if(StatList[0]->IsSelected())
+	
+    for (int i = 0; i < StatCount; i++)
+    {
 
-	StatList[0]->SetSelected(true);
+        if (StatList[i]->InStatement(P))
+            return StatList[i];
+    }
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities
 
 	return NULL;
+}
+int ApplicationManager::GetStatCount() const
+{
+	return StatCount;
 }
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
@@ -138,6 +186,24 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
+void ApplicationManager::DeleteStatement(Statement* pStat)
+{
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == pStat)
+		{
+			delete StatList[i];
+			for (int j = i; j < StatCount - 1; j++)
+			{
+				StatList[j] = StatList[j + 1];
+			}
+			StatList[StatCount - 1] = NULL;
+			StatCount--;
+			break;
+		}
+	}
+}
+
 
 //==================================================================================//
 //							Interface Management Functions							//
@@ -151,7 +217,8 @@ void ApplicationManager::UpdateInterface() const
 
 	//Draw all statements
 	for(int i=0; i<StatCount; i++)
-		StatList[i]->Draw(pOut);
+
+			StatList[i]->Draw(pOut);
 	
 	//Draw all connections
 	for(int i=0; i<ConnCount; i++)

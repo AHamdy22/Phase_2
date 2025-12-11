@@ -1,8 +1,10 @@
 #ifndef DECLARE_H
 #define DECLARE_H
 
-#include "Statements\Statement.h"
 
+#include "Statements\Statement.h"
+#include "ApplicationManager.h"
+#include"Actions\..\AddDeclare.h"
 
 class Declare : public Statement
 {
@@ -33,6 +35,16 @@ public:
 	void setVar(const string& v);
 	bool InStatement(Point p) const;
 
+	virtual Point GetPosition() const;
+
+	virtual void SetPosition(Point p);
+
+	void EditStatement(ApplicationManager* pApp, Point p);
+
+	void GetStatementCut(ApplicationManager* pApp) const;
+
+	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
+	
 	virtual void Draw(Output* pOut) const;
 
 
