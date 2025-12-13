@@ -1,13 +1,13 @@
 #include "AddConnectors.h"
 #include "ApplicationManager.h"
+#include "Conditional.h"
 #include "GUI\input.h"
 #include "GUI\Output.h"
 
 AddConnectors::AddConnectors(ApplicationManager* pAppManager) :Action(pAppManager)
 {
-	pConn = nullptr;  // Initialize pointer to null
+	pConn = nullptr;
 }
-
 
 void AddConnectors::ReadActionParameters()
 {
@@ -55,38 +55,199 @@ void AddConnectors::Execute()
 		return;
 	}
 
-	// Check if source statement already has an outgoing connector
-	if (SrcStat->getOutConnector() != nullptr)
+	// Check if the source statement is a Conditional statement
+	Conditional* condStat = dynamic_cast<Conditional*>(SrcStat);
+
+	if (condStat != nullptr)
 	{
-		pOut->PrintMessage("Error: Source statement already has an outgoing connector.");
-		return;
+		// Handle Conditional Statement Connectors
+
+		// Check if both connectors already exist
+		if (condStat->getOutConnector() != nullptr && condStat->getNoConnector() != nullptr)
+		{
+			pOut->PrintMessage("Error: Conditional statement already has both Yes and No connectors.");
+			return;
+		}
+
+		// Ask user which branch (Yes or No)
+		pOut->PrintMessage("Is this the Yes branch? (y/n)");
+		Input* pIn = pManager->GetInput();
+		string response = pIn->GetString(pOut);
+		pOut->ClearStatusBar();
+
+		bool isYesBranch = (response == "y" || response == "Y" || response == "yes" || response == "Yes");
+
+		// Get the outlets from conditional
+		Point yesOutlet = condStat->getYesOutlet();
+		Point noOutlet = condStat->getNoOutlet();
+
+		if (isYesBranch)
+		{
+			// Yes branch (right side)
+			if (condStat->getOutConnector() != nullptr)
+			{
+				pOut->PrintMessage("Error: Conditional statement already has a Yes connector.");
+				return;
+			}
+
+			// If No branch already exists, align with it
+			if (condStat->getNoConnector() != nullptr)
+			{
+				Statement* noDestStat = condStat->getNoConnector()->getDstStat();
+				if (noDestStat != nullptr)
+				{
+					Point noDestInlet = noDestStat->getInlet();
+					Point dstInlet = DstStat->getInlet();
+
+					// Calculate movements to align both horizontally and vertically
+					// 1. Vertical alignment: same Y level as No branch destination
+					int deltaY = noDestInlet.y - dstInlet.y;
+
+					// 2. Horizontal alignment: position to the right of conditional
+					int desiredX = yesOutlet.x + 100; // 100 pixels to the right
+					int deltaX = desiredX - dstInlet.x;
+
+					// Move the Yes destination statement
+					DstStat->Move(deltaX, deltaY);
+				}
+			}
+			else
+			{
+				// No branch doesn't exist yet - just position below and to the right
+				Point dstInlet = DstStat->getInlet();
+
+				// Position 100 pixels to the right and 100 pixels below conditional
+				int desiredX = yesOutlet.x + 100;
+				int desiredY = yesOutlet.y + 100;
+
+				int deltaX = desiredX - dstInlet.x;
+				int deltaY = desiredY - dstInlet.y;
+
+				DstStat->Move(deltaX, deltaY);
+			}
+
+			// Create the connector
+			pConn = new Connector(condStat, DstStat);
+			pConn->setOutletBranch(1); // 1 for Yes branch
+
+			// Set start and end points
+			pConn->setStartPoint(condStat->getYesOutlet());
+			pConn->setEndPoint(DstStat->getInlet());
+
+			// Update the statements
+			condStat->setOutConnector(pConn);
+			DstStat->addInConnector(pConn);
+		}
+		else
+		{
+			// No branch (left side)
+			if (condStat->getNoConnector() != nullptr)
+			{
+				pOut->PrintMessage("Error: Conditional statement already has a No connector.");
+				return;
+			}
+
+			// If Yes branch already exists, align with it
+			if (condStat->getOutConnector() != nullptr)
+			{
+				Statement* yesDestStat = condStat->getOutConnector()->getDstStat();
+				if (yesDestStat != nullptr)
+				{
+					Point yesDestInlet = yesDestStat->getInlet();
+					Point dstInlet = DstStat->getInlet();
+
+					// Calculate movements to align both horizontally and vertically
+					// 1. Vertical alignment: same Y level as Yes branch destination
+					int deltaY = yesDestInlet.y - dstInlet.y;
+
+					// 2. Horizontal alignment: position to the left of conditional
+					int desiredX = noOutlet.x - 100; // 100 pixels to the left
+					int deltaX = desiredX - dstInlet.x;
+
+					// Move the No destination statement
+					DstStat->Move(deltaX, deltaY);
+				}
+			}
+			else
+			{
+				// Yes branch doesn't exist yet - just position below and to the left
+				Point dstInlet = DstStat->getInlet();
+
+				// Position 100 pixels to the left and 100 pixels below conditional
+				int desiredX = noOutlet.x - 100;
+				int desiredY = noOutlet.y + 100;
+
+				int deltaX = desiredX - dstInlet.x;
+				int deltaY = desiredY - dstInlet.y;
+
+				DstStat->Move(deltaX, deltaY);
+			}
+
+			// Create the connector
+			pConn = new Connector(condStat, DstStat);
+			pConn->setOutletBranch(2); // 2 for No branch
+
+			// Set start and end points
+			pConn->setStartPoint(condStat->getNoOutlet());
+			pConn->setEndPoint(DstStat->getInlet());
+
+			// Update the statements
+			condStat->setNoConnector(pConn);
+			DstStat->addInConnector(pConn);
+		}
+
+		// Add the connector to application manager's connector list
+		pManager->AddConnector(pConn);
+
+		// Update the interface
+		pManager->UpdateInterface();
+
+		pOut->PrintMessage("Connector added successfully.");
 	}
-
-	// Move destination statement to align with source
-	Point srcOutlet = SrcStat->getOutlet();
-	Point dstInlet = DstStat->getInlet();
-
-	// Calculate horizontal difference in distance to align centers
-	int deltaX = srcOutlet.x - dstInlet.x;
-
-	if (deltaX != 0)
+	else
 	{
-		DstStat->Move(deltaX, 0);
+		// Handle Normal Statement Connectors
+
+		// Check if source statement already has an outgoing connector
+		if (SrcStat->getOutConnector() != nullptr)
+		{
+			pOut->PrintMessage("Error: Source statement already has an outgoing connector.");
+			return;
+		}
+
+		// Get outlet and inlet points
+		Point srcOutlet = SrcStat->getOutlet();
+		Point dstInlet = DstStat->getInlet();
+
+		// Calculate horizontal difference to align centers
+		int deltaX = srcOutlet.x - dstInlet.x;
+
+		// Move destination statement to align with source
+		if (deltaX != 0)
+		{
+			DstStat->Move(deltaX, 0);
+			// Update inlet after moving
+			dstInlet = DstStat->getInlet();
+		}
+
+		// Create the connector
+		pConn = new Connector(SrcStat, DstStat);
+		pConn->setOutletBranch(0); // 0 for normal connector
+
+		// Set the start and end points
+		pConn->setStartPoint(srcOutlet);
+		pConn->setEndPoint(dstInlet);
+
+		// Update the statements to reference this connector
+		SrcStat->setOutConnector(pConn);
+		DstStat->addInConnector(pConn);
+
+		// Add the connector to application manager's connector list
+		pManager->AddConnector(pConn);
+
+		// Update the interface
+		pManager->UpdateInterface();
+
+		pOut->PrintMessage("Connector added successfully.");
 	}
-
-	// Create the connector
-	pConn = new Connector(SrcStat, DstStat);
-
-	// Set the start and end points of the connector based on statement outlets/inlets
-	pConn->setStartPoint(SrcStat->getOutlet());
-	pConn->setEndPoint(DstStat->getInlet());
-
-	// Update the statements to reference this connector
-	SrcStat->setOutConnector(pConn);
-	DstStat->addInConnector(pConn);
-
-	// Add the connector to application manager's connector list
-	pManager->AddConnector(pConn);
-
-	pOut->PrintMessage("Connector added successfully.");
 }
