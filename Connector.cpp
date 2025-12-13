@@ -36,6 +36,11 @@ Statement* Connector::getDstStat()
 	return DstStat;
 }
 
+bool Connector::IsSelected()
+{
+	return Selected;
+}
+
 void Connector::setStartPoint(Point P)
 {
 	Start = P;

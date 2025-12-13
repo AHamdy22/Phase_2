@@ -31,9 +31,16 @@ void Delete::Execute()
     ReadActionParameters();
 
     Statement* clickedStat = pManager->GetSelectedStatement();
+    Connector* clickedConn = pManager->GetSelectedConnector();
     if (clickedStat)
     {
 		pManager->DeleteStatement(clickedStat);
 		pManager->SetSelectedStatement(NULL);
     }
+    if (clickedConn)
+    {
+        pManager->DeleteConnector(clickedConn);
+        pManager->SetSelectedConnector(NULL);
+    }
+	pManager->UpdateInterface();
 }

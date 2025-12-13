@@ -22,6 +22,7 @@ public:
 	Statement* getSrcStat();
 	void		setDstStat(Statement* Dst);
 	Statement* getDstStat();
+	bool IsSelected();
 
 	void setStartPoint(Point P);
 	Point getStartPoint();

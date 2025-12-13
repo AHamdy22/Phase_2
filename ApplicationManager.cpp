@@ -130,20 +130,20 @@ Statement *ApplicationManager::GetStatement(Point P) const
 	return NULL;
 }
 
-Connector* ApplicationManager::GetConnector(Point P) const
+Connector *ApplicationManager::GetConnector(Point P) const
 {
-	//If this point P(x,y) belongs to a statement return a pointer to it.
-	//otherwise, return NULL
-
 	for (int i = 0; i < ConnCount; i++)
 	{
-		//if (ConnList[i]->InConnector(P)) 
+		const int tolerance = 5;
+		Point start = ConnList[i]->getStartPoint();
+		Point end = ConnList[i]->getEndPoint();
+		int minX = min(start.x, end.x) - tolerance;
+		int maxX = max(start.x, end.x) + tolerance;
+		int minY = min(start.y, end.y) - tolerance;
+		int maxY = max(start.y, end.y) + tolerance;
+		if (P.x >= minX && P.x <= maxX && P.y >= minY && P.y <= maxY)
 			return ConnList[i];
 	}
-
-	///Add your code here to search for a statement given a point P(x,y)	
-	///WITHOUT breaking class responsibilities
-
 	return NULL;
 }
 
@@ -197,6 +197,19 @@ void ApplicationManager::SetClipboard(Statement *pStat)
 
 void ApplicationManager::DeleteStatement(Statement * pStat)
 {
+	Connector* outConn = pStat->getOutConnector();
+	if (outConn)
+	{
+		DeleteConnector(outConn);
+	}
+	for (int i = 0; i < pStat->getInConnectorCount(); i++)
+	{
+		Connector* inConn = pStat->getInConnector(i);
+		if (inConn)
+		{
+			DeleteConnector(inConn);
+		}
+	}
 	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] == pStat)
