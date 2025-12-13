@@ -51,26 +51,22 @@ void Select::Execute()
         }
         pManager->UpdateInterface();
     }
-
-    //----------------------------------------------//
-
     if (clickedConn)
     {
-        Connector* prevSelected = pManager->GetSelectedConnector();
-        if (prevSelected == clickedConn)
+        Connector* prevSelectedConn = pManager->GetSelectedConnector();
+        if (prevSelectedConn == clickedConn)
         {
             clickedConn->SetSelected(false);
             pManager->SetSelectedConnector(NULL);
         }
         else
         {
-            if (prevSelected)
-              prevSelected->SetSelected(false);
-
-              clickedConn->SetSelected(true);
+            if (prevSelectedConn)
+                prevSelectedConn->SetSelected(false);
+            clickedConn->SetSelected(true);
             pManager->SetSelectedConnector(clickedConn);
         }
         pManager->UpdateInterface();
-    }
+	}
 
 }
