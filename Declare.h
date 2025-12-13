@@ -1,10 +1,8 @@
 #ifndef DECLARE_H
 #define DECLARE_H
 
-
 #include "Statements\Statement.h"
 #include "ApplicationManager.h"
-#include"Actions\..\AddDeclare.h"
 
 class Declare : public Statement
 {
@@ -12,18 +10,11 @@ private:
 	string DataType;
 	string Var;
 
-	Connector* pOutConn;
-
 
 	Point Inlet;
 	Point Outlet;
 
-	Point LeftCorner;
-
-
-	int stringlength;
-
-	int stringheight;
+	Point LeftCorner;		//Top-Left corner of the statement
 
 
 	virtual void UpdateStatementText();
@@ -36,24 +27,21 @@ public:
 	bool InStatement(Point p) const;
 
 	virtual Point GetPosition() const;
-
 	virtual void SetPosition(Point p);
-
-	void EditStatement(ApplicationManager* pApp, Point p);
 
 	virtual void Draw(Output* pOut) const;
 
 	Point getInlet() const;
 	Point getOutlet() const;
 
-	int GetID() const;				//returns the statement ID
-	string GetText() const;			//returns the statement text
-	string GetType() const;			//returns the statement type as a string
+	int GetID() const;
+	string GetText() const;
+	string GetType() const;
 
-	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
+	void Save(ofstream& OutFile);
+	void Load(ifstream& Infile);
 
+	void Move(int x, int y);
 };
 
 #endif
-

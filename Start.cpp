@@ -11,8 +11,8 @@ Start::Start(Point Lcorner)
 	pOutConn = NULL;	//No connectors yet
 
 
-	Outlet.x = LeftCorner.x + (UI.ASSGN_WDTH / 2);
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
+	Outlet.y = LeftCorner.y + UI.START_HI;
 
 }
 
@@ -67,5 +67,16 @@ void Start::Save(ofstream& OutFile)
 
 void Start::Load(ifstream& Infile)
 {
-	// No additional parameters to load for Start statement
+	Infile >> ID >> LeftCorner.x >> LeftCorner.y;
+	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
+	Outlet.y = LeftCorner.y + UI.START_HI;
+}
+
+void Start::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
 }

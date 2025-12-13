@@ -18,17 +18,17 @@ Conditional::Conditional(Point Tcorner, string LeftHS, double ValueRightHS, stri
 	//pW->GetStringSize(stringlength, stringheight, Text);
 	TopCorner = Tcorner;
 
-	pOutConn1 = NULL;	//No connectors yet
-	pOutConn2 = NULL;	//No connectors yet
+	pOutConn = NULL;	//No connectors yet
+	pNoConn = NULL;	    //No connectors yet
 
 	Inlet.x = Tcorner.x;
 	Inlet.y = Tcorner.y;
 
-	Outlet1.x = Tcorner.x - (UI.ASSGN_WDTH / 2);
-	Outlet1.y = Tcorner.y + (UI.ASSGN_HI / 2);
+	YesOutlet.x = Tcorner.x + (UI.ASSGN_WDTH / 2);
+	YesOutlet.y = Tcorner.y + (UI.ASSGN_HI / 2);
 
-	Outlet2.x = Tcorner.x + (UI.ASSGN_WDTH / 2);
-	Outlet2.y = Tcorner.y + (UI.ASSGN_HI / 2);
+	NoOutlet.x = Tcorner.x - (UI.ASSGN_WDTH / 2);
+	NoOutlet.y = Tcorner.y + (UI.ASSGN_HI / 2);
 
 }
 
@@ -79,8 +79,9 @@ void Conditional::UpdateStatementText()
 }
 bool Conditional::InStatement(Point P) const
 {
-	return (P.x >= TopCorner.x - (UI.ASSGN_WDTH / 2) && P.x <= TopCorner.x + (UI.ASSGN_WDTH / 2) &&
-		P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
+	// Assume that the conditional statement is a square; as it is difficult to determine the positions inside it if it is rhombus
+	return (P.x >= TopCorner.x - UI.ASSGN_WDTH / 2 && P.x <= TopCorner.x + UI.ASSGN_WDTH / 2 + UI.ASSGN_WDTH
+		&&  P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
 }
 
 Point Conditional::getInlet() const
@@ -88,14 +89,31 @@ Point Conditional::getInlet() const
 	return Inlet;
 }
 
-Point Conditional::getOutlet1() const
+Point Conditional::getOutlet() const
 {
-	return Outlet1;
+	// There is no single outlet for Conditional statement
+	Point p(-1, -1);
+	return p;
 }
 
-Point Conditional::getOutlet2() const
+Point Conditional::getYesOutlet() const
 {
-	return Outlet2;
+	return YesOutlet;
+}
+
+Point Conditional::getNoOutlet() const
+{
+	return NoOutlet;
+}
+
+void Conditional::setNoConnector(Connector* pConn)
+{
+	pNoConn = pConn;
+}
+
+Connector* Conditional::getNoConnector() const
+{
+	return pNoConn;
 }
 
 int Conditional::GetID() const
@@ -126,7 +144,10 @@ void Conditional::Load(ifstream& Infile)
 {
 	string varRHS;
 	double valRHS;
-	Infile >> TopCorner.x >> TopCorner.y >> LHS >> CompOperator >> valRHS >> varRHS;
+
+	// Read ID first, then other parameters
+	Infile >> ID >> TopCorner.x >> TopCorner.y >> LHS >> CompOperator >> valRHS >> varRHS;
+
 	if (varRHS == "0")
 	{
 		ValueRHS = valRHS;
@@ -137,5 +158,28 @@ void Conditional::Load(ifstream& Infile)
 		ValueRHS = 0;
 		VariableRHS = varRHS;
 	}
+
 	UpdateStatementText();
+
+	// Recalculate inlet and outlet positions
+	Inlet.x = TopCorner.x;
+	Inlet.y = TopCorner.y;
+
+	YesOutlet.x = TopCorner.x + (UI.ASSGN_WDTH / 2);
+	YesOutlet.y = TopCorner.y + (UI.ASSGN_HI / 2);
+
+	NoOutlet.x = TopCorner.x - (UI.ASSGN_WDTH / 2);
+	NoOutlet.y = TopCorner.y + (UI.ASSGN_HI / 2);
+}
+
+void Conditional::Move(int x, int y)
+{
+	TopCorner.x += x;
+	TopCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	YesOutlet.x += x;
+	YesOutlet.y += y;
+	NoOutlet.x += x;
+	NoOutlet.y += y;
 }

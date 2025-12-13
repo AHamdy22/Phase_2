@@ -1,7 +1,6 @@
-#include "End.h"
-#include <sstream>
-#include <fstream>
 
+#include "End.h"
+#include <fstream>
 using namespace std;
 
 End::End(Point Lcorner)
@@ -9,7 +8,7 @@ End::End(Point Lcorner)
 
 	LeftCorner = Lcorner;
 
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
 }
@@ -24,6 +23,7 @@ void End::Draw(Output* pOut) const
 void End::UpdateStatementText()
 {
 }
+
 bool End::InStatement(Point P) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.START_WDTH &&
@@ -65,5 +65,16 @@ void End::Save(ofstream& OutFile)
 
 void End::Load(ifstream& Infile)
 {
-	// No additional parameters to load for End statement
+	Infile >> ID >> LeftCorner.x >> LeftCorner.y;
+	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+}
+
+void End::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Inlet.x += x;
+	Inlet.y += y;
 }

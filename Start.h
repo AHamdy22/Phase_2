@@ -7,13 +7,13 @@ class Start : public Statement
 {
 private:
 
-	Connector* pOutConn;	
 
-	Point Outlet;	
+	Point LeftCorner;		//Top-Left corner of the statement
 
-	Point LeftCorner;
+	Point Outlet;
 
 	void UpdateStatementText();
+
 
 public:
 
@@ -32,6 +32,8 @@ public:
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
 	void Load(ifstream& Infile);	//Load the Statement parameters from a file
+
+	void Move(int x, int y);
 };
 
 #endif

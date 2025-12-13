@@ -1,3 +1,4 @@
+
 #include "Declare.h"
 #include <sstream>
 #include <fstream>
@@ -6,15 +7,12 @@ using namespace std;
 
 Declare::Declare(Point Lcorner, string data_type, string variable)
 {
-
 	DataType = data_type;
 	Var = variable;
 
 	UpdateStatementText();
 
-	stringlength = 0;
-	stringheight = 0;
-	//pW->GetStringSize(stringlength, stringheight, Text);
+	// REMOVED: stringlength, stringheight, and GetStringSize call
 	LeftCorner = Lcorner;
 
 	pOutConn = NULL;	//No connectors yet
@@ -40,7 +38,6 @@ void Declare::setVar(const string& v)
 
 bool Declare::InStatement(Point P) const
 {
-
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
 }
@@ -55,41 +52,17 @@ void Declare::SetPosition(Point p)
 	LeftCorner = p;
 }
 
-void Declare::EditStatement(ApplicationManager* pApp, Point p)
-{
-
-	AddDeclare* D = new AddDeclare(pApp);
-
-	D->SetPosition(p);
-
-	D->ReadActionParameters();
-
-	DataType = D->GetDataType();
-
-	Var = D->GetVar();
-
-	UpdateStatementText();
-
-	delete D;
-}
-
 void Declare::Draw(Output* pOut) const
 {
-
 	pOut->DrawDeclare(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
-
 }
-
-
 
 void Declare::UpdateStatementText()
 {
-
 	ostringstream T;
 	T << DataType << " " << Var;
 	Text = T.str();
 }
-
 
 Point Declare::getInlet() const
 {
@@ -123,6 +96,22 @@ void Declare::Save(ofstream& OutFile)
 
 void Declare::Load(ifstream& Infile)
 {
-	Infile >> LeftCorner.x >> LeftCorner.y >> DataType >> Var;
+	Infile >> ID >> LeftCorner.x >> LeftCorner.y >> DataType >> Var;
 	UpdateStatementText();
+
+	// Recalculate inlet and outlet positions
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+
+void Declare::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	Outlet.x += x;
+	Outlet.y += y;
 }

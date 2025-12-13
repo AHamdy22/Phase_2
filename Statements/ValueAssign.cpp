@@ -1,9 +1,11 @@
+
 #include "ValueAssign.h"
 #include <sstream>
 
 
 using namespace std;
-
+//window w;
+//window *pW = &w;
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 {
 	// Note: The LeftHS and RightHS should be validated inside (AddValueAssign) action
@@ -13,8 +15,8 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 
 	UpdateStatementText();
 
-	stringlength = 0;
-	stringheight = 0;
+	//stringlength = 0;
+	//stringheight = 0;
 	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
 
@@ -25,6 +27,14 @@ ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 
 	Outlet.x = Inlet.x;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+
+void ValueAssign::UpdateStatementText()
+{
+	//Build the statement text: Left handside then equals then right handside
+	ostringstream T;
+	T << LHS << " = " << RHS;
+	Text = T.str();
 }
 
 void ValueAssign::setLHS(const string& L)
@@ -42,25 +52,8 @@ void ValueAssign::setRHS(double R)
 
 void ValueAssign::Draw(Output* pOut) const
 {
-	//Call Output::DrawAssign function to draw assignment statement 	
+	//Call Output::DrawAssign function to draw assignment statement
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
-
-}
-
-
-//This function should be called when LHS or RHS changes
-void ValueAssign::UpdateStatementText()
-{
-	//Build the statement text: Left handside then equals then right handside
-	ostringstream T;
-	T << LHS << " = " << RHS;
-	Text = T.str();
-}
-
-bool ValueAssign::InStatement(Point P) const
-{
-	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
 
 }
 
@@ -72,6 +65,12 @@ Point ValueAssign::getInlet() const
 Point ValueAssign::getOutlet() const
 {
 	return Outlet;
+}
+
+bool ValueAssign::InStatement(Point p) const
+{
+	return (p.x >= LeftCorner.x && p.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		p.y >= LeftCorner.y && p.y <= LeftCorner.y + UI.ASSGN_HI);
 }
 
 int ValueAssign::GetID() const
@@ -102,4 +101,16 @@ void ValueAssign::Load(std::ifstream& Infile)
 	Inlet.y = LeftCorner.y;
 	Outlet.x = Inlet.x;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+
+void ValueAssign::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Inlet.x += x;
+	Inlet.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
 }

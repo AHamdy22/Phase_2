@@ -10,7 +10,7 @@ private:
 	Point Inlet;	//A point where connections enters this statement 
 	//It's used as the (End) point of the (Input) connectors
 
-	Point LeftCorner;	//left corenr of the statement block.
+	Point LeftCorner;		//Top-Left corner of the statement
 
 	void UpdateStatementText();
 
@@ -30,9 +30,9 @@ public:
 	string GetType() const;			//returns the statement type as a string
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
+	void Load(ifstream& Infile);	//Load the Statement parameters from a file
+
+	void Move(int x, int y);
 };
 
 #endif
-
-
