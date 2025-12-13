@@ -159,6 +159,12 @@ void ApplicationManager::SetSelectedConnector(Connector* pStat)
 
 void ApplicationManager::DeleteConnector(Connector* pStat)
 {
+	for(int i = 0; i < StatCount; i++)
+	{
+		Connector* outConn = StatList[i]->getOutConnector();
+		if (outConn == pStat)
+			StatList[i]->setOutConnector(NULL);
+	}
 	for (int i = 0; i < ConnCount; i++)
 	{
 		if (ConnList[i] == pStat)
@@ -195,35 +201,44 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
-void ApplicationManager::DeleteStatement(Statement * pStat)
+void ApplicationManager::DeleteStatement(Statement* pStat)
 {
-	Connector* outConn = pStat->getOutConnector();
-	if (outConn)
-	{
-		DeleteConnector(outConn);
-	}
-	for (int i = 0; i < pStat->getInConnectorCount(); i++)
-	{
-		Connector* inConn = pStat->getInConnector(i);
-		if (inConn)
-		{
-			DeleteConnector(inConn);
-		}
-	}
-	for (int i = 0; i < StatCount; i++)
-	{
-		if (StatList[i] == pStat)
-		{
-			delete StatList[i];
-			for (int j = i; j < StatCount - 1; j++)
-			{
-				StatList[j] = StatList[j + 1];
-			}
-			StatList[StatCount - 1] = NULL;
-			StatCount--; 
-			break;
-		}
-	}
+    // Deselect the statement if it's selected
+    if (pStat == GetSelectedStatement())
+        SetSelectedStatement(NULL);
+
+    // First, delete all connectors associated with this statement
+    for (int i = 0; i < ConnCount; )
+    {
+        if (ConnList[i]->getSrcStat() == pStat || ConnList[i]->getDstStat() == pStat)
+        {
+            if (ConnList[i] == GetSelectedConnector())
+                SetSelectedConnector(NULL);
+			DeleteConnector(ConnList[i]);
+        }
+        else
+        {
+            i++;
+        }
+    }
+
+    // Now, delete the statement itself
+    for (int i = 0; i < StatCount; i++)
+    {
+        if (StatList[i] == pStat)
+        {
+            delete StatList[i];
+
+            for (int j = i; j < StatCount - 1; j++)
+                StatList[j] = StatList[j + 1];
+
+            StatCount--;
+            break;
+        }
+    }
+
+    // Finally, update GUI
+    UpdateInterface();
 }
 
 

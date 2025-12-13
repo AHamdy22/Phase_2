@@ -35,7 +35,7 @@ void Delete::Execute()
     if (clickedStat)
     {
 		pManager->DeleteStatement(clickedStat);
-		pManager->SetSelectedStatement(NULL);
+		pManager->SetSelectedStatement(NULL); 
     }
     if (clickedConn)
     {
