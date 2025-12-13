@@ -8,8 +8,7 @@ class Read : public Statement
 private:
 	string VarName; //The name of the variable to read
 
-	Point LeftCorner;	//left corenr of the statement block.
-
+	Point LeftCorner;		//Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement 
 	//It's used as the (End) point of the (Input) connectors

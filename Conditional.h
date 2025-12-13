@@ -11,23 +11,15 @@ private:
 	string VariableRHS;	//Right Handside (variable)
 	string CompOperator;	//Comparison Operator
 
-	Connector* pOutConn1;	
-	Connector* pOutConn2;	
-	//Each statement type in flowchart has a predefined number of (output) connectors
-	//For example, conditional statement always has 2 output connectors
-
-	//Note: We don't need to keep track with input connectors
-	//      Whenever we want to iterate on all statements of the flowchart
-	//      we will begin with start statement then its output connector
-	//      then the connector's destination statement and so on (follow the connectors)
-
 	Point Inlet;	//A point where connections enters this statement 
-	//It's used as the (End) point of the (Input) connectors
-	Point Outlet1;	//A point a connection leaves this statement
-	Point Outlet2;	//A point a connection leaves this statement
-	//It's used as the (Start) point of the (Output) connector
+	
+	Point TopCorner;	//Top corenr of the statement block.
+	Point YesOutlet;	// A point where "Yes" connections leaves this statement
+	Point NoOutlet;	    // A point where "No" connections leaves this statement
 
-	Point TopCorner;	//left corenr of the statement block.
+	// pYesConn is the pOutConn
+	Connector* pNoConn;
+
 
 	void UpdateStatementText();
 
@@ -43,8 +35,13 @@ public:
 	bool InStatement(Point P) const;
 
 	Point getInlet() const;
-	Point getOutlet1() const;
-	Point getOutlet2() const;
+	Point getOutlet() const;
+	Point getYesOutlet() const;
+	Point getNoOutlet() const;
+
+	// Let setOutConnector & getOutConnector be for Yes connector
+	void setNoConnector(Connector* pConn);			// Set the No connector
+	Connector* getNoConnector() const;				// Get the No connector
 
 	int GetID() const;				//returns the statement ID
 	string GetText() const;			//returns the statement text
@@ -52,6 +49,8 @@ public:
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
 	void Load(ifstream& Infile);	//Load the Statement parameters from a file
+
+	void Move(int x, int y);
 };
 
 #endif

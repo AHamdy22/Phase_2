@@ -1,7 +1,11 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
+#include "AddStart.h"
+#include "AddEnd.h"
 #include "AddRead.h"
 #include "AddWrite.h"
+#include "AddConditional.h"
+#include "AddDeclare.h"
 #include "AddConnectors.h"
 #include "Save.h"
 #include "Load.h"
@@ -48,12 +52,16 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
+		case ADD_START:
+			pAct = new AddStart(this);
+			break;
+
 		case ADD_VALUE_ASSIGN:
 			pAct = new AddValueAssign(this);
 			break;
 
 		case ADD_CONDITION:
-			///create AddCondition Action here
+			pAct = new AddConditional(this);
 			break;
 
 		case ADD_READ:
@@ -62,6 +70,14 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
+			break;
+
+		case ADD_END:
+			pAct = new AddEnd(this);
+			break;
+
+		case ADD_DECLARE_VARIABLE:
+			pAct = new AddDeclare(this);
 			break;
 
 		case ADD_CONNECTOR:

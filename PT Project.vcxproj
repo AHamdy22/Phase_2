@@ -124,8 +124,12 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddConditional.cpp" />
     <ClCompile Include="AddConnectors.cpp" />
+    <ClCompile Include="AddDeclare.cpp" />
+    <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddRead.cpp" />
+    <ClCompile Include="AddStart.cpp" />
     <ClCompile Include="AddWrite.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -293,8 +297,12 @@
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddConditional.h" />
     <ClInclude Include="AddConnectors.h" />
+    <ClInclude Include="AddDeclare.h" />
+    <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddRead.h" />
+    <ClInclude Include="AddStart.h" />
     <ClInclude Include="AddWrite.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
     <ClInclude Include="CMUgraphicsLib\CMUgraphics.h" />

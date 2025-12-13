@@ -7,7 +7,7 @@ End::End(Point Lcorner)
 
 	LeftCorner = Lcorner;
 
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
 }
@@ -63,7 +63,9 @@ void End::Save(ofstream& OutFile)
 
 void End::Load(ifstream& Infile)
 {
-	// No additional parameters to load for End statement
+	Infile >> ID >> LeftCorner.x >> LeftCorner.y;
+	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
+	Inlet.y = LeftCorner.y;
 }
 
 void End::Move(int x, int y)

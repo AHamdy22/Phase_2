@@ -32,6 +32,8 @@ struct UI_Info	//User Interface Info.
 	int START_HI;
 	int READ_WDTH;
 	int READ_HI;
+	int COND_WDTH;
+	int COND_HI;
 
 }UI;	//create a single global object UI
 

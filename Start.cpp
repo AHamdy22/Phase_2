@@ -11,8 +11,8 @@ Start::Start(Point Lcorner)
 	pOutConn = NULL;	//No connectors yet
 
 
-	Outlet.x = LeftCorner.x + (UI.ASSGN_WDTH / 2);
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
+	Outlet.y = LeftCorner.y + UI.START_HI;
 
 }
 
@@ -29,7 +29,7 @@ void Start::UpdateStatementText()
 bool Start::InStatement(Point P) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.START_WDTH &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.START_HI);
+			P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.START_HI);
 }
 
 Point Start::getInlet() const
@@ -67,7 +67,9 @@ void Start::Save(ofstream& OutFile)
 
 void Start::Load(ifstream& Infile)
 {
-	// No additional parameters to load for Start statement
+	Infile >> ID >> LeftCorner.x >> LeftCorner.y;
+	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
+	Outlet.y = LeftCorner.y + UI.START_HI;
 }
 
 void Start::Move(int x, int y)

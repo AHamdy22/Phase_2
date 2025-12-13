@@ -14,7 +14,7 @@ private:
 	Point Inlet;
 	Point Outlet;
 
-	Point LeftCorner;
+	Point LeftCorner;		//Top-Left corner of the statement
 
 
 	virtual void UpdateStatementText();

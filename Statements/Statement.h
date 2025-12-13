@@ -13,8 +13,8 @@ protected:
 	static int NextID; //Static variable to hold the next ID to be assigned
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
-	Point LeftCorner; //Top-Left corner of the statement
 	Connector* pOutConn;	//A pointer to the outgoing connector
+	
 	virtual void UpdateStatementText() = 0;	//is called when any part of the stat. is edited	
 
 

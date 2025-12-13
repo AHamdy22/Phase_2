@@ -8,7 +8,7 @@ class Start : public Statement
 private:
 
 
-	Point LeftCorner;	//left corenr of the statement block.
+	Point LeftCorner;		//Top-Left corner of the statement
 
 	Point Outlet;
 

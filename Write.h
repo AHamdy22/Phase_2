@@ -7,8 +7,8 @@ class Write : public Statement
 {
 private:
 	string VarName; //The name of the variable to be written write
-	Point LeftCorner;	//left corenr of the statement block.
 
+	Point LeftCorner; // Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement 
 	Point Outlet;	//A point a connection leaves this statement

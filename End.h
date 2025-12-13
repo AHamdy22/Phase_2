@@ -10,7 +10,7 @@ private:
 	Point Inlet;	//A point where connections enters this statement 
 	//It's used as the (End) point of the (Input) connectors
 
-	Point LeftCorner;	//left corenr of the statement block.
+	Point LeftCorner;		//Top-Left corner of the statement
 
 	void UpdateStatementText();
 

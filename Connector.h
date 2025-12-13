@@ -10,8 +10,9 @@ class Connector	//a connector that connects two statements (Source & Destination
 private:
 	Statement *SrcStat;	//The source statement of the connector
 	Statement *DstStat;	//The destination statement of the connector
-	Point Start;	//Start point of the connector
-	Point End;		//End point of the connector
+	mutable Point Start;	//Start point of the connector
+	mutable Point End;		//End point of the connector
+	// We made the 2 points mutable to be able to modify them in const functions, specifically in Draw() 
 	int OutletBranch; // 0 : Normal , 1: yes branch , 2: no branch
 	bool Selected; //true if the connector is selected on the flowchart
 public:

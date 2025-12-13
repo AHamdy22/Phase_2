@@ -63,6 +63,19 @@ string Input::GetVariable(Output* pO) const
 	}
 }
 
+string Input::GetDataType(Output* pO) const
+{
+	pO->PrintMessage("Please enter a data type");
+	string type;
+	while (1)
+	{
+		type = GetString(pO);
+		if (type == "int" || type == "float" || type == "string" || type == "char" || type == "double" || type == "bool")
+			return type;
+		pO->PrintMessage("Please enter a valid data type");
+	}
+}
+
 char Input::GetArithOperator(Output* pO) const
 {
 	// To read an arithmetic operator (+, -, * or /) from the user

@@ -12,8 +12,7 @@ private:
 	string LHS;	//Left Handside of the assignment (name of a variable)
 	double RHS;	//Right Handside (Value)
 
-	Point LeftCorner; //Top-Left corner of the statement
-
+	Point LeftCorner;		//Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement
 	Point Outlet;	//A point a connection leaves this statement
