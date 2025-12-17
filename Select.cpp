@@ -35,6 +35,54 @@ void Select::Execute()
 
     if (clickedStat)
     {
+        Connector* prevSelectedConn = pManager->GetSelectedConnector();
+        if (prevSelectedConn)
+        {
+            prevSelectedConn->SetSelected(false);
+            pManager->SetSelectedConnector(NULL);
+        }
+
+        Statement* prevSelectedStat = pManager->GetSelectedStatement();
+        if (prevSelectedStat == clickedStat)
+        {
+            clickedStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+        else
+        {
+            if (prevSelectedStat)
+                prevSelectedStat->SetSelected(false);
+            clickedStat->SetSelected(true);
+            pManager->SetSelectedStatement(clickedStat);
+        }
+        pManager->UpdateInterface();
+    }
+    else if (clickedConn)  
+    {
+        Statement* prevSelectedStat = pManager->GetSelectedStatement();
+        if (prevSelectedStat)
+        {
+            prevSelectedStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+        Connector* prevSelectedConn = pManager->GetSelectedConnector();
+        if (prevSelectedConn == clickedConn)
+        {
+            clickedConn->SetSelected(false);
+            pManager->SetSelectedConnector(NULL);
+        }
+        else
+        {
+            if (prevSelectedConn)
+                prevSelectedConn->SetSelected(false);
+            clickedConn->SetSelected(true);
+            pManager->SetSelectedConnector(clickedConn);
+        }
+        pManager->UpdateInterface();
+    }
+
+    /*if (clickedStat)
+    {
         Statement* prevSelected = pManager->GetSelectedStatement();
         if (prevSelected == clickedStat)
         {
@@ -59,5 +107,111 @@ void Select::Execute()
             pManager->SetSelectedConnector(clickedConn);
         else
             pManager->SetSelectedConnector(NULL);
+    }*/
+
+    /*if (clickedStat)
+    {
+        Connector* prevConn = pManager->GetSelectedConnector();
+        if (prevConn)
+        {
+            prevConn->SetSelected(false);
+            pManager->SetSelectedConnector(NULL);
+        }
+
+        Statement* prevStat = pManager->GetSelectedStatement();
+
+        if (prevStat == clickedStat)
+        {
+            clickedStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+        else
+        {
+            if (prevStat)
+                prevStat->SetSelected(false);
+
+            clickedStat->SetSelected(true);
+            pManager->SetSelectedStatement(clickedStat);
+        }
+
+        pManager->UpdateInterface();
     }
+    else if (clickedConn)
+    {
+        Statement* prevStat = pManager->GetSelectedStatement();
+        if (prevStat)
+        {
+            prevStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+
+        Connector* prevConn = pManager->GetSelectedConnector();
+
+        if (prevConn == clickedConn)
+        {
+            clickedConn->SetSelected(false);
+            pManager->SetSelectedConnector(NULL);
+        }
+        else
+        {
+            if (prevConn)
+                prevConn->SetSelected(false);
+
+            clickedConn->SetSelected(true);
+            pManager->SetSelectedConnector(clickedConn);
+        }
+
+        pManager->UpdateInterface();
+    }*/
+
+    /*bool needUpdate = false;
+    if (clickedStat)
+    {
+        needUpdate = true;
+        Connector* prevConn = pManager->GetSelectedConnector();
+        if (prevConn)
+        {
+            prevConn->SetSelected(false);
+            pManager->SetSelectedConnector(NULL);
+        }
+
+        Statement* prevSelected = pManager->GetSelectedStatement();
+
+        if (prevSelected == clickedStat)
+        {
+            clickedStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+        else
+        {
+            if (prevSelected)
+                prevSelected->SetSelected(false);
+
+            clickedStat->SetSelected(true);
+            pManager->SetSelectedStatement(clickedStat);
+        }
+    }
+    else if (clickedConn)
+    {
+        needUpdate = true;
+        Statement* prevStat = pManager->GetSelectedStatement();
+        if (prevStat)
+        {
+            prevStat->SetSelected(false);
+            pManager->SetSelectedStatement(NULL);
+        }
+
+        bool isSelected = clickedConn->IsSelected();
+        clickedConn->SetSelected(!isSelected);
+
+        if (!isSelected)
+            pManager->SetSelectedConnector(clickedConn);
+        else
+            pManager->SetSelectedConnector(NULL);
+    }
+    if (needUpdate)
+    {
+        pManager->UpdateInterface();
+    }*/
+
 }
