@@ -34,8 +34,8 @@ void AddDeclare::ReadActionParameters()
 	
 
 	//pOut->PrintMessage("Please enter the variable name");
-	pIn->GetPointClicked(p1);
-	pOut->ClearStatusBar();
+	//pIn->GetPointClicked(p1);
+	//pOut->ClearStatusBar();
 	Var = pIn->GetVariable(pOut);
 
 	
