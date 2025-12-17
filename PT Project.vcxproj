@@ -128,6 +128,7 @@
     <ClCompile Include="AddDeclare.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddOperatorAssign.cpp" />
+    <ClCompile Include="AddRead.cpp" />
     <ClCompile Include="AddStart.cpp" />
     <ClCompile Include="AddVariableAssign.cpp" />
     <ClCompile Include="AddWrite.cpp" />
@@ -290,6 +291,7 @@
     <ClCompile Include="HelperFn.cpp" />
     <ClCompile Include="OperatorAssign.cpp" />
     <ClCompile Include="Paste.cpp" />
+    <ClCompile Include="Read.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Start.cpp" />
     <ClCompile Include="Statements\ValueAssign.cpp" />
@@ -306,6 +308,7 @@
     <ClInclude Include="AddDeclare.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddOperatorAssign.h" />
+    <ClInclude Include="AddRead.h" />
     <ClInclude Include="AddStart.h" />
     <ClInclude Include="AddVariableAssign.h" />
     <ClInclude Include="AddWrite.h" />
@@ -347,6 +350,7 @@
     <ClInclude Include="HelperFn.h" />
     <ClInclude Include="OperatorAssign.h" />
     <ClInclude Include="Paste.h" />
+    <ClInclude Include="Read.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />

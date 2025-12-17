@@ -72,6 +72,45 @@ void VariableAssign::EditStatement(ApplicationManager* pApp, Point p)
 
 	delete D;
 }
+void VariableAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	VariableAssign* V = new VariableAssign(*this);
+	V->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(V);
+
+}
+
+
+void VariableAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	VariableAssign* v = dynamic_cast<VariableAssign*>(S);
+	if (v)
+	{
+		if (v->IsCopied())
+		{
+			v->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			v = new VariableAssign(*v);
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}
 
 void VariableAssign::Draw(Output* pOut) const
 {

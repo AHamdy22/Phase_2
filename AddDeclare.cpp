@@ -14,7 +14,6 @@ using namespace std;
 
 AddDeclare::AddDeclare(ApplicationManager* pAppManager) : Action(pAppManager)
 {
-	DataType = "";
 	Var = "";
 	Position.x = -1;
 }
@@ -32,17 +31,9 @@ void AddDeclare::ReadActionParameters()
 		pOut->ClearStatusBar();
 	}
 
-
 	
 
-	pOut->PrintMessage("Please enter the data type for the variable declaration");
-	pIn->GetPointClicked(p1);
-	pOut->ClearStatusBar();
-	DataType = pIn->GetDataType(pOut);
-
-	
-
-	pOut->PrintMessage("Please enter the variable name");
+	//pOut->PrintMessage("Please enter the variable name");
 	pIn->GetPointClicked(p1);
 	pOut->ClearStatusBar();
 	Var = pIn->GetVariable(pOut);
@@ -53,11 +44,6 @@ void AddDeclare::ReadActionParameters()
 void AddDeclare::SetPosition(Point p)
 {
 	Position = p;
-}
-
-string AddDeclare::GetDataType() const
-{
-	return DataType;
 }
 
 string AddDeclare::GetVar() const
@@ -75,7 +61,7 @@ void AddDeclare::Execute()
 	Corner.x = Position.x - UI.ASSGN_WDTH / 2;
 	Corner.y = Position.y;
 
-	Declare* pAssign = new Declare(Corner, DataType, Var);
+	Declare* pAssign = new Declare(Corner, Var);
 	
 	pManager->AddStatement(pAssign); 
 }

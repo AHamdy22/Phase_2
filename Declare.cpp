@@ -5,10 +5,9 @@
 using namespace std;
 //window w;
 //window *pW = &w;
-Declare::Declare(Point Lcorner, string data_type, string variable)
+Declare::Declare(Point Lcorner, string variable)
 {
 	
-	DataType = data_type;
 	Var = variable;
 
 	UpdateStatementText();
@@ -25,12 +24,6 @@ Declare::Declare(Point Lcorner, string data_type, string variable)
 
 	Outlet.x = Inlet.x;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
-}
-
-void Declare::setDataType(const string& d)
-{
-	DataType = d;
-	UpdateStatementText();
 }
 
 void Declare::setVar(const string& v)
@@ -65,8 +58,6 @@ void Declare::EditStatement(ApplicationManager* pApp, Point p)
 
 	D->ReadActionParameters();
 
-	DataType = D->GetDataType();
-
 	Var = D->GetVar();
 
 	UpdateStatementText();
@@ -100,7 +91,7 @@ void Declare::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationMan
 			d->SetPosition(p);
 			d->SetSelected(false);
 			pManager->AddStatement(d);
-			pManager->SetClipboard(nullptr);
+			//pManager->SetClipboard(nullptr);
 		}
 		else
 			{
@@ -108,7 +99,7 @@ void Declare::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationMan
 			d->SetPosition(p);
 			d->SetSelected(false);
 			pManager->AddStatement(d);
-			pManager->SetClipboard(nullptr);
+			//pManager->SetClipboard(nullptr);
 			}
 	}
 	
@@ -127,6 +118,6 @@ void Declare::UpdateStatementText()
 {
 	
 	ostringstream T;
-	T << DataType << " " << Var;
+	T << "Declare" << " " << Var;
 	Text = T.str();
 }

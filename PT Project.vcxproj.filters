@@ -155,6 +155,30 @@
     <ClCompile Include="GUI\Output.cpp">
       <Filter>GUI Classes</Filter>
     </ClCompile>
+    <ClCompile Include="AddConditional.cpp" />
+    <ClCompile Include="AddDeclare.cpp" />
+    <ClCompile Include="AddEnd.cpp" />
+    <ClCompile Include="AddOperatorAssign.cpp" />
+    <ClCompile Include="AddStart.cpp" />
+    <ClCompile Include="AddVariableAssign.cpp" />
+    <ClCompile Include="AddWrite.cpp" />
+    <ClCompile Include="Conditional.cpp" />
+    <ClCompile Include="Copy.cpp" />
+    <ClCompile Include="Cut.cpp" />
+    <ClCompile Include="Declare.cpp" />
+    <ClCompile Include="Delete.cpp" />
+    <ClCompile Include="Edit.cpp" />
+    <ClCompile Include="End.cpp" />
+    <ClCompile Include="OperatorAssign.cpp" />
+    <ClCompile Include="Paste.cpp" />
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Start.cpp" />
+    <ClCompile Include="VariableAssign.cpp" />
+    <ClCompile Include="Write.cpp" />
+    <ClCompile Include="Read.cpp" />
+    <ClCompile Include="AddRead.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -245,6 +269,30 @@
     </ClInclude>
     <ClInclude Include="GUI\UI_Info.h">
       <Filter>GUI Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AddConditional.h" />
+    <ClInclude Include="AddDeclare.h" />
+    <ClInclude Include="AddEnd.h" />
+    <ClInclude Include="AddOperatorAssign.h" />
+    <ClInclude Include="AddStart.h" />
+    <ClInclude Include="AddVariableAssign.h" />
+    <ClInclude Include="AddWrite.h" />
+    <ClInclude Include="Conditional.h" />
+    <ClInclude Include="Copy.h" />
+    <ClInclude Include="Cut.h" />
+    <ClInclude Include="Declare.h" />
+    <ClInclude Include="Delete.h" />
+    <ClInclude Include="Edit.h" />
+    <ClInclude Include="End.h" />
+    <ClInclude Include="OperatorAssign.h" />
+    <ClInclude Include="Paste.h" />
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Start.h" />
+    <ClInclude Include="VariableAssign.h" />
+    <ClInclude Include="Write.h" />
+    <ClInclude Include="Read.h" />
+    <ClInclude Include="AddRead.h">
+      <Filter>Action Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@
 #include "Actions\..\AddConditional.h"
 #include "Actions\..\AddEnd.h"
 #include "Actions\..\AddWrite.h"
+#include "Actions\..\AddRead.h"
 #include "Actions\..\Edit.h"
 #include "Actions\..\Delete.h"
 #include "Actions\..\Copy.h"
@@ -86,6 +87,10 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
+			break;
+
+		case ADD_READ:
+			pAct = new AddRead(this);
 			break;
 
 		case SELECT:

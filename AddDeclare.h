@@ -11,7 +11,6 @@ private:
 	
 
 	Point Position;
-	string DataType;
 	string Var;
 
 	
@@ -24,8 +23,6 @@ public:
 
 	
 	void SetPosition(Point p);
-
-	string GetDataType() const;
 
 	string GetVar() const;
 

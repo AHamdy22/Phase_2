@@ -45,6 +45,46 @@ void Start::EditStatement(ApplicationManager* pApp, Point p)
 	delete D;
 }
 
+void Start::GetStatementCut(ApplicationManager* pApp) const
+{
+	Start* S = new Start(*this);
+	S->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(S);
+
+}
+
+
+void Start::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Start* s = dynamic_cast<Start*>(S);
+	if (s)
+	{
+		if (s->IsCopied())
+		{
+			s->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			s = new Start(*s);
+			p.x -= UI.ASSGN_WDTH / 2;
+			s->SetPosition(p);
+			s->SetSelected(false);
+			pManager->AddStatement(s);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			s->SetPosition(p);
+			s->SetSelected(false);
+			pManager->AddStatement(s);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}
+
 void Start::UpdateStatementText()
 {
 }

@@ -87,6 +87,44 @@ void Conditional::EditStatement(ApplicationManager* pApp, Point p)
 	delete D;
 }
 
+void Conditional::GetStatementCut(ApplicationManager* pApp) const
+{
+	Conditional* C = new Conditional(*this);
+	C->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(C);
+
+}
+
+
+void Conditional::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Conditional* c = dynamic_cast<Conditional*>(S);
+	if (c)
+	{
+		if (c->IsCopied())
+		{
+			c->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			c = new Conditional(*c);
+			c->SetPosition(p);
+			c->SetSelected(false);
+			pManager->AddStatement(c);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			c->SetPosition(p);
+			c->SetSelected(false);
+			pManager->AddStatement(c);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}
+
 void Conditional::Draw(Output* pOut) const
 {
 	 	

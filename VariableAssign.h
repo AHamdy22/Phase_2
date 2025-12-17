@@ -39,6 +39,10 @@ public:
 
 	void EditStatement(ApplicationManager* pApp, Point p);
 
+	void GetStatementCut(ApplicationManager* pApp) const;
+
+	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
+
 	virtual void Draw(Output* pOut) const;
 
 };

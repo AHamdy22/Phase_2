@@ -101,6 +101,46 @@ void OperatorAssign::EditStatement(ApplicationManager* pApp, Point p)
 	delete D;
 }
 
+void OperatorAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	OperatorAssign* O = new OperatorAssign(*this);
+	O->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(O);
+
+}
+
+
+void OperatorAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	OperatorAssign* o = dynamic_cast<OperatorAssign*>(S);
+	if (o)
+	{
+		if (o->IsCopied())
+		{
+			o->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			o = new OperatorAssign(*o);
+			p.x -= UI.ASSGN_WDTH / 2;
+			o->SetPosition(p);
+			o->SetSelected(false);
+			pManager->AddStatement(o);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			o->SetPosition(p);
+			o->SetSelected(false);
+			pManager->AddStatement(o);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}
+
 void OperatorAssign::Draw(Output* pOut) const
 {
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);

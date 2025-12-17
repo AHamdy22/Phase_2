@@ -52,3 +52,42 @@ void Write::EditStatement(ApplicationManager* pApp, Point p)
 
 	delete D;
 }
+
+void Write::GetStatementCut(ApplicationManager* pApp) const
+{
+	Write* W = new Write(*this);
+	W->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(W);
+
+}
+
+void Write::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Write* w = dynamic_cast<Write*>(S);
+	if (w)
+	{
+		if (w->IsCopied())
+		{
+			w->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			w = new Write(*w);
+			p.x -= UI.ASSGN_WDTH / 3;
+			w->SetPosition(p);
+			w->SetSelected(false);
+			pManager->AddStatement(w);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 3;
+			w->SetPosition(p);
+			w->SetSelected(false);
+			pManager->AddStatement(w);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}

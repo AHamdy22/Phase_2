@@ -9,7 +9,7 @@
 class Declare : public Statement
 {
 private:
-	string DataType;
+
 	string Var;
 
 	Connector* pOutConn;	
@@ -29,10 +29,11 @@ private:
 	virtual void UpdateStatementText();
 
 public:
-	Declare(Point Lcorner, string data_type = "", string Variable = "");
+	Declare(Point Lcorner, string Variable = "");
 
-	void setDataType(const string& d);
+	
 	void setVar(const string& v);
+
 	bool InStatement(Point p) const;
 
 	virtual Point GetPosition() const;
