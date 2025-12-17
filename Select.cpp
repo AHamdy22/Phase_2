@@ -33,7 +33,7 @@ void Select::Execute()
 	Statement* clickedStat = pManager->GetStatement(Position);
     Connector* clickedConn = pManager->GetConnector(Position);
 
-    if (clickedStat)
+    /*if (clickedStat)
     {
         Connector* prevSelectedConn = pManager->GetSelectedConnector();
         if (prevSelectedConn)
@@ -79,9 +79,9 @@ void Select::Execute()
             pManager->SetSelectedConnector(clickedConn);
         }
         pManager->UpdateInterface();
-    }
+    }*/
 
-    /*if (clickedStat)
+    if (clickedStat)
     {
         Statement* prevSelected = pManager->GetSelectedStatement();
         if (prevSelected == clickedStat)
@@ -107,7 +107,7 @@ void Select::Execute()
             pManager->SetSelectedConnector(clickedConn);
         else
             pManager->SetSelectedConnector(NULL);
-    }*/
+    }
 
     /*if (clickedStat)
     {
