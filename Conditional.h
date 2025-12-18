@@ -13,7 +13,6 @@ private:
 
 	Point Inlet;	//A point where connections enters this statement 
 	
-	Point TopCorner;	//Top corenr of the statement block.
 	Point YesOutlet;	// A point where "Yes" connections leaves this statement
 	Point NoOutlet;	    // A point where "No" connections leaves this statement
 
@@ -30,6 +29,9 @@ public:
 	void setValueRHS(double ValueR);
 	void setVariableRHS(string VariableR);
 	void setCompOperator(string Operator);
+	
+	string getLHS() const;
+	string getVariableRHS() const;
 
 	void Draw(Output* pOut) const;
 	bool InStatement(Point P) const;
@@ -48,7 +50,6 @@ public:
 	string GetType() const;			//returns the statement type as a string
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
 };

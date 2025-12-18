@@ -122,7 +122,7 @@ void Load::Execute()
             pStat = new Declare(corner, dataType, var);
             pStat->SetID(id);
         }
-        /*else if (StatementType == "COND")
+        else if (StatementType == "COND")
         {
             int id;
             int x, y;
@@ -136,7 +136,7 @@ void Load::Execute()
             else
                 pStat = new Conditional(corner, lhs, 0, varRHS, op);
             pStat->SetID(id);
-        }*/
+        }
 
         if (pStat != nullptr)
         {
@@ -172,14 +172,45 @@ void Load::Execute()
 
         if (srcStat != nullptr && dstStat != nullptr)
         {
-            Connector* pConn = new Connector(srcStat, dstStat);
-            pConn->setStartPoint(srcStat->getOutlet());
-            pConn->setEndPoint(dstStat->getInlet());
-            pConn->setOutletBranch(branch);
+			Conditional* condStat = dynamic_cast<Conditional*>(srcStat);
+			if (condStat != nullptr)
+			{
+				// Conditional statement
+				if (branch == 1 && condStat->getOutConnector() == nullptr)
+				{
+					// Yes branch
+					Connector* pConn = new Connector(srcStat, dstStat);
+					pConn->setStartPoint(condStat->getYesOutlet());
+					pConn->setEndPoint(dstStat->getInlet());
+					pConn->setOutletBranch(branch);
+					condStat->setOutConnector(pConn);
+					dstStat->addInConnector(pConn);
+					pManager->AddConnector(pConn);
+					continue;
+				}
+				else if (branch == 2 && condStat->getNoConnector() == nullptr)
+				{
+					// No branch
+					Connector* pConn = new Connector(srcStat, dstStat);
+					pConn->setStartPoint(condStat->getNoOutlet());
+					pConn->setEndPoint(dstStat->getInlet());
+					pConn->setOutletBranch(branch);
+					condStat->setNoConnector(pConn);
+					dstStat->addInConnector(pConn);
+					pManager->AddConnector(pConn);
+					continue;
+				}
+			}
+            else {
+                Connector* pConn = new Connector(srcStat, dstStat);
+                pConn->setStartPoint(srcStat->getOutlet());
+                pConn->setEndPoint(dstStat->getInlet());
+                pConn->setOutletBranch(branch);
 
-            srcStat->setOutConnector(pConn);
-            dstStat->addInConnector(pConn);
-            pManager->AddConnector(pConn);
+                srcStat->setOutConnector(pConn);
+                dstStat->addInConnector(pConn);
+                pManager->AddConnector(pConn);
+            }
         }
     }
 

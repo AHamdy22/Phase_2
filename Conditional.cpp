@@ -16,7 +16,7 @@ Conditional::Conditional(Point Tcorner, string LeftHS, double ValueRightHS, stri
 	UpdateStatementText();
 
 	//pW->GetStringSize(stringlength, stringheight, Text);
-	TopCorner = Tcorner;
+	LeftCorner = Tcorner;  // LeftCorner here is considered the top corner point of the statement
 
 	pOutConn = NULL;	//No connectors yet
 	pNoConn = NULL;	    //No connectors yet
@@ -56,11 +56,21 @@ void Conditional::setCompOperator(string Operator)
 	UpdateStatementText();
 }
 
+string Conditional::getLHS() const
+{
+	return LHS;
+}
+
+string Conditional::getVariableRHS() const
+{
+	return VariableRHS;
+}
+
 
 void Conditional::Draw(Output* pOut) const
 {
 	//Call Output::DrawAssign function to draw assignment statement 	
-	pOut->DrawCondition(TopCorner, UI.COND_WDTH, UI.COND_HI, Text, Selected);
+	pOut->DrawCondition(LeftCorner, UI.COND_WDTH, UI.COND_HI, Text, Selected);
 }
 
 
@@ -80,8 +90,8 @@ void Conditional::UpdateStatementText()
 bool Conditional::InStatement(Point P) const
 {
 	// Assume that the conditional statement is a square; as it is difficult to determine the positions inside it if it is rhombus
-	return (P.x >= TopCorner.x - UI.COND_WDTH / 2 && P.x <= TopCorner.x + UI.COND_WDTH / 2 + UI.ASSGN_WDTH
-		&&  P.y >= TopCorner.y && P.y <= TopCorner.y + UI.COND_HI);
+	return (P.x >= LeftCorner.x - UI.COND_WDTH / 2 && P.x <= LeftCorner.x + UI.COND_WDTH / 2 + UI.ASSGN_WDTH
+		&&  P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.COND_HI);
 }
 
 Point Conditional::getInlet() const
@@ -133,49 +143,18 @@ string Conditional::GetType() const
 
 void Conditional::Save(ofstream& OutFile)
 {
-	OutFile << "COND " << ID << " " << TopCorner.x << " " << TopCorner.y << " " << LHS << " " << CompOperator << " ";
+	OutFile << "COND " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << CompOperator << " ";
 	if (VariableRHS == "")
 		OutFile << ValueRHS << " " << "0" << endl; // 0 indicates that RHS is a value
 	else
-		OutFile << "0" << " " << VariableRHS << endl; // 0 indicates that RHS is a variable
+		OutFile << "1" << " " << VariableRHS << endl; // 1 indicates that RHS is a variable
 }
 
-void Conditional::Load(ifstream& Infile)
-{
-	string varRHS;
-	double valRHS;
-
-	// Read ID first, then other parameters
-	Infile >> ID >> TopCorner.x >> TopCorner.y >> LHS >> CompOperator >> valRHS >> varRHS;
-
-	if (varRHS == "0")
-	{
-		ValueRHS = valRHS;
-		VariableRHS = "";
-	}
-	else
-	{
-		ValueRHS = 0;
-		VariableRHS = varRHS;
-	}
-
-	UpdateStatementText();
-
-	// Recalculate inlet and outlet positions
-	Inlet.x = TopCorner.x;
-	Inlet.y = TopCorner.y;
-
-	YesOutlet.x = TopCorner.x + (UI.COND_WDTH / 2);
-	YesOutlet.y = TopCorner.y + (UI.COND_HI / 2);
-
-	NoOutlet.x = TopCorner.x - (UI.COND_WDTH / 2);
-	NoOutlet.y = TopCorner.y + (UI.COND_HI / 2);
-}
 
 void Conditional::Move(int x, int y)
 {
-	TopCorner.x += x;
-	TopCorner.y += y;
+	LeftCorner.x += x;
+	LeftCorner.y += y;
 	Inlet.x += x;
 	Inlet.y += y;
 	YesOutlet.x += x;

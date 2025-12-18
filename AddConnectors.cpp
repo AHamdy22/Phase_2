@@ -1,6 +1,8 @@
 #include "AddConnectors.h"
 #include "ApplicationManager.h"
 #include "Conditional.h"
+#include "End.h"
+#include "Start.h"
 #include "GUI\input.h"
 #include "GUI\Output.h"
 
@@ -34,15 +36,16 @@ void AddConnectors::Execute()
 	// Get source and destination statements based on clicked points
 	Statement* SrcStat = pManager->GetStatement(StartPoint);
 	Statement* DstStat = pManager->GetStatement(EndPoint);
-
+	End* endStat = dynamic_cast<End*>(SrcStat);
+	Start* startStat = dynamic_cast<Start*>(DstStat);
 	// Validate that both statements exist
-	if (SrcStat == nullptr)
+	if (SrcStat == nullptr || endStat != nullptr)
 	{
 		pOut->PrintMessage("Error: No source statement found at the clicked position.");
 		return;
 	}
 
-	if (DstStat == nullptr)
+	if (DstStat == nullptr || startStat != nullptr)
 	{
 		pOut->PrintMessage("Error: No destination statement found at the clicked position.");
 		return;
@@ -215,39 +218,84 @@ void AddConnectors::Execute()
 			return;
 		}
 
-		// Get outlet and inlet points
-		Point srcOutlet = SrcStat->getOutlet();
-		Point dstInlet = DstStat->getInlet();
-
-		// Calculate horizontal difference to align centers
-		int deltaX = srcOutlet.x - dstInlet.x;
-
-		// Move destination statement to align with source
-		if (deltaX != 0)
+		// Handling if the DstStat is positioned above the SrcStat
+		else if (DstStat->getLeftCornerY() <= SrcStat->getLeftCornerY() + 50)
 		{
-			DstStat->Move(deltaX, 0);
-			// Update inlet after moving
-			dstInlet = DstStat->getInlet();
+			// Get outlet and inlet points
+			Point srcOutlet = SrcStat->getOutlet();
+			Point dstInlet = DstStat->getInlet();
+
+			// Calculate horizontal difference to align centers
+			int deltaX = srcOutlet.x - dstInlet.x;
+
+			// Calculate vertical difference
+			int deltaY = srcOutlet.y - dstInlet.y;
+
+			// Move destination statement to align with source
+			if (deltaX != 0)
+			{
+				DstStat->Move(deltaX, deltaY + 30);
+				// Update inlet after moving
+				dstInlet = DstStat->getInlet();
+			}
+
+			// Create the connector
+			pConn = new Connector(SrcStat, DstStat);
+			pConn->setOutletBranch(0); // 0 for normal connector
+
+			// Set the start and end points
+			pConn->setStartPoint(srcOutlet);
+			pConn->setEndPoint(dstInlet);
+
+			// Update the statements to reference this connector
+			SrcStat->setOutConnector(pConn);
+			DstStat->addInConnector(pConn);
+
+			// Add the connector to application manager's connector list
+			pManager->AddConnector(pConn);
+
+			// Update the interface
+			pManager->UpdateInterface();
+
+			pOut->PrintMessage("Connector added successfully.");
 		}
 
-		// Create the connector
-		pConn = new Connector(SrcStat, DstStat);
-		pConn->setOutletBranch(0); // 0 for normal connector
+		else
+		{
+			// Get outlet and inlet points
+			Point srcOutlet = SrcStat->getOutlet();
+			Point dstInlet = DstStat->getInlet();
 
-		// Set the start and end points
-		pConn->setStartPoint(srcOutlet);
-		pConn->setEndPoint(dstInlet);
+			// Calculate horizontal difference to align centers
+			int deltaX = srcOutlet.x - dstInlet.x;
 
-		// Update the statements to reference this connector
-		SrcStat->setOutConnector(pConn);
-		DstStat->addInConnector(pConn);
+			// Move destination statement to align with source
+			if (deltaX != 0)
+			{
+				DstStat->Move(deltaX, 0);
+				// Update inlet after moving
+				dstInlet = DstStat->getInlet();
+			}
 
-		// Add the connector to application manager's connector list
-		pManager->AddConnector(pConn);
+			// Create the connector
+			pConn = new Connector(SrcStat, DstStat);
+			pConn->setOutletBranch(0); // 0 for normal connector
 
-		// Update the interface
-		pManager->UpdateInterface();
+			// Set the start and end points
+			pConn->setStartPoint(srcOutlet);
+			pConn->setEndPoint(dstInlet);
 
-		pOut->PrintMessage("Connector added successfully.");
+			// Update the statements to reference this connector
+			SrcStat->setOutConnector(pConn);
+			DstStat->addInConnector(pConn);
+
+			// Add the connector to application manager's connector list
+			pManager->AddConnector(pConn);
+
+			// Update the interface
+			pManager->UpdateInterface();
+
+			pOut->PrintMessage("Connector added successfully.");
+		}
 	}
 }

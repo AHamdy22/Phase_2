@@ -37,7 +37,6 @@ public:
 	int getOutletBranch() const;
 
 	void Save(ofstream& OutFile);
-	void Load(ifstream& Infile, Statement** StatList, int StatCount);
 
 };
 

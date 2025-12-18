@@ -2,7 +2,7 @@
 #define APPLICATION_MANAGER_H
 
 #include "DEFS.h"
-
+#include "Var_info.h"
 #include "Statements\Statement.h"
 class Input;
 class Output;
@@ -27,6 +27,9 @@ private:
 	//Pointers to Input and Output classes
 	Input *pIn;
 	Output *pOut;
+
+	Var_info VarList[MaxCount];			// Array to store variables
+	int VarCount;						// Number of variables
 
 public:	
 	ApplicationManager(); 
@@ -64,6 +67,14 @@ public:
 	void UpdateInterface() const;	//Redraws all the drawing window
 
 	void ClearAll();                //Clears all statements and connectors from the flowchart
+
+	void DeclareVariable(string varName);
+	void SetVariableValue(string varName, double value);
+	double GetVariableValue(string varName); // You must check if the variable is declared and initialized before calling this function
+	bool IsVariableDeclared(string varName);
+	bool IsVariableInitialized(string varName);
+	int FindVariable(string varName);
+	void ClearVariables();
 	
 };
 

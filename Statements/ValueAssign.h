@@ -12,7 +12,6 @@ private:
 	string LHS;	//Left Handside of the assignment (name of a variable)
 	double RHS;	//Right Handside (Value)
 
-	Point LeftCorner;		//Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement
 	Point Outlet;	//A point a connection leaves this statement
@@ -23,10 +22,13 @@ private:
 public:
 	ValueAssign(Point Lcorner, string LeftHS = "", double RightHS = 0);
 
-	void setLHS(const string& L);
+	void void setLHS(const string& L);
 	void setRHS(double R);
+	
+	string getLHS() const;
+	double getRHS() const;
 
-	virtual void Draw(Output* pOut) const;
+	void Draw(Output* pOut) const;
 
 	Point getInlet() const;
 	Point getOutlet() const;
@@ -35,7 +37,6 @@ public:
 	string GetText() const;			//returns the statement text
 	string GetType() const;			//returns the statement type as a string
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
 

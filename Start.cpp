@@ -65,12 +65,6 @@ void Start::Save(ofstream& OutFile)
 	OutFile << "START " << ID << " " << LeftCorner.x << " " << LeftCorner.y << endl;
 }
 
-void Start::Load(ifstream& Infile)
-{
-	Infile >> ID >> LeftCorner.x >> LeftCorner.y;
-	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
-	Outlet.y = LeftCorner.y + UI.START_HI;
-}
 
 void Start::Move(int x, int y)
 {

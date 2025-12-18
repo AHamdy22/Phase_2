@@ -1,5 +1,6 @@
 #include "Connector.h"
 #include <fstream>
+#include <cmath>
 #include"Statements\Statement.h"
 #include "Conditional.h"
 
@@ -112,24 +113,38 @@ void Connector::Draw(Output* pOut) const
 			// Draw the L-shaped connector
 			pOut->DrawConnector(start, mid, Output::NoDirection, Selected);
 			pOut->DrawConnector(mid, end, Output::DOWN, Selected);
-			pOut->DrawString(start.x -55, start.y - 25, "NO");
+			pOut->DrawString(start.x - 55, start.y - 25, "NO");
 		}
 	}
 	else
 	{
-		// Normal statement (not conditional)
 		Point start = SrcStat->getOutlet();
 		Point end = DstStat->getInlet();
 
-		// Make it vertical by aligning X coordinates
-		end.x = start.x;
-
-		// Update stored points (now allowed because they're mutable)
 		Start = start;
 		End = end;
 
-		// Draw the connector
-		pOut->DrawConnector(start, end, Output::DOWN, Selected);
+		if (abs(start.x - end.x) < 20)
+		{
+			end.x = start.x;
+			End = end;
+			pOut->DrawConnector(start, end, Output::DOWN, Selected);
+		}
+		else
+		{
+			int midY = start.y + 20;
+			if (midY > end.y - 20)
+				midY = (start.y + end.y) / 2;
+
+			Point p1 = start;
+			Point p2(start.x, midY);
+			Point p3(end.x, midY);
+			Point p4 = end;
+
+			pOut->DrawConnector(p1, p2, Output::NoDirection, Selected);
+			pOut->DrawConnector(p2, p3, Output::NoDirection, Selected);
+			pOut->DrawConnector(p3, p4, Output::DOWN, Selected);
+		}
 	}
 }
 
@@ -149,25 +164,4 @@ void Connector::Save(std::ofstream& OutFile)
 	int dstID = DstStat ? DstStat->GetID() : -1;
 
 	OutFile << srcID << " " << dstID << " " << OutletBranch << std::endl;
-}
-
-void Connector::Load(ifstream& Infile, Statement** StatList, int StatCount)
-{
-	int srcID, dstID;
-	Infile >> srcID >> dstID >> OutletBranch;
-
-	SrcStat = nullptr;
-	DstStat = nullptr;
-
-	for (int i = 0; i < StatCount; ++i)
-	{
-		if (StatList[i]->GetID() == srcID)
-		{
-			SrcStat = StatList[i];
-		}
-		if (StatList[i]->GetID() == dstID)
-		{
-			DstStat = StatList[i];
-		}
-	}
 }

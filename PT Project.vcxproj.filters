@@ -200,6 +200,19 @@
     <ClCompile Include="AddDeclare.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Copy.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Cut.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Paste.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Validate.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Var_info.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -336,6 +349,19 @@
     <ClInclude Include="AddDeclare.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Copy.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Cut.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Paste.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Validate.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Var_info.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

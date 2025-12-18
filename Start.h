@@ -7,13 +7,8 @@ class Start : public Statement
 {
 private:
 
-
-	Point LeftCorner;		//Top-Left corner of the statement
-
 	Point Outlet;
-
 	void UpdateStatementText();
-
 
 public:
 
@@ -31,7 +26,6 @@ public:
 	string GetType() const;			//returns the statement type as a string
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
 };

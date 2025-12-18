@@ -35,7 +35,12 @@ void Declare::setVar(const string& v)
 	UpdateStatementText();
 }
 
-bool Declare::InStatement(Point P) const
+string Declare::getVar() const
+{
+	return Var;
+}
+
+bool Declare::InStatement(Point p) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
@@ -93,17 +98,6 @@ void Declare::Save(ofstream& OutFile)
 	OutFile << "DECLARE " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << DataType << " " << Var << endl;
 }
 
-void Declare::Load(ifstream& Infile)
-{
-	Infile >> ID >> LeftCorner.x >> LeftCorner.y >> DataType >> Var;
-	UpdateStatementText();
-
-	// Recalculate inlet and outlet positions
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
-	Inlet.y = LeftCorner.y;
-	Outlet.x = Inlet.x;
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
-}
 
 void Declare::Move(int x, int y)
 {

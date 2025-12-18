@@ -48,6 +48,16 @@ void ValueAssign::setRHS(double R)
 	UpdateStatementText();
 }
 
+string ValueAssign::getLHS() const
+{
+	return LHS;
+}
+
+double ValueAssign::getRHS() const
+{
+	return RHS;
+}
+
 
 void ValueAssign::Draw(Output* pOut) const
 {
@@ -92,15 +102,6 @@ void ValueAssign::Save(std::ofstream& OutFile)
 	OutFile << "VALUE ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
 }
 
-void ValueAssign::Load(std::ifstream& Infile)
-{
-	Infile >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS;
-	UpdateStatementText();
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
-	Inlet.y = LeftCorner.y;
-	Outlet.x = Inlet.x;
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
-}
 
 void ValueAssign::Move(int x, int y)
 {

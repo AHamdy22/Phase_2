@@ -8,7 +8,6 @@ class Write : public Statement
 private:
 	string VarName; //The name of the variable to be written write
 
-	Point LeftCorner; // Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement 
 	Point Outlet;	//A point a connection leaves this statement
@@ -17,6 +16,8 @@ private:
 
 public:
 	Write(Point LCorner, string var = "");
+	
+	string getVar() const;
 
 	void Draw(Output* pOut) const;
 
@@ -30,9 +31,10 @@ public:
 	string GetType() const;			//returns the statement type as a string
 
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
+
+	bool validate(ApplicationManager* pApp) const;
 };
 
 #endif

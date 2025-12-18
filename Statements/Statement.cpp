@@ -10,7 +10,9 @@ Statement::Statement()
 	Selected = false;
 	pOutConn = nullptr;
 	ConnCount = 0;
-	for (int i = 0; i < 3; i++)
+	LeftCorner.x = 0;
+	LeftCorner.y = 0;
+	for (int i = 0; i < 2; i++)
 	{
         pInConnList[i] = nullptr;
 	}
@@ -31,6 +33,12 @@ bool Statement::IsSelected() const
     return Selected;
 }
 
+
+double Statement::getLeftCornerY() const
+{
+    return LeftCorner.y;
+}
+
 void Statement::setOutConnector(Connector* pConn)
 {   
     pOutConn = pConn;
@@ -44,7 +52,7 @@ Connector* Statement::getOutConnector() const
 void Statement::addInConnector(Connector* pConn)
 {
     // Check bounds before accessing the array
-    if (pConn == nullptr || ConnCount >= 3)
+    if (pConn == nullptr || ConnCount >= 2)
     {
         return;  // Don't add null connectors
     }

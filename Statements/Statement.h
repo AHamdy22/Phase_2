@@ -4,6 +4,7 @@
 #include "..\defs.h"
 #include "..\Connector.h"
 #include "..\GUI\Output.h"
+#include "..\ApplicationManager.h"
 
 //Base class for all Statements
 class Statement
@@ -14,13 +15,14 @@ protected:
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
 	Connector* pOutConn;	//A pointer to the outgoing connector
+	Point LeftCorner; // Top-Left corner of the statement(Top corner point in case of conditional statement)
 	
 	virtual void UpdateStatementText() = 0;	//is called when any part of the stat. is edited	
 
 
 	/// Add more parameters if needed.
 
-	Connector* pInConnList[3];		  // Array of incoming connectors 
+	Connector* pInConnList[2];		  // Array of incoming connectors 
 	int ConnCount;                    // Number of connectors
 
 public:
@@ -44,7 +46,6 @@ public:
 	virtual string GetText() const = 0;		//returns the statement text
 
 	virtual void Save(ofstream &OutFile) = 0;	//Save the Statement parameters to a file
-	virtual void Load(ifstream &Infile) = 0;	//Load the Statement parameters from a file
 
 	//virtual void Edit() = 0;		//Edit the Statement parameter
 
@@ -54,7 +55,7 @@ public:
 
 
 	///TODO: Add more functions if needed
-
+	double getLeftCornerY() const;		// Get the top-left corner point of the statement
 
 	// Functions to manage connectors
 	void setOutConnector(Connector* pConn);			// Set the outgoing connector
@@ -64,6 +65,8 @@ public:
 	int getInConnectorCount() const;				// Get the number of incoming connectors
 
 	virtual void Move(int x, int y) = 0; 			// Move the statement by x and y to make all the connectors vertical
+
+	virtual bool validate(ApplicationManager* pApp) const = 0;
 
 };
 

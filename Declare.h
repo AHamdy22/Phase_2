@@ -14,7 +14,6 @@ private:
 	Point Inlet;
 	Point Outlet;
 
-	Point LeftCorner;		//Top-Left corner of the statement
 
 
 	virtual void UpdateStatementText();
@@ -24,6 +23,7 @@ public:
 
 	void setDataType(const string& d);
 	void setVar(const string& v);
+	string getVar() const;
 	bool InStatement(Point p) const;
 
 	virtual Point GetPosition() const;
@@ -39,7 +39,6 @@ public:
 	string GetType() const;
 
 	void Save(ofstream& OutFile);
-	void Load(ifstream& Infile);
 
 	void Move(int x, int y);
 };

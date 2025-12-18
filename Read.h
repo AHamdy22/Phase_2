@@ -8,7 +8,6 @@ class Read : public Statement
 private:
 	string VarName; //The name of the variable to read
 
-	Point LeftCorner;		//Top-Left corner of the statement
 
 	Point Inlet;	//A point where connections enters this statement 
 	//It's used as the (End) point of the (Input) connectors
@@ -19,6 +18,8 @@ private:
 
 public:
 	Read(Point LCorner, string var = "");
+	
+	string getVar() const;
 
 	void Draw(Output* pOut) const;
 
@@ -35,9 +36,9 @@ public:
 
 	string GetType() const;	//returns the statement type as a string
 
-	void Load(ifstream& Infile);	//Load the Statement parameters from a file
-
 	void Move(int x, int y);
+
+	bool validate(ApplicationManager* pApp) const;
 };
 
 #endif
