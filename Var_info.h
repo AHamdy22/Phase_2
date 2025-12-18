@@ -1,13 +1,17 @@
-#pragma once
+#ifndef VAR_INFO_H
+#define VAR_INFO_H
+
 #include <string>
-using namespace std;
+
 class Var_info
 {
 public:
-    string VarName;
+    std::string VarName;
     double Value;
     bool IsDeclared;
     bool IsInitialized;
 
     Var_info();
 };
+
+#endif

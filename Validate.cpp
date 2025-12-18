@@ -62,8 +62,8 @@ void Validate::Execute()
     }
 
     // 4. Final message
-    if (isValid)
+    /*if (isValid)
         pOut->PrintMessage("Validation Successful! Flowchart is valid.");
     else
-        pOut->PrintMessage("Validation completed with errors. Please fix them.");
+        pOut->PrintMessage("Validation completed with errors. Please fix them.");*/
 }
