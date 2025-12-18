@@ -30,16 +30,18 @@ void AddStart::ReadActionParameters()
 void AddStart::Execute()
 {
 	ReadActionParameters();
+	
+	
 
 	//Calculating left corner of assignement statement block
 	Point Corner;
 	Corner.x = Position.x - UI.START_WDTH / 2;
 	Corner.y = Position.y;
 
-	Start* pAssign = new Start(Corner);
+	Start* pStart = new Start(Corner);
 	//TODO: should set the LHS and RHS of pAssign statement
 	//      with the data members set and validated before in ReadActionParameters()
 
-	pManager->AddStatement(pAssign); // Adds the created statement to application manger's statement list
+	pManager->AddStatement(pStart); // Adds the created statement to application manger's statement list
 
 }
