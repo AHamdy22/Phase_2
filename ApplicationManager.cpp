@@ -135,13 +135,16 @@ Connector *ApplicationManager::GetConnector(Point P) const
 {
 	for (int i = 0; i < ConnCount; i++)
 	{
-		const int tolerance = 5;
+		const int Range = 5;
+
 		Point start = ConnList[i]->getStartPoint();
 		Point end = ConnList[i]->getEndPoint();
-		int minX = min(start.x, end.x) - tolerance;
-		int maxX = max(start.x, end.x) + tolerance;
-		int minY = min(start.y, end.y) - tolerance;
-		int maxY = max(start.y, end.y) + tolerance;
+
+		int minX = min(start.x, end.x) - Range;
+		int maxX = max(start.x, end.x) + Range;
+		int minY = min(start.y, end.y) - Range;
+		int maxY = max(start.y, end.y) + Range;
+
 		if (P.x >= minX && P.x <= maxX && P.y >= minY && P.y <= maxY)
 			return ConnList[i];
 	}
