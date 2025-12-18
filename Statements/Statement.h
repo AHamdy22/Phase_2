@@ -4,7 +4,8 @@
 #include "..\defs.h"
 #include "..\Connector.h"
 #include "..\GUI\Output.h"
-#include "..\ApplicationManager.h"
+
+class ApplicationManager;
 
 //Base class for all Statements
 class Statement

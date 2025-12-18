@@ -1,4 +1,5 @@
 #include "Statement.h"
+#include "..\ApplicationManager.h"
 
 int Statement::NextID = 1;
 

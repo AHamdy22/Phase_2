@@ -2,6 +2,7 @@
 #define CONDITIONAL_H
 
 #include "Statements/Statement.h"
+#include "ApplicationManager.h"
 
 class Conditional : public Statement
 {

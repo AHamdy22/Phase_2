@@ -2,6 +2,7 @@
 #define END_H
 
 #include "Statements/Statement.h"
+#include "ApplicationManager.h"
 
 class End : public Statement
 {

@@ -2,6 +2,7 @@
 #define START_H
 
 #include "Statements/Statement.h"
+#include "ApplicationManager.h"
 
 class Start : public Statement
 {

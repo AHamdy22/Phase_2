@@ -2,6 +2,7 @@
 #define VALUE_ASSIGN_H
 
 #include "Statement.h"
+#include "..\ApplicationManager.h"
 #include<fstream>
 
 //Value Assignment statement class
