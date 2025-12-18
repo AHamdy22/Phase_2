@@ -89,10 +89,11 @@ Start::~Start()
 
 bool Start::validate(ApplicationManager* pApp) const
 {
+	Output* pOut = pApp->GetOutput();
+
 	// There should be only one Start statement in the flowchart
 	if (CountStart != 1)
 	{
-		Output* pOut = pApp->GetOutput();
 		pOut->PrintMessage("Error: There should be only one Start statement in the flowchart.");
 		return false;
 	}
@@ -100,7 +101,6 @@ bool Start::validate(ApplicationManager* pApp) const
 	Connector* outConn = getOutConnector();
 	if (outConn == NULL)
 	{
-		Output* pOut = pApp->GetOutput();
 		pOut->PrintMessage("Error: Start statement must have an incoming connector.");
 		return false;
 	}

@@ -88,10 +88,11 @@ End::~End()
 
 bool End::validate(ApplicationManager* pApp) const
 {
+	Output* pOut = pApp->GetOutput();
+
 	// There should be only one Start statement in the flowchart
 	if (CountEnd != 1)
 	{
-		Output* pOut = pApp->GetOutput();
 		pOut->PrintMessage("Error: There should be only one End statement in the flowchart.");
 		return false;
 	}
@@ -99,7 +100,6 @@ bool End::validate(ApplicationManager* pApp) const
 	Connector* inConn = getInConnector(0);
 	if (inConn == NULL)
 	{
-		Output* pOut = pApp->GetOutput();
 		pOut->PrintMessage("Error: End statement must have an incoming connector.");
 		return false;
 	}

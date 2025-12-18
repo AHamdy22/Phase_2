@@ -183,3 +183,8 @@ void Conditional::Move(int x, int y)
 	NoOutlet.x += x;
 	NoOutlet.y += y;
 }
+
+bool Conditional::validate(ApplicationManager* pApp) const
+{
+	
+}
