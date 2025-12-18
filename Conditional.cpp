@@ -186,5 +186,30 @@ void Conditional::Move(int x, int y)
 
 bool Conditional::validate(ApplicationManager* pApp) const
 {
-	
+	Output* pOut = pApp->GetOutput();
+
+	// LHS variable not declared
+	if (!(pApp->IsVariableDeclared(LHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		return false;
+	}
+	// statement without incoming connector
+	Connector* inConn = getInConnector(0);
+	if (inConn == NULL)
+	{
+		pOut->PrintMessage("Error: Conditional statement must have an incoming connector.");
+		return false;
+	}
+	// statement without outgoing connectors
+	Connector* yesConn = getOutConnector();
+	Connector* noConn = getNoConnector();
+	if (yesConn == NULL || noConn == NULL)
+	{
+		pOut->PrintMessage("Error: Conditional statement must have two outgoing connectors (Yes and No).");
+		return false;
+	}
+
+	return true;
+
 }
