@@ -194,13 +194,14 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
 		return false;
 	}
-	// statement without incoming connector
-	Connector* inConn = getInConnector(0);
-	if (inConn == NULL)
+
+	// RHS variable not declared
+	if (!(pApp->IsVariableDeclared(VariableRHS)))
 	{
-		pOut->PrintMessage("Error: Conditional statement must have an incoming connector.");
+		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not declared.");
 		return false;
 	}
+
 	// statement without outgoing connectors
 	Connector* yesConn = getOutConnector();
 	Connector* noConn = getNoConnector();
