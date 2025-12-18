@@ -8,6 +8,8 @@ End::End(Point Lcorner)
 
 	LeftCorner = Lcorner;
 
+	CountEnd++;
+
 	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
@@ -78,3 +80,31 @@ void End::Move(int x, int y)
 	Inlet.x += x;
 	Inlet.y += y;
 }
+
+End::~End()
+{
+	CountEnd--;
+}
+
+bool End::validate(ApplicationManager* pApp) const
+{
+	// There should be only one Start statement in the flowchart
+	if (CountEnd != 1)
+	{
+		Output* pOut = pApp->GetOutput();
+		pOut->PrintMessage("Error: There should be only one End statement in the flowchart.");
+		return false;
+	}
+	// statement without incoming connector
+	Connector* inConn = getInConnector(0);
+	if (inConn == NULL)
+	{
+		Output* pOut = pApp->GetOutput();
+		pOut->PrintMessage("Error: End statement must have an incoming connector.");
+		return false;
+	}
+	return true;
+
+}
+
+int End::CountEnd = 0;

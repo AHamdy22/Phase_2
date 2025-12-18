@@ -19,6 +19,8 @@ ApplicationManager::ApplicationManager()
 	
 	StatCount = 0;
 	ConnCount = 0;
+	VarCount = 0;
+
 	pSelectedStat = NULL;	//no Statement is selected yet
 	pSelectedConn = NULL;
 	pClipboard = NULL;

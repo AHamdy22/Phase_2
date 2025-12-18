@@ -12,6 +12,8 @@ private:
 
 	Point LeftCorner;		//Top-Left corner of the statement
 
+	static int CountEnd;
+
 	void UpdateStatementText();
 
 public:
@@ -33,6 +35,11 @@ public:
 	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
+
+	~End();
+
+	bool validate(ApplicationManager* pApp) const;
+
 };
 
 #endif
