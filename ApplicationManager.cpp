@@ -303,3 +303,84 @@ void ApplicationManager::AddConnector(Connector* pConn)
 		ConnList[ConnCount++] = pConn;
 }
 
+void ApplicationManager::DeclareVariable(string varName)
+{
+	// Check if already exists
+	int index = FindVariable(varName);
+
+	if (index == -1)  // Variable doesn't exist, add it
+	{
+		if (VarCount < MaxCount)
+		{
+			VarList[VarCount].VarName = varName;
+			VarList[VarCount].IsDeclared = true;
+			VarList[VarCount].IsInitialized = false;
+			VarCount++;
+		}
+	}
+
+}
+void ApplicationManager::SetVariableValue(string varName, double value)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+	{
+		VarList[index].Value = value;
+		VarList[index].IsInitialized = true;
+	}
+}
+
+double ApplicationManager::GetVariableValue(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+	{
+		if (VarList[index].IsInitialized)
+		{
+			return VarList[index].Value;
+		}
+	}
+	else
+		return 0; // Variable not found or not initialized
+}
+
+bool ApplicationManager::IsVariableDeclared(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+		return VarList[index].IsDeclared;
+
+	return false;
+}
+bool ApplicationManager::IsVariableInitialized(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+		return VarList[index].IsDeclared && VarList[index].IsInitialized;
+
+	return false;
+}
+int ApplicationManager::FindVariable(string varName)
+{
+	for (int i = 0; i < VarCount; i++)
+	{
+		if (VarList[i].VarName == varName)
+			return i;
+	}
+	return -1;  // Variable not found
+}
+void ApplicationManager::ClearVariables()
+{
+	VarCount = 0;
+	// Reset all variables
+	for (int i = 0; i < MaxCount; i++)
+	{
+		VarList[i].VarName = "";
+		VarList[i].IsDeclared = false;
+		VarList[i].IsInitialized = false;
+	}
+}

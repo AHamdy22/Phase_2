@@ -3,6 +3,8 @@
 
 #include "DEFS.h"
 
+#include "Var_info.h"
+
 #include "Statements\Statement.h"
 class Input;
 class Output;
@@ -31,6 +33,9 @@ private:
 	//Pointers to Input and Output classes
 	Input *pIn;
 	Output *pOut;
+
+	Var_info VarList[MaxCount];			// Array to store variables
+	int VarCount;						// Number of variables
 
 public:	
 	ApplicationManager(); 
@@ -69,7 +74,14 @@ public:
 	int GetConnectorCount() const;        //Returns the actual number of connectors
 	int GetStatementCount() const;        //Returns the actual number of statements
 
-	
+	void DeclareVariable(string varName);
+	void SetVariableValue(string varName, double value);
+	double GetVariableValue(string varName); // You must check if the variable is declared and initialized before calling this function
+	bool IsVariableDeclared(string varName);
+	bool IsVariableInitialized(string varName);
+	int FindVariable(string varName);
+	void ClearVariables();
+
 };
 
 #endif
