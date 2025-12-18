@@ -12,6 +12,8 @@ private:
 
 	Point Outlet;
 
+	static int CountStart;
+
 	void UpdateStatementText();
 
 
@@ -34,6 +36,11 @@ public:
 	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
+
+	~Start();
+
+	bool validate(ApplicationManager* pApp) const;
+
 };
 
 #endif

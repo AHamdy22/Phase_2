@@ -10,6 +10,7 @@ Start::Start(Point Lcorner)
 
 	pOutConn = NULL;	//No connectors yet
 
+	CountStart++;
 
 	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
 	Outlet.y = LeftCorner.y + UI.START_HI;
@@ -80,3 +81,29 @@ void Start::Move(int x, int y)
 	Outlet.x += x;
 	Outlet.y += y;
 }
+
+Start::~Start()
+{
+	CountStart--;
+}
+
+bool Start::validate(ApplicationManager* pApp) const
+{
+	// There should be only one Start statement in the flowchart
+	if (CountStart > 1)
+	{
+		Output* pOut = pApp->GetOutput();
+		pOut->PrintMessage("Error: There should be only one Start statement in the flowchart.");
+		return false;
+	}
+	// statement without outgoing connector
+	if (pOutConn == NULL)
+	{
+		Output* pOut = pApp->GetOutput();
+		pOut->PrintMessage("Error: Start statement must have an outgoing connector.");
+		return false;
+	}
+	return true;
+}
+
+int Start::CountStart = 0;

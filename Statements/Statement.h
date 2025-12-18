@@ -4,6 +4,7 @@
 #include "..\defs.h"
 #include "..\Connector.h"
 #include "..\GUI\Output.h"
+#include "..\ApplicationManager.h"
 
 //Base class for all Statements
 class Statement
@@ -65,6 +66,7 @@ public:
 
 	virtual void Move(int x, int y) = 0; 			// Move the statement by x and y to make all the connectors vertical
 
+	virtual bool validate(ApplicationManager* pApp) const = 0;            
 };
 
 #endif
