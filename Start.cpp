@@ -83,11 +83,14 @@ void Start::Move(int x, int y)
 
 bool Start::validate(ApplicationManager* pApp) const
 {
-	// check exist one start statement
-	if (pApp->GetStartCount() != 1)
+	Output* pOut = pApp->GetOutput();
+
+	// Check if Start has an outgoing connector
+	if (!pOutConn)
 	{
-		Output* pOut = pApp->GetOutput();
-		pOut->PrintMessage("Error: There can be only one Start statement in the flowchart.");
+		pOut->PrintMessage("Error: Start statement must have an outgoing connector!");
 		return false;
 	}
+
+	return true;
 }

@@ -83,6 +83,9 @@ public:
 	void ClearVariables();
 
 	int GetStartCount() const;
+
+	Statement* GetStatementByIndex(int index) const;
+
 };
 
 #endif

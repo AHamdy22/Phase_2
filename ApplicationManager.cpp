@@ -410,3 +410,11 @@ int ApplicationManager::GetStartCount() const
 			count++;
 	return count;
 }
+
+Statement* ApplicationManager::GetStatementByIndex(int index) const
+{
+	if (index >= 0 && index < StatCount)
+		return StatList[index];
+	return NULL;
+}
+
