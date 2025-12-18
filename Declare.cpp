@@ -115,3 +115,25 @@ void Declare::Move(int x, int y)
 	Outlet.x += x;
 	Outlet.y += y;
 }
+
+bool Declare::validate(ApplicationManager* pApp) const
+{
+	Output* pOut = pApp->GetOutput();
+	if (pApp->IsVariableDeclared(Var))
+	{
+		pOut->PrintMessage("Error: Variable '" + Var + "' is already declared.");
+		return false;
+	}
+
+	// Check if has output connector (except for End statement)
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+
+	// Declare the variable
+	pApp->DeclareVariable(Var);
+
+	return true;
+}

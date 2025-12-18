@@ -114,3 +114,22 @@ void ValueAssign::Move(int x, int y)
 	Outlet.x += x;
 	Outlet.y += y;
 }
+
+bool ValueAssign::validate(ApplicationManager* pApp) const
+{
+	Output* pOut = pApp->GetOutput();
+
+	if (!(pApp->IsVariableDeclared(LHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		return false;
+	}
+
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+
+	return true;
+}

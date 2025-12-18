@@ -39,6 +39,8 @@ public:
 
 	void Move(int x, int y);
 
+	bool validate(ApplicationManager* pApp) const;
+
 };
 
 #endif
