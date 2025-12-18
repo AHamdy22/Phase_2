@@ -70,3 +70,16 @@ void End::Move(int x, int y)
 	Inlet.x += x;
 	Inlet.y += y;
 }
+
+bool End::validate(ApplicationManager* pApp) const
+{
+	Output* pOut = pApp->GetOutput();
+	Connector* inConn = getInConnector(0);
+	if (inConn == NULL)
+	{
+		pOut->PrintMessage("Error: End statement must have an incoming connector.");
+		return false;
+	}
+	return true;
+
+}

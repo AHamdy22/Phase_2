@@ -31,6 +31,8 @@ public:
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
 
 	void Move(int x, int y);
+
+	bool validate(ApplicationManager* pApp) const;
 };
 
 #endif

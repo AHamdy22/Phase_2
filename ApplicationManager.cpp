@@ -6,9 +6,12 @@
 #include "AddWrite.h"
 #include "AddConditional.h"
 #include "AddDeclare.h"
+#include "AddVariableAssign.h"
+#include "AddOperatorAssign.h"
 #include "AddConnectors.h"
 #include "Save.h"
 #include "Load.h"
+#include "Validate.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -61,6 +64,14 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new AddValueAssign(this);
 			break;
 
+		case ADD_VAR_ASSIGN:
+			pAct = new AddVariableAssign(this);
+			break;
+		
+		case ADD_OPER_ASSIGN:
+			pAct = new AddOperatorAssign(this);
+			break;
+
 		case ADD_CONDITION:
 			pAct = new AddConditional(this);
 			break;
@@ -97,6 +108,20 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 		case LOAD:
 			pAct = new Load(this);
+			break;
+
+		case SWITCH_SIM_MODE:
+			pOut->CreateSimulationToolBar();
+			UI.AppMode = SIMULATION;
+			break;
+
+		case SWITCH_DSN_MODE:
+			pOut->CreateDesignToolBar();
+			UI.AppMode = DESIGN;
+			break;
+
+		case VALIDATE:
+			pAct = new Validate(this);
 			break;
 
 		case EXIT:
@@ -254,13 +279,11 @@ Output *ApplicationManager::GetOutput() const
 {	return pOut; }
 ////////////////////////////////////////////////////////////////////////////////////
 
-
 int ApplicationManager::FindVariable(string varName)
 {
 	for (int i = 0; i < VarCount; i++)
 	{
 		if (VarList[i].VarName == varName)
-
 			return i;
 	}
 	return -1;  // Variable not found
@@ -318,7 +341,6 @@ bool ApplicationManager::IsVariableDeclared(string varName)
 
 	return false;
 }
-
 bool ApplicationManager::IsVariableInitialized(string varName)
 {
 	int index = FindVariable(varName);
@@ -340,7 +362,6 @@ void ApplicationManager::ClearVariables()
 		VarList[i].IsInitialized = false;
 	}
 }
-
 //Destructor
 ApplicationManager::~ApplicationManager()
 {

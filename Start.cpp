@@ -74,3 +74,17 @@ void Start::Move(int x, int y)
 	Outlet.x += x;
 	Outlet.y += y;
 }
+
+
+bool Start::validate(ApplicationManager* pApp) const
+{
+	Output* pOut = pApp->GetOutput();
+
+	Connector* pOutConn = getOutConnector();
+	if (pOutConn == NULL)
+	{
+		pOut->PrintMessage("Error: Start statement must have an outgoing connector.");
+		return false;
+	}
+	return true;
+}

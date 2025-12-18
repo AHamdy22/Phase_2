@@ -42,8 +42,8 @@ string Declare::getVar() const
 
 bool Declare::InStatement(Point p) const
 {
-	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+	return (p.x >= LeftCorner.x && p.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		p.y >= LeftCorner.y && p.y <= LeftCorner.y + UI.ASSGN_HI);
 }
 
 Point Declare::GetPosition() const
@@ -107,4 +107,28 @@ void Declare::Move(int x, int y)
 	Inlet.y += y;
 	Outlet.x += x;
 	Outlet.y += y;
+}
+
+bool Declare::validate(ApplicationManager* pApp) const
+{
+	Output* pOut = pApp->GetOutput();
+	if (pApp->IsVariableDeclared(Var))
+	{
+		pOut->PrintMessage("Error: Variable '" + Var + "' is already declared.");
+		return false;
+	}
+
+	// Check if has output connector (except for End statement)
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+
+	// Declare the variable
+	pApp->DeclareVariable(Var);
+
+	return true;
+
+
 }

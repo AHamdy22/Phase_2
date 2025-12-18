@@ -22,7 +22,7 @@ private:
 public:
 	ValueAssign(Point Lcorner, string LeftHS = "", double RightHS = 0);
 
-	void void setLHS(const string& L);
+	void setLHS(const string& L);
 	void setRHS(double R);
 	
 	string getLHS() const;
@@ -39,6 +39,8 @@ public:
 	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
 
 	void Move(int x, int y);
+
+	bool validate(ApplicationManager* pApp) const;
 
 };
 

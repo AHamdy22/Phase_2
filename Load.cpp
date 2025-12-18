@@ -9,6 +9,8 @@
 #include "Declare.h"
 #include "Conditional.h"
 #include "Statements\ValueAssign.h"
+#include "VariableAssign.h"
+#include "OperatorAssign.h"
 #include <fstream>
 
 Load::Load(ApplicationManager* pAppManager) : Action(pAppManager) 
@@ -69,6 +71,49 @@ void Load::Execute()
             pStat = new ValueAssign(corner, lhs, rhs);
             pStat->SetID(id);
         }
+
+        else if (StatementType == "VARIABLE_ASSIGN")
+        {
+            int id;
+            int x, y;
+            string lhs;
+            string rhs;
+            InFile >> id >> x >> y >> lhs >> rhs;
+
+            Point corner(x, y);
+            pStat = new VariableAssign(corner, lhs, rhs);
+            pStat->SetID(id);
+        }
+
+        else if (StatementType == "OPERATOR_ASSIGN")
+        {
+            int id;
+            int x, y;
+            string lhs, op1, op2;
+            char operation;
+
+            InFile >> id >> x >> y >> lhs >> op1 >> operation >> op2;
+
+            Point corner(x, y);
+
+            // Determine operands
+            double valOp1 = 0, valOp2 = 0;
+            string varOp1 = "", varOp2 = "";
+
+            if (IsValue(op1))
+                valOp1 = stod(op1);
+            else
+                varOp1 = op1;
+
+            if (IsValue(op2))
+                valOp2 = stod(op2);
+            else
+                varOp2 = op2;
+
+            pStat = new OperatorAssign(corner, lhs, valOp1, varOp1, valOp2, varOp2, operation);
+            pStat->SetID(id);
+        }
+
         else if (StatementType == "READ")
         {
             int id;
