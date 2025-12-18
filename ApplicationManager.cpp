@@ -3,6 +3,7 @@
 #include "Actions\..\AddStart.h"
 #include "Actions\..\AddDeclare.h"
 #include "Actions\..\Select.h"
+#include "Actions\..\Validate.h"
 #include "Actions\..\AddConnectors.h"
 #include "Actions\..\Delete.h"
 #include "Actions\..\AddConditional.h"
@@ -74,6 +75,10 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	case SWITCH_SIM_MODE:
 		pOut->CreateSimulationToolBar();
 		UI.AppMode = SIMULATION;
+		break; 
+
+	case VALIDATE:
+		pAct = new Validate(this);
 		break;
 
 	case SELECT:
