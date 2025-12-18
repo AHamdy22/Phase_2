@@ -77,6 +77,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		UI.AppMode = SIMULATION;
 		break; 
 
+	case SWITCH_DSN_MODE:
+		pOut->CreateDesignToolBar();
+		UI.AppMode = DESIGN;
+		break;
+
 	case VALIDATE:
 		pAct = new Validate(this);
 		break;
