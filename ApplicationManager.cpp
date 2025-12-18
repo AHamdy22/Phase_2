@@ -71,6 +71,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		pAct = new AddConnectors(this);
 		break;
 
+	case SWITCH_SIM_MODE:
+		pOut->CreateSimulationToolBar();
+		UI.AppMode = SIMULATION;
+		break;
+
 	case SELECT:
 		pAct = new Select(this);
 		break;
