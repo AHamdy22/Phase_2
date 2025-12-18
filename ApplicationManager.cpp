@@ -401,3 +401,12 @@ void ApplicationManager::ClearVariables()
 		VarList[i].IsInitialized = false;
 	}
 }
+
+int ApplicationManager::GetStartCount() const
+{
+	int count = 0;
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i] && StatList[i]->GetType() == "START")
+			count++;
+	return count;
+}

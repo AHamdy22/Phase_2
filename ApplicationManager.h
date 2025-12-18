@@ -82,6 +82,7 @@ public:
 	int FindVariable(string varName);
 	void ClearVariables();
 
+	int GetStartCount() const;
 };
 
 #endif
