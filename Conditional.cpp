@@ -79,9 +79,9 @@ void Conditional::UpdateStatementText()
 }
 bool Conditional::InStatement(Point P) const
 {
-	// Assume that the conditional statement is a square; as it is difficult to determine the positions inside it if it is rhombus
-	return (P.x >= TopCorner.x - UI.ASSGN_WDTH / 2 && P.x <= TopCorner.x + UI.ASSGN_WDTH / 2 + UI.ASSGN_WDTH
-		&&  P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
+	//Check if point P is inside the statement block
+	return (P.x >= TopCorner.x - UI.ASSGN_WDTH / 2 && P.x <= TopCorner.x + UI.ASSGN_WDTH / 2 &&
+		P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
 }
 
 Point Conditional::getInlet() const
