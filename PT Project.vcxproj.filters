@@ -191,6 +191,9 @@
     <ClCompile Include="Var_info.cpp">
       <Filter>Statements</Filter>
     </ClCompile>
+    <ClCompile Include="Validate.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -317,6 +320,9 @@
     </ClInclude>
     <ClInclude Include="Var_info.h">
       <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Validate.h">
+      <Filter>Action Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

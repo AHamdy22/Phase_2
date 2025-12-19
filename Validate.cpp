@@ -12,6 +12,8 @@
 
 Validate::Validate(ApplicationManager* pAppManager) : Action(pAppManager)
 {
+	pAppManager->ClearVariables();
+
 }
 
 void Validate::ReadActionParameters()

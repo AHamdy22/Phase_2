@@ -195,13 +195,13 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		return false;
 	}
 
-	// RHS variable not declared
-	if (!(pApp->IsVariableDeclared(VariableRHS)))
+	// LHS variable is initialized
+	if (!(pApp->IsVariableInitialized(LHS)))
 	{
-		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not declared.");
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not initialized.");
 		return false;
 	}
-
+	 
 	// statement without outgoing connectors
 	Connector* yesConn = getOutConnector();
 	Connector* noConn = getNoConnector();
@@ -210,6 +210,21 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		pOut->PrintMessage("Error: Conditional statement must have two outgoing connectors (Yes and No).");
 		return false;
 	}
+
+	// RHS is value
+	if(ValueRHS != 0)
+	{
+		return true;
+	}
+	
+	// RHS variable not declared
+	if (!(pApp->IsVariableDeclared(VariableRHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not declared.");
+		return false;
+	}
+
+
 
 	return true;
 
