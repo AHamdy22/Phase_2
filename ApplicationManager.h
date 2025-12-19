@@ -4,6 +4,7 @@
 #include "DEFS.h"
 
 #include "Statements\Statement.h"
+#include "Var_info.h"
 class Input;
 class Output;
 
@@ -24,6 +25,9 @@ private:
 	Statement *pClipboard;    //a pointer to the last copied/cut statement
 	                          //you can set and get this pointer
 
+	Var_info VarList[MaxCount];			// Array to store variables
+	int VarCount;						// Number of variables
+
 	//Pointers to Input and Output classes
 	Input *pIn;
 	Output *pOut;
@@ -39,6 +43,7 @@ public:
 	
 	// == Statements/Connector Management Functions ==
 	void AddStatement(Statement* pStat);    //Adds a new Statement to the Flowchart
+	Statement* GetStatement(int index) const; //Gets a statement by index
 	Statement *GetStatement(Point P) const;	//Searches for a statement where point P belongs
 	                                        //TODO: Complete its implementation 
 	                                        //      WITHOUT breaking class responsibilities
@@ -46,8 +51,11 @@ public:
 	void AddConnector(Connector* pConn);    //Adds a new Connector to the Flowchart
 	Connector *GetConnector(Point P) const;	//search for a Connector where point P belongs
 
-
+	Connector* GetConnector(int index) const;
+	int GetConnectorCount() const;        //Returns the actual number of connectors
 	int GetStatCount() const;
+
+	void ClearAll();                //Clears all statements and connectors from the flowchart
 
 	// Note: you should use the following 4 functions 
 	//       in order not to break class responsibilities (especially in copy, cut and paste)
@@ -61,6 +69,13 @@ public:
 	Output *GetOutput() const;      //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window
 	
+	void DeclareVariable(string varName);
+	void SetVariableValue(string varName, double value);
+	double GetVariableValue(string varName); // You must check if the variable is declared and initialized before calling this function
+	bool IsVariableDeclared(string varName);
+	bool IsVariableInitialized(string varName);
+	int FindVariable(string varName);
+	void ClearVariables();
 
 	
 };

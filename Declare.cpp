@@ -112,7 +112,30 @@ void Declare::Draw(Output* pOut) const
 
 }
 
+bool Declare::Validate(ApplicationManager* pApp) 
+{
+	 Output* pOut = pApp->GetOutput();
 
+	if (pApp->IsVariableDeclared(Var))
+	{
+		pOut->PrintMessage("Error: Variable '" + Var + "' is already declared.");
+		return false;
+	}
+
+	// Check if has output connector (except for End statement)
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+
+	// Declare the variable
+	pApp->DeclareVariable(Var);
+
+	return true;
+
+	
+}
 
 void Declare::UpdateStatementText()
 {
@@ -120,4 +143,45 @@ void Declare::UpdateStatementText()
 	ostringstream T;
 	T << "Declare" << " " << Var;
 	Text = T.str();
+}
+
+Point Declare::getInlet() const
+{
+	return Inlet;
+}
+
+Point Declare::getOutlet() const
+{
+	return Outlet;
+}
+
+int Declare::GetID() const
+{
+	return ID;
+}
+
+string Declare::GetText() const
+{
+	return Text;
+}
+
+string Declare::GetType() const
+{
+	return "DECLARE";
+}
+
+void Declare::Save(ofstream& OutFile)
+{
+	OutFile << "DECLARE " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << Var << endl;
+}
+
+
+void Declare::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	Outlet.x += x;
+	Outlet.y += y;
 }

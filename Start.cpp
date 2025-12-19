@@ -14,6 +14,8 @@ Start::Start(Point Lcorner)
 	Outlet.x = LeftCorner.x + (UI.ASSGN_WDTH / 2);
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 
+	CountStart++;
+
 }
 
 void Start::Draw(Output* pOut) const
@@ -94,3 +96,73 @@ bool Start::InStatement(Point P) const
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.START_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.START_HI);
 }
+
+Point Start::getInlet() const
+{
+	Point p;
+	p.x = -1; // No inlet for Start statement
+	p.y = -1;
+	return p;
+}
+
+Point Start::getOutlet() const
+{
+	return Outlet;
+}
+
+int Start::GetID() const
+{
+	return ID;
+}
+
+string Start::GetText() const
+{
+	return Text;
+}
+
+string Start::GetType() const
+{
+	return "START";
+}
+
+void Start::Save(ofstream& OutFile)
+{
+	OutFile << "START " << ID << " " << LeftCorner.x << " " << LeftCorner.y << endl;
+}
+
+
+void Start::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
+}
+
+bool Start::Validate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+
+	// There should be only one Start statement in the flowchart
+	if (CountStart != 1)
+	{
+		pOut->PrintMessage("Error: There should be only one Start statement in the flowchart.");
+		return false;
+	}
+	// statement without outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == NULL)
+	{
+		pOut->PrintMessage("Error: Start statement must have an incoming connector.");
+		return false;
+	}
+	return true;
+}
+
+
+Start::~Start()
+{
+	CountStart--;
+}
+int Start::CountStart = 0;

@@ -54,6 +54,65 @@ void ValueAssign::Draw(Output* pOut) const
 	
 }
 
+void ValueAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	ValueAssign* V = new ValueAssign(*this);
+	V->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(V);
+
+}
+
+
+void ValueAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	ValueAssign* v = dynamic_cast<ValueAssign*>(S);
+	if (v)
+	{
+		if (v->IsCopied())
+		{
+			v->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			v = new ValueAssign(*v);
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+
+}
+
+bool ValueAssign::Validate(ApplicationManager* pApp)
+{
+	 Output* pOut = pApp->GetOutput();
+
+	 if (!(pApp->IsVariableDeclared(LHS)))
+	 {
+		 pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		 return false;
+	 }
+
+	 if(!pOutConn)
+	 {
+		 pOut->PrintMessage("Error: There is a statement without an output connector.");
+		 return false;
+	 }
+
+	 return true;
+}
+
 Point ValueAssign::GetPosition() const
 {
 	return LeftCorner;
@@ -89,4 +148,47 @@ void ValueAssign::UpdateStatementText()
 	ostringstream T;
 	T<<LHS<<" = "<<RHS;	
 	Text = T.str();	 
+}
+
+Point ValueAssign::getInlet() const
+{
+	return Inlet;
+}
+
+Point ValueAssign::getOutlet() const
+{
+	return Outlet;
+}
+
+int ValueAssign::GetID() const
+{
+	return ID;
+}
+
+string ValueAssign::GetText() const
+{
+	return Text;
+}
+
+string ValueAssign::GetType() const
+{
+	return "VALUE ASSIGNMENT";
+}
+
+void ValueAssign::Save(std::ofstream& OutFile)
+{
+	OutFile << "VALUE ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
+}
+
+
+void ValueAssign::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Inlet.x += x;
+	Inlet.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
 }

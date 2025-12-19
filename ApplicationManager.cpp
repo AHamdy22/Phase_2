@@ -14,6 +14,9 @@
 #include "Actions\..\Copy.h"
 #include "Actions\..\Cut.h"
 #include "Actions\..\Paste.h"
+#include "AddConnectors.h"
+#include "Save.h"
+#include "Load.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -26,6 +29,7 @@ ApplicationManager::ApplicationManager()
 	
 	StatCount = 0;
 	ConnCount = 0;
+	VarCount = 0;
 	pSelectedStat = NULL;	//no Statement is selected yet
 	pClipboard = NULL;
 	
@@ -117,6 +121,28 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new Paste(this);
 			break;
 
+		case ADD_CONNECTOR:
+			pAct = new AddConnectors(this);
+			break;
+
+		case SAVE:
+			pAct = new Save(this);
+			break;
+
+		case LOAD:
+			pAct = new Load(this);
+			break;
+
+		case SWITCH_SIM_MODE:
+			pOut->CreateSimulationToolBar();
+			UI.AppMode = SIMULATION;
+			break;
+
+		case SWITCH_DSN_MODE:
+			pOut->CreateDesignToolBar();
+			UI.AppMode = DESIGN;
+			break;
+
 		case EXIT:
 			///create Exit Action here
 			
@@ -149,6 +175,12 @@ void ApplicationManager::AddStatement(Statement *pStat)//upcasting (will get der
 	
 }
 
+void ApplicationManager::AddConnector(Connector* pConn)
+{
+	if (ConnCount < MaxCount)
+		ConnList[ConnCount++] = pConn;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 Statement *ApplicationManager::GetStatement(Point P) const
 {
@@ -167,6 +199,27 @@ Statement *ApplicationManager::GetStatement(Point P) const
 
 	return NULL;
 }
+
+Connector* ApplicationManager::GetConnector(Point P) const
+{
+	for (int i = 0; i < ConnCount; i++)
+	{
+		const int Range = 5;
+
+		Point start = ConnList[i]->getStartPoint();
+		Point end = ConnList[i]->getEndPoint();
+
+		int minX = min(start.x, end.x) - Range;
+		int maxX = max(start.x, end.x) + Range;
+		int minY = min(start.y, end.y) - Range;
+		int maxY = max(start.y, end.y) + Range;
+
+		if (P.x >= minX && P.x <= maxX && P.y >= minY && P.y <= maxY)
+			return ConnList[i];
+	}
+	return NULL;
+}
+
 int ApplicationManager::GetStatCount() const
 {
 	return StatCount;
@@ -175,6 +228,13 @@ int ApplicationManager::GetStatCount() const
 //Returns the selected statement
 Statement *ApplicationManager::GetSelectedStatement() const
 {	return pSelectedStat;	}
+
+Statement* ApplicationManager::GetStatement(int index) const
+{
+	if (index >= 0 && index < StatCount)
+		return StatList[index];
+	return nullptr;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Set the statement selected by the user
@@ -209,6 +269,17 @@ void ApplicationManager::DeleteStatement(Statement* pStat)
 	}
 }
 
+Connector* ApplicationManager::GetConnector(int index) const
+{
+	if (index >= 0 && index < ConnCount)
+		return ConnList[index];
+	return nullptr;
+}
+	
+int ApplicationManager::GetConnectorCount() const
+{
+	return ConnCount;
+}
 
 //==================================================================================//
 //							Interface Management Functions							//
@@ -229,6 +300,108 @@ void ApplicationManager::UpdateInterface() const
 	for(int i=0; i<ConnCount; i++)
 		ConnList[i]->Draw(pOut);
 
+}
+
+void ApplicationManager::ClearAll()
+{
+	//Clear statements
+	for (int i = 0; i < StatCount; i++)
+	{
+		delete StatList[i];
+		StatList[i] = nullptr;
+	}
+	StatCount = 0;
+	//Clear connectors
+	for (int i = 0; i < ConnCount; i++)
+	{
+		delete ConnList[i];
+		ConnList[i] = nullptr;
+	}
+	ConnCount = 0;
+	UpdateInterface();
+}
+////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeclareVariable(string varName)
+{
+	// Check if already exists
+	int index = FindVariable(varName);
+
+	if (index == -1)  // Variable doesn't exist, add it
+	{
+		if (VarCount < MaxCount)
+		{
+			VarList[VarCount].VarName = varName;
+			VarList[VarCount].IsDeclared = true;
+			VarList[VarCount].IsInitialized = false;
+			VarCount++;
+		}
+	}
+
+}
+void ApplicationManager::SetVariableValue(string varName, double value)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+	{
+		VarList[index].Value = value;
+		VarList[index].IsInitialized = true;
+	}
+}
+
+double ApplicationManager::GetVariableValue(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+	{
+		if (VarList[index].IsInitialized)
+		{
+			return VarList[index].Value;
+		}
+	}
+	else
+		return 0; // Variable not found or not initialized
+}
+
+bool ApplicationManager::IsVariableDeclared(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+		return VarList[index].IsDeclared;
+
+	return false;
+}
+bool ApplicationManager::IsVariableInitialized(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)
+		return //VarList[index].IsDeclared &&
+		VarList[index].IsInitialized;
+
+	return false;
+}
+int ApplicationManager::FindVariable(string varName)
+{
+	for (int i = 0; i < VarCount; i++)
+	{
+		if (VarList[i].VarName == varName)
+			return i;
+	}
+	return -1;  // Variable not found
+}
+void ApplicationManager::ClearVariables()
+{
+	VarCount = 0;
+	// Reset all variables
+	for (int i = 0; i < MaxCount; i++)
+	{
+		VarList[i].VarName = "";
+		VarList[i].IsDeclared = false;
+		VarList[i].IsInitialized = false;
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the input

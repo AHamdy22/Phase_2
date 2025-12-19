@@ -145,3 +145,32 @@ void Read::Move(int x, int y)
 	Outlet.x += x;
 	Outlet.y += y;
 }
+
+bool Read::Validate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	// Check if the variable is declared
+	if (!pApp->IsVariableDeclared(VarName))
+	{
+		pOut->PrintMessage("Error: Variable '" + VarName + "' used in Read statement is not declared.");
+		return false; // Variable not declared
+	}
+
+	// Check if there is an incoming connector
+	Connector* inConn = getInConnector(0);
+	if (inConn == nullptr)
+	{
+		pOut->PrintMessage("Error: Thre is a Read statement without an incoming connector.");
+		return false; // No incoming connector
+	}
+
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
+	{
+		pOut->PrintMessage("Error: There is a Read statement without an outgoing connector.");
+		return false; // No outgoing connector
+	}
+	return true; // Valid
+	
+}

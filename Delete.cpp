@@ -8,31 +8,39 @@
 #include <sstream>
 using namespace std;
 
-
+//constructor: set the ApplicationManager pointer inside this action
 Delete::Delete(ApplicationManager* pAppManager) : Action(pAppManager)
 {
 }
 
 void Delete::ReadActionParameters()
 {
-    
-    
+    //Input* pIn = pManager->GetInput();
+    Output* pOut = pManager->GetOutput();
+
+    //Read the (Position) parameter
+    pOut->PrintMessage("Delete Statement: Click on a statement to delete");
+
+    //pIn->GetPointClicked(Position);
+    //pOut->ClearStatusBar();
 
 }
 
 void Delete::Execute()
 {
-    Output* pOut = pManager->GetOutput();
-
-    
+    ReadActionParameters();
 
     Statement* clickedStat = pManager->GetSelectedStatement();
+    Connector* clickedConn = pManager->GetSelectedConnector();
     if (clickedStat)
     {
-        pOut->PrintMessage("Delete Action: Selected Statement has been deleted");
         pManager->DeleteStatement(clickedStat);
         pManager->SetSelectedStatement(NULL);
     }
-    else
-        pOut->PrintMessage("Delete Action: There is no selected statement to delete");
+    if (clickedConn)
+    {
+        pManager->DeleteConnector(clickedConn);
+        pManager->SetSelectedConnector(NULL);
+    }
+    pManager->UpdateInterface();
 }

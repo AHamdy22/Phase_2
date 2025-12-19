@@ -5,6 +5,7 @@
 #include "Statements\Statement.h"
 #include "ApplicationManager.h"
 #include"Actions\..\AddDeclare.h"
+#include<fstream>
 
 class Declare : public Statement
 {
@@ -48,6 +49,18 @@ public:
 	
 	virtual void Draw(Output* pOut) const;
 
+	bool Validate(ApplicationManager* pApp);
+
+	Point getInlet() const;
+	Point getOutlet() const;
+
+	int GetID() const;
+	string GetText() const;
+	string GetType() const;
+
+	void Save(ofstream& OutFile);
+
+	void Move(int x, int y);
 
 };
 

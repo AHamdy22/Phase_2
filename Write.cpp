@@ -16,6 +16,57 @@ Write::Write(Point LCorner, string var)
 	Outlet.y = LeftCorner.y + UI.READ_HI;
 }
 
+
+string Write::getVar() const
+{
+	return VarName;
+}
+
+Point Write::getInlet() const
+{
+	return Inlet;
+}
+
+void Write::Save(std::ofstream& OutFile)
+{
+	// Changed "Write" to "WRITE" to match the Load function and other statements
+	OutFile << "WRITE " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << VarName << endl;
+}
+
+
+int Write::GetID() const
+{
+	return ID;
+}
+
+string Write::GetText() const
+{
+	return Text;
+}
+
+string Write::GetType() const
+{
+	return "WRITE";
+}
+
+
+void Write::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+
+	Inlet.x += x;
+	Inlet.y += y;
+
+	Outlet.x += x;
+	Outlet.y += y;
+}
+
+Point Write::getOutlet() const
+{
+	return Outlet;
+}
+
 void Write::Draw(Output* pOut) const
 {
 	pOut->DrawWrite(LeftCorner, UI.READ_WDTH, UI.READ_HI, Text, Selected);
@@ -90,4 +141,39 @@ void Write::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManag
 		}
 	}
 
+}
+
+bool Write::Validate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	// Check if the variable is declared
+	if (!pApp->IsVariableDeclared(VarName))
+	{
+		pOut->PrintMessage("Error: Variable '" + VarName + "' used in Write statement is not declared.");
+		return false; // Variable not declared
+	}
+
+	// Check if the variable is initialized
+	if (!pApp->IsVariableInitialized(VarName))
+	{
+		pOut->PrintMessage("Error: Variable '" + VarName + "' used in Write statement is not initialized.");
+		return false; // Variable not declared
+	}
+
+	// Check if there is an incoming connector
+	Connector* inConn = getInConnector(0);
+	if (inConn == nullptr)
+	{
+		pOut->PrintMessage("Error: Thre is a Read statement without an incoming connector.");
+		return false; // No incoming connector
+	}
+
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
+	{
+		pOut->PrintMessage("Error: There is a Read statement without an outgoing connector.");
+		return false; // No outgoing connector
+	}
+	return true; // Valid
 }

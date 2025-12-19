@@ -4,6 +4,7 @@
 #include "Statement.h"
 #include "..\ApplicationManager.h"
 #include"..\Actions\AddValueAssign.h"
+#include<fstream>
 
 //Value Assignment statement class
 //The value assignment statement assigns a value to a variable
@@ -43,6 +44,16 @@ public:
 	void setLHS(const string &L);
 	void setRHS(double R);
 
+	Point getInlet() const;
+	Point getOutlet() const;
+
+	int GetID() const;				//returns the statement ID
+	string GetText() const;			//returns the statement text
+	string GetType() const;			//returns the statement type as a string
+	void Save(ofstream& OutFile); 	//Save the Statement parameters to a file
+
+	void Move(int x, int y);
+
 	bool InStatement(Point P) const;
 
 	virtual Point GetPosition() const;
@@ -52,6 +63,12 @@ public:
 	void EditStatement(ApplicationManager* pApp, Point p);
 
 	virtual void Draw(Output* pOut) const;
+
+	void GetStatementCut(ApplicationManager* pApp) const;
+
+	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
+
+	bool Validate(ApplicationManager* pApp);
 
 };
 

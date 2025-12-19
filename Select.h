@@ -7,16 +7,20 @@ class Select : public Action
 {
 private:
 
+
+	bool selected;
 	Point Position;
 
-public:
+	//Position where the user clicks to add the stat.
+	//TODO: you should add LHS and RHS of the assignment statement as parameters
 
+public:
 	Select(ApplicationManager* pAppManager);
 
-	
+	//Read Assignemt statements position
 	void ReadActionParameters();
 
-	
+	//Create and add an assignemnt statement to the list of statements
 	void Execute();
 
 };

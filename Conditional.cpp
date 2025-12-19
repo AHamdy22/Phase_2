@@ -1,5 +1,6 @@
 #include "Conditional.h"
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 //window w;
@@ -17,17 +18,18 @@ Conditional::Conditional(Point T, string LeftHS, double ValueRightHS, string Var
 
 	Top = T;
 
-	pOutConn1 = NULL;	
-	pOutConn2 = NULL;	
+	pOutConn = NULL;	
+	pNoConn = NULL;	
 
 	Inlet.x = T.x;
 	Inlet.y = T.y;
 
-	Outlet1.x = T.x - (UI.ASSGN_WDTH / 2);
-	Outlet1.y = T.y + (UI.ASSGN_HI / 2);
+	YesOutlet.x = Top.x + (UI.ASSGN_WDTH / 2);
+	YesOutlet.y = Top.y + (UI.ASSGN_HI / 2);
 
-	Outlet2.x = T.x + (UI.ASSGN_WDTH / 2);
-	Outlet2.y = T.y + (UI.ASSGN_HI / 2);
+	NoOutlet.x = Top.x - (UI.ASSGN_WDTH / 2);
+	NoOutlet.y = Top.y + (UI.ASSGN_HI / 2);
+
 
 }
 
@@ -150,4 +152,101 @@ bool Conditional::InStatement(Point P) const
 {
 	return (P.x >= Top.x - (UI.ASSGN_WDTH / 2) && P.x <= Top.x + (UI.ASSGN_WDTH / 2) &&
 		P.y >= Top.y && P.y <= Top.y + UI.ASSGN_HI );
+}
+
+Point Conditional::getInlet() const
+{
+	return Inlet;
+}
+
+Point Conditional::getOutlet() const
+{
+	// There is no single outlet for Conditional statement
+	Point p(-1, -1);
+	return p;
+}
+
+Point Conditional::getYesOutlet() const
+{
+	return YesOutlet;
+}
+
+Point Conditional::getNoOutlet() const
+{
+	return NoOutlet;
+}
+
+void Conditional::setNoConnector(Connector* pConn)
+{
+	pNoConn = pConn;
+}
+
+Connector* Conditional::getNoConnector() const
+{
+	return pNoConn;
+}
+
+int Conditional::GetID() const
+{
+	return ID;
+}
+
+string Conditional::GetText() const
+{
+	return Text;
+}
+
+string Conditional::GetType() const
+{
+	return "CONDITIONAL";
+}
+
+void Conditional::Save(ofstream& OutFile)
+{
+	OutFile << "COND " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << CompOperator << " ";
+	if (VariableRHS == "")
+		OutFile << ValueRHS << " " << "0" << endl; // 0 indicates that RHS is a value
+	else
+		OutFile << "1" << " " << VariableRHS << endl; // 1 indicates that RHS is a variable
+}
+
+
+void Conditional::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	YesOutlet.x += x;
+	YesOutlet.y += y;
+	NoOutlet.x += x;
+	NoOutlet.y += y;
+}
+
+bool Conditional::Validate(ApplicationManager* pApp) 
+{
+	Output* pOut = pApp->GetOutput();
+
+	// LHS variable not declared
+	if (!(pApp->IsVariableDeclared(LHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		return false;
+	}
+	// statement without incoming connector
+	Connector* inConn = getInConnector(0);
+	if (inConn == NULL)
+	{
+		pOut->PrintMessage("Error: Conditional statement must have an incoming connector.");
+		return false;
+	}
+	// statement without outgoing connectors
+	Connector* yesConn = getOutConnector();
+	Connector* noConn = getNoConnector();
+	if (yesConn == NULL || noConn == NULL)
+	{
+		pOut->PrintMessage("Error: Conditional statement must have two outgoing connectors (Yes and No).");
+		return false;
+	}
+	return true;
 }

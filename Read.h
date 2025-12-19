@@ -50,6 +50,9 @@ public:
 	void Load(ifstream& Infile);	//Load the Statement parameters from a file
 
 	void Move(int x, int y);
+
+	bool Validate(ApplicationManager* pApp);
+
 };
 
 #endif

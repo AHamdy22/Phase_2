@@ -179,6 +179,10 @@
     <ClCompile Include="AddRead.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Var_info.cpp" />
+    <ClCompile Include="AddConnectors.cpp" />
+    <ClCompile Include="Load.cpp" />
+    <ClCompile Include="Save.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -294,6 +298,10 @@
     <ClInclude Include="AddRead.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Var_info.h" />
+    <ClInclude Include="AddConnectors.h" />
+    <ClInclude Include="Load.h" />
+    <ClInclude Include="Save.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

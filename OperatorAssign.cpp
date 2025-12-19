@@ -147,6 +147,110 @@ void OperatorAssign::Draw(Output* pOut) const
 
 }
 
+int OperatorAssign::GetID() const
+{
+	return ID;
+}
+
+string OperatorAssign::GetText() const
+{
+	return Text;
+}
+
+string OperatorAssign::GetType() const
+{
+	return "OPERATOR ASSIGNMENT";
+}
+
+void OperatorAssign::Save(ofstream& OutFile)
+{
+	OutFile << "OPERATOR_ASSIGN " << ID << " "
+		<< LeftCorner.x << " " << LeftCorner.y << " "
+		<< LHS << " ";
+
+	// Save first operand (value or variable)
+	if (varOP1 == "" || varOP1.empty())
+		OutFile << valOP1 << " "; // It's a value
+	else
+		OutFile << varOP1 << " "; // It's a variable
+
+	// Save operation
+	OutFile << Operation << " ";
+
+	// Save second operand (value or variable)
+	if (varOP2 == "" || varOP2.empty())
+		OutFile << valOP2; // It's a value
+	else
+		OutFile << varOP2; // It's a variable
+
+	OutFile << endl;
+}
+
+void OperatorAssign::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	Outlet.x += x;
+	Outlet.y += y;
+}
+
+Point OperatorAssign::getInlet() const
+{
+	return Inlet;
+}
+
+Point OperatorAssign::getOutlet() const
+{
+	return Outlet;
+}
+
+bool OperatorAssign::Validate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	if (!(pApp->IsVariableDeclared(LHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		return false;
+	}
+	if(varOP1 != "" && !(pApp->IsVariableDeclared(varOP1)))
+	{
+		pOut->PrintMessage("Error: Variable '" + varOP1 + "' is not declared.");
+		return false;
+	}
+
+	if (varOP1 != "" && (pApp->IsVariableDeclared(varOP1)))
+	{
+		if ((pApp->IsVariableInitialized(varOP1)))
+		{
+			pOut->PrintMessage("Error: Variable '" + varOP1 + "' is not initialized.");
+			return false;
+		}
+	}
+
+	if(varOP2 != "" && !(pApp->IsVariableDeclared(varOP2)))
+	{
+		pOut->PrintMessage("Error: Variable '" + varOP2 + "' is not declared.");
+		return false;
+	}
+
+	if (varOP2 != "" && (pApp->IsVariableDeclared(varOP2)))
+	{
+		if ((pApp->IsVariableInitialized(varOP2)))
+		{
+			pOut->PrintMessage("Error: Variable '" + varOP2 + "' is not initialized.");
+			return false;
+		}
+	}
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+	return true;
+}
+
 
 
 void OperatorAssign::UpdateStatementText()

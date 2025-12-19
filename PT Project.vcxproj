@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddConditional.cpp" />
+    <ClCompile Include="AddConnectors.cpp" />
     <ClCompile Include="AddDeclare.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddOperatorAssign.cpp" />
@@ -289,9 +290,11 @@
     <ClCompile Include="GUI\Input.cpp" />
     <ClCompile Include="GUI\Output.cpp" />
     <ClCompile Include="HelperFn.cpp" />
+    <ClCompile Include="Load.cpp" />
     <ClCompile Include="OperatorAssign.cpp" />
     <ClCompile Include="Paste.cpp" />
     <ClCompile Include="Read.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Start.cpp" />
     <ClCompile Include="Statements\ValueAssign.cpp" />
@@ -301,10 +304,12 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="VariableAssign.cpp" />
+    <ClCompile Include="Var_info.cpp" />
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddConditional.h" />
+    <ClInclude Include="AddConnectors.h" />
     <ClInclude Include="AddDeclare.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddOperatorAssign.h" />
@@ -348,14 +353,17 @@
     <ClInclude Include="GUI\Output.h" />
     <ClInclude Include="GUI\UI_Info.h" />
     <ClInclude Include="HelperFn.h" />
+    <ClInclude Include="Load.h" />
     <ClInclude Include="OperatorAssign.h" />
     <ClInclude Include="Paste.h" />
     <ClInclude Include="Read.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />
     <ClInclude Include="Statements\Statement.h" />
     <ClInclude Include="VariableAssign.h" />
+    <ClInclude Include="Var_info.h" />
     <ClInclude Include="Write.h" />
   </ItemGroup>
   <ItemGroup>

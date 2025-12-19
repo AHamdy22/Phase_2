@@ -119,6 +119,76 @@ void VariableAssign::Draw(Output* pOut) const
 }
 
 
+int VariableAssign::GetID() const
+{
+	return ID;
+}
+
+string VariableAssign::GetText() const
+{
+	return Text;
+}
+
+string VariableAssign::GetType() const
+{
+	return "VARIABLE ASSIGNMENT";
+}
+
+void VariableAssign::Save(ofstream& OutFile)
+{
+	OutFile << "VARIABLE_ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
+}
+
+void VariableAssign::Move(int x, int y)
+{
+	LeftCorner.x += x;
+	LeftCorner.y += y;
+	Inlet.x += x;
+	Inlet.y += y;
+	Outlet.x += x;
+	Outlet.y += y;
+}
+
+Point VariableAssign::getInlet() const
+{
+	return Inlet;
+}
+
+Point VariableAssign::getOutlet() const
+{
+	return Outlet;
+}
+
+
+bool VariableAssign::Validate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	if (!(pApp->IsVariableDeclared(LHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
+		return false;
+	}
+
+	if (!(pApp->IsVariableDeclared(RHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + RHS + "' is not declared.");
+		return false;
+	}
+
+	if (!(pApp->IsVariableInitialized(RHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + RHS + "' is not initialized.");
+		return false;
+	}
+
+	if (!pOutConn)
+	{
+		pOut->PrintMessage("Error: There is a statement without an output connector.");
+		return false;
+	}
+}
+
+
 
 void VariableAssign::UpdateStatementText()
 {
