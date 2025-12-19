@@ -3,6 +3,11 @@
 #include "Conditional.h"
 #include "End.h"
 #include "Start.h"
+#include "Statements/ValueAssign.h"
+#include "VariableAssign.h"
+#include "Declare.h"
+#include "Read.h"
+#include "Write.h"
 #include "GUI\input.h"
 #include "GUI\Output.h"
 

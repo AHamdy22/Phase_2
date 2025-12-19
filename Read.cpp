@@ -160,7 +160,7 @@ bool Read::Validate(ApplicationManager* pApp)
 	Connector* inConn = getInConnector(0);
 	if (inConn == nullptr)
 	{
-		pOut->PrintMessage("Error: Thre is a Read statement without an incoming connector.");
+		pOut->PrintMessage("Error: There is a \"Read\" statement without an incoming connector.");
 		return false; // No incoming connector
 	}
 

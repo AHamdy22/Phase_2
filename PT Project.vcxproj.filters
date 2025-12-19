@@ -183,6 +183,7 @@
     <ClCompile Include="AddConnectors.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Save.cpp" />
+    <ClCompile Include="Validate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -302,6 +303,7 @@
     <ClInclude Include="AddConnectors.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Save.h" />
+    <ClInclude Include="Validate.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

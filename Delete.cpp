@@ -15,32 +15,26 @@ Delete::Delete(ApplicationManager* pAppManager) : Action(pAppManager)
 
 void Delete::ReadActionParameters()
 {
-    //Input* pIn = pManager->GetInput();
-    Output* pOut = pManager->GetOutput();
-
-    //Read the (Position) parameter
-    pOut->PrintMessage("Delete Statement: Click on a statement to delete");
-
-    //pIn->GetPointClicked(Position);
-    //pOut->ClearStatusBar();
-
 }
 
 void Delete::Execute()
 {
-    ReadActionParameters();
-
+   
+    Output* pOut = pManager->GetOutput();
     Statement* clickedStat = pManager->GetSelectedStatement();
     Connector* clickedConn = pManager->GetSelectedConnector();
+
     if (clickedStat)
     {
         pManager->DeleteStatement(clickedStat);
         pManager->SetSelectedStatement(NULL);
+		pOut->PrintMessage("Statement deleted");
     }
     if (clickedConn)
     {
         pManager->DeleteConnector(clickedConn);
         pManager->SetSelectedConnector(NULL);
+		pOut->PrintMessage("Connector deleted");
     }
     pManager->UpdateInterface();
 }

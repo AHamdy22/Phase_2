@@ -303,6 +303,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Validate.cpp" />
     <ClCompile Include="VariableAssign.cpp" />
     <ClCompile Include="Var_info.cpp" />
     <ClCompile Include="Write.cpp" />
@@ -362,6 +363,7 @@
     <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />
     <ClInclude Include="Statements\Statement.h" />
+    <ClInclude Include="Validate.h" />
     <ClInclude Include="VariableAssign.h" />
     <ClInclude Include="Var_info.h" />
     <ClInclude Include="Write.h" />

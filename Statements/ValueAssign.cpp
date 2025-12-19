@@ -104,11 +104,23 @@ bool ValueAssign::Validate(ApplicationManager* pApp)
 		 return false;
 	 }
 
-	 if(!pOutConn)
+	 // Check if there is an incoming connector
+	 Connector* inConn = getInConnector(0);
+	 if (inConn == nullptr)
 	 {
-		 pOut->PrintMessage("Error: There is a statement without an output connector.");
-		 return false;
+		 pOut->PrintMessage("Error: There is a \"Value Assign\" statement without an incoming connector.");
+		 return false; // No incoming connector
 	 }
+
+	 // Check if there is an outgoing connector
+	 Connector* outConn = getOutConnector();
+	 if (outConn == nullptr)
+	 {
+		 pOut->PrintMessage("Error: There is a \"Value Assign\" statement without an outgoing connector.");
+		 return false; // No outgoing connector
+	 }
+
+	 pApp->SetVariableValue(LHS, RHS);
 
 	 return true;
 }

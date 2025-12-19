@@ -10,7 +10,7 @@ class Start : public Statement
 {
 private:
 
-	Connector* pOutConn;	
+	
 	Point Outlet;	
 	Point LeftCorner;
 	static int CountStart;

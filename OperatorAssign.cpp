@@ -243,11 +243,101 @@ bool OperatorAssign::Validate(ApplicationManager* pApp)
 			return false;
 		}
 	}
-	if (!pOutConn)
+	Connector* inConn = getInConnector(0);
+	if (inConn == nullptr)
 	{
-		pOut->PrintMessage("Error: There is a statement without an output connector.");
-		return false;
+		pOut->PrintMessage("Error: There is an \"Operator Assign\" statement without an incoming connector.");
+		return false; // No incoming connector
 	}
+
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
+	{
+		pOut->PrintMessage("Error: There is an \"Operator Assign\" statement without an outgoing connector.");
+		return false; // No outgoing connector
+	}
+
+	if(varOP1!=""&&varOP2!="")
+	{
+		if(Operation == '+')
+		pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) + pApp->GetVariableValue(varOP2)));
+		else if (Operation == '-')
+			pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) - pApp->GetVariableValue(varOP2)));
+		else if (Operation == '*')
+			pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) * pApp->GetVariableValue(varOP2)));
+		else if (Operation == '/')
+		{
+			if (pApp->GetVariableValue(varOP2) != 0)
+				pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) / pApp->GetVariableValue(varOP2)));
+			else
+				{
+				pOut->PrintMessage("Error: Division by zero.");
+				return false;
+				}
+		}
+		
+	}
+
+	if (varOP1 != "" && varOP2 == "")
+	{
+		if (Operation == '+')
+			pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) + valOP2));
+		else if (Operation == '-')
+			pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) - valOP2));
+		else if (Operation == '*')
+			pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) * valOP2));
+		else if (Operation == '/')
+		{
+			if (valOP2 != 0)
+				pApp->SetVariableValue(LHS, (pApp->GetVariableValue(varOP1) / valOP2));
+			else
+			{
+				pOut->PrintMessage("Error: Division by zero.");
+				return false;
+			}
+		}
+	}
+	if (varOP1 == "" && varOP2 != "")
+	{
+		if (Operation == '+')
+			pApp->SetVariableValue(LHS, (valOP1 + pApp->GetVariableValue(varOP2)));
+		else if (Operation == '-')
+			pApp->SetVariableValue(LHS, (valOP1 - pApp->GetVariableValue(varOP2)));
+		else if (Operation == '*')
+			pApp->SetVariableValue(LHS, (valOP1 * pApp->GetVariableValue(varOP2)));
+		else if (Operation == '/')
+		{
+			if (pApp->GetVariableValue(varOP2) != 0)
+				pApp->SetVariableValue(LHS, (valOP1 / pApp->GetVariableValue(varOP2)));
+			else
+			{
+				pOut->PrintMessage("Error: Division by zero.");
+				return false;
+			}
+		}
+	}
+
+	if(varOP1 == "" && varOP2 == "")
+		{
+		if (Operation == '+')
+			pApp->SetVariableValue(LHS, (valOP1 + valOP2));
+		else if (Operation == '-')
+			pApp->SetVariableValue(LHS, (valOP1 - valOP2));
+		else if (Operation == '*')
+			pApp->SetVariableValue(LHS, (valOP1 * valOP2));
+		else if (Operation == '/')
+		{
+			if (valOP2 != 0)
+				pApp->SetVariableValue(LHS, (valOP1 / valOP2));
+			else
+			{
+				pOut->PrintMessage("Error: Division by zero.");
+				return false;
+			}
+		}
+	}
+
 	return true;
 }
 

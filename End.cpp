@@ -145,8 +145,8 @@ bool End::Validate(ApplicationManager* pApp)
 	// There should be only one Start statement in the flowchart
 	if (CountEnd != 1)
 	{
-		pOut->PrintMessage("Error: There should be only one End statement in the flowchart.");
-		return false;
+		//pOut->PrintMessage("Error: There should be only one End statement in the flowchart.");
+		//return false;
 	}
 	// statement without incoming connector
 	Connector* inConn = getInConnector(0);

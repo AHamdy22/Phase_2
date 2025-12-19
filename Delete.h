@@ -1,3 +1,6 @@
+#ifndef DEL_H
+#define DEL_H
+
 #include "Actions\Action.h"
 
 class Delete : public Action
@@ -20,4 +23,4 @@ public:
 
 };
 
-#endi
+#endif

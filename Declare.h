@@ -13,8 +13,6 @@ private:
 
 	string Var;
 
-	Connector* pOutConn;	
-
 	
 	Point Inlet;	
 	Point Outlet;	
@@ -32,7 +30,6 @@ private:
 public:
 	Declare(Point Lcorner, string Variable = "");
 
-	
 	void setVar(const string& v);
 
 	bool InStatement(Point p) const;

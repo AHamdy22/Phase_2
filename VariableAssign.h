@@ -12,7 +12,6 @@ private:
 	string LHS;	
 	string RHS;	
 
-	Connector* pOutConn;	
 
 	Point Inlet;	
 	Point Outlet;	

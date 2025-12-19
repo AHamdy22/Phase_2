@@ -22,6 +22,8 @@ private:
 
 	Statement *pSelectedStat; //a pointer to the last selected statement
 	                          //you can set and get this pointer
+	Connector* pSelectedConn; //a pointer to the last selected connector
+
 	Statement *pClipboard;    //a pointer to the last copied/cut statement
 	                          //you can set and get this pointer
 
@@ -61,20 +63,26 @@ public:
 	//       in order not to break class responsibilities (especially in copy, cut and paste)
 	Statement *GetSelectedStatement() const;	 //Returns the selected Statement
 	void SetSelectedStatement(Statement *pStat); //Set the Statement selected by the user
+	Connector* GetSelectedConnector() const;	 //Returns the selected Connector
+	void SetSelectedConnector(Connector* pConn); //Set the Connector selected by the user
 	Statement *GetClipboard() const;	         //Returns the Clipboard
 	void SetClipboard(Statement *pStat);         //Set the Clipboard
 	void DeleteStatement(Statement* pStat);      //Deletes a statement from the statement list
+	void DeleteConnector(Connector* pStat);      //Deletes a connector from the connector list
 	// == Interface Management Functions ==
 	Input *GetInput() const;        //Return pointer to the input
 	Output *GetOutput() const;      //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window
 	
+	int GetStartCount() const;
+
 	void DeclareVariable(string varName);
 	void SetVariableValue(string varName, double value);
 	double GetVariableValue(string varName); // You must check if the variable is declared and initialized before calling this function
 	bool IsVariableDeclared(string varName);
 	bool IsVariableInitialized(string varName);
 	int FindVariable(string varName);
+	void RemoveVariable(string varName);
 	void ClearVariables();
 
 	

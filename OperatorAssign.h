@@ -16,7 +16,7 @@ private:
 	double valOP2;
 	char Operation;
 
-	Connector* pOutConn;
+	
 
 	Point Inlet;
 	Point Outlet;

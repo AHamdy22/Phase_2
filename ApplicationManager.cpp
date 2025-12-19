@@ -17,6 +17,7 @@
 #include "AddConnectors.h"
 #include "Save.h"
 #include "Load.h"
+#include "Validate.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -31,6 +32,7 @@ ApplicationManager::ApplicationManager()
 	ConnCount = 0;
 	VarCount = 0;
 	pSelectedStat = NULL;	//no Statement is selected yet
+	pSelectedConn = NULL;   //no Connector is selected yet
 	pClipboard = NULL;
 	
 	//Create an array of Statement pointers and set them to NULL		
@@ -133,6 +135,10 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new Load(this);
 			break;
 
+		case VALIDATE:
+			pAct = new Validate(this);
+			break;
+
 		case SWITCH_SIM_MODE:
 			pOut->CreateSimulationToolBar();
 			UI.AppMode = SIMULATION;
@@ -233,13 +239,23 @@ Statement* ApplicationManager::GetStatement(int index) const
 {
 	if (index >= 0 && index < StatCount)
 		return StatList[index];
-	return nullptr;
+	return NULL;
+}
+
+Connector* ApplicationManager::GetSelectedConnector() const
+{
+	return pSelectedConn;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Set the statement selected by the user
 void ApplicationManager::SetSelectedStatement(Statement *pStat)
 {	pSelectedStat = pStat;	}
+
+void ApplicationManager::SetSelectedConnector(Connector* pConn)
+{
+	pSelectedConn = pConn;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the Clipboard
@@ -251,19 +267,66 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
-void ApplicationManager::DeleteStatement(Statement* pStat)
+
+void ApplicationManager::DeleteStatement(Statement * pStat)
 {
+	// Deselect the statement if it's selected
+	if (pStat == GetSelectedStatement())
+		SetSelectedStatement(NULL);
+
+	// First, delete all connectors associated with this statement
+	for (int i = 0; i < ConnCount; )
+	{
+		if (ConnList[i]->getSrcStat() == pStat || ConnList[i]->getDstStat() == pStat)
+		{
+			if (ConnList[i] == GetSelectedConnector())
+				SetSelectedConnector(NULL);
+				DeleteConnector(ConnList[i]);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	// Now, delete the statement itself
 	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] == pStat)
 		{
 			delete StatList[i];
+
 			for (int j = i; j < StatCount - 1; j++)
-			{
 				StatList[j] = StatList[j + 1];
-			}
-			StatList[StatCount - 1] = NULL;
+
 			StatCount--;
+			break;
+		}
+
+	}
+	
+	// Finally, update GUI
+	UpdateInterface();
+}
+
+void ApplicationManager::DeleteConnector(Connector* pStat)
+{
+	for (int i = 0; i < StatCount; i++)
+	{
+		Connector* outConn = StatList[i]->getOutConnector();
+		if (outConn == pStat)
+			StatList[i]->setOutConnector(NULL);
+	}
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pStat)
+		{
+			delete ConnList[i];
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[ConnCount - 1] = NULL;
+			ConnCount--;
 			break;
 		}
 	}
@@ -300,6 +363,15 @@ void ApplicationManager::UpdateInterface() const
 	for(int i=0; i<ConnCount; i++)
 		ConnList[i]->Draw(pOut);
 
+}
+
+int ApplicationManager::GetStartCount() const
+{
+	int count = 0;
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i] && StatList[i]->GetType() == "START")
+			count++;
+	return count;
 }
 
 void ApplicationManager::ClearAll()
@@ -391,6 +463,28 @@ int ApplicationManager::FindVariable(string varName)
 			return i;
 	}
 	return -1;  // Variable not found
+}
+void ApplicationManager::RemoveVariable(string varName)
+{
+	int index = FindVariable(varName);
+
+	if (index != -1)  // Variable found
+	{
+		// Shift all variables after this one to the left
+		for (int i = index; i < VarCount - 1; i++)
+		{
+			VarList[i] = VarList[i + 1];
+		}
+
+		// Clear the last element
+		VarList[VarCount - 1].VarName = "";
+		VarList[VarCount - 1].Value = 0.0;
+		VarList[VarCount - 1].IsDeclared = false;
+		VarList[VarCount - 1].IsInitialized = false;
+
+		// Decrement count
+		VarCount--;
+	}
 }
 void ApplicationManager::ClearVariables()
 {
