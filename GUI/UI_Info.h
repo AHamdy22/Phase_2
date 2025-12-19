@@ -26,6 +26,8 @@ struct UI_Info	//User Interface Info.
 	color HighlightColor;		//Highlighting color
 	color MsgColor;		//Messages color
 
+	int COND_WDTH;		//Conditional statement default width
+	int COND_HI;		//Conditional statement default height
 	int ASSGN_WDTH;		//Assignment statement default width
 	int ASSGN_HI;		//Assignment statement default height
 	int START_WDTH;

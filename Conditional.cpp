@@ -24,11 +24,11 @@ Conditional::Conditional(Point Tcorner, string LeftHS, double ValueRightHS, stri
 	Inlet.x = Tcorner.x;
 	Inlet.y = Tcorner.y;
 
-	YesOutlet.x = Tcorner.x + (UI.ASSGN_WDTH / 2);
-	YesOutlet.y = Tcorner.y + (UI.ASSGN_HI / 2);
+	YesOutlet.x = Tcorner.x + (UI.COND_WDTH / 2);
+	YesOutlet.y = Tcorner.y + (UI.COND_HI / 2);
 
-	NoOutlet.x = Tcorner.x - (UI.ASSGN_WDTH / 2);
-	NoOutlet.y = Tcorner.y + (UI.ASSGN_HI / 2);
+	NoOutlet.x = Tcorner.x - (UI.COND_WDTH / 2);
+	NoOutlet.y = Tcorner.y + (UI.COND_HI / 2);
 
 }
 
@@ -60,7 +60,7 @@ void Conditional::setCompOperator(string Operator)
 void Conditional::Draw(Output* pOut) const
 {
 	//Call Output::DrawAssign function to draw assignment statement 	
-	pOut->DrawCondition(TopCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
+	pOut->DrawCondition(TopCorner, UI.COND_WDTH, UI.COND_HI, Text, Selected);
 }
 
 
@@ -80,8 +80,8 @@ void Conditional::UpdateStatementText()
 bool Conditional::InStatement(Point P) const
 {
 	//Check if point P is inside the statement block
-	return (P.x >= TopCorner.x - UI.ASSGN_WDTH / 2 && P.x <= TopCorner.x + UI.ASSGN_WDTH / 2 &&
-		P.y >= TopCorner.y && P.y <= TopCorner.y + UI.ASSGN_HI);
+	return (P.x >= TopCorner.x - UI.COND_WDTH / 2 && P.x <= TopCorner.x + UI.COND_WDTH / 2 &&
+		P.y >= TopCorner.y && P.y <= TopCorner.y + UI.COND_HI);
 }
 
 Point Conditional::getInlet() const
@@ -165,11 +165,11 @@ void Conditional::Load(ifstream& Infile)
 	Inlet.x = TopCorner.x;
 	Inlet.y = TopCorner.y;
 
-	YesOutlet.x = TopCorner.x + (UI.ASSGN_WDTH / 2);
-	YesOutlet.y = TopCorner.y + (UI.ASSGN_HI / 2);
+	YesOutlet.x = TopCorner.x + (UI.COND_WDTH / 2);
+	YesOutlet.y = TopCorner.y + (UI.COND_HI / 2);
 
-	NoOutlet.x = TopCorner.x - (UI.ASSGN_WDTH / 2);
-	NoOutlet.y = TopCorner.y + (UI.ASSGN_HI / 2);
+	NoOutlet.x = TopCorner.x - (UI.COND_WDTH / 2);
+	NoOutlet.y = TopCorner.y + (UI.COND_HI / 2);
 }
 
 void Conditional::Move(int x, int y)
