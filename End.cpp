@@ -32,6 +32,7 @@ bool End::InStatement(Point P) const
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.START_HI);
 }
 
+
 Point End::getInlet() const
 {
 	return Inlet;
