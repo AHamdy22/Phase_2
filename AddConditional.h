@@ -26,6 +26,17 @@ public:
 	//Create and add an assignemnt statement to the list of statements
 	void Execute();
 
+	void SetPosition(Point p);
+
+	string GetLHS() const;
+
+	double GetValueRHS() const;
+
+	string GetVariableRHS() const;
+
+	string GetCompOperator() const;
+
+
 };
 
 #endif

@@ -32,6 +32,8 @@ public:
 	void ClearSimulationToolBar(); //Clears the Simulation Tool bar after switching to Design mode
 	
 	void PrintMessage(string msg);	//Prints a message on Status bar
+
+	void PrintOutput(string out);  //Print the output
 	
 	void DrawString(const int, const int, const string);  //Writes a string in the specified location
 

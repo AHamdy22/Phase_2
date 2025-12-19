@@ -54,3 +54,19 @@ void AddValueAssign::Execute()
 
 	pManager->AddStatement(pAssign); // Adds the created statement to application manger's statement list
 }
+
+
+void AddValueAssign::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddValueAssign::GetLHS() const
+{
+	return LHS;
+}
+
+double AddValueAssign::GetRHS() const
+{
+	return RHS;
+}

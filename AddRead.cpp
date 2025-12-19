@@ -35,3 +35,13 @@ void AddRead::Execute()
 
 	pManager->AddStatement(pRead); // Adds the created statement to application manger's statement list
 }
+
+void AddRead::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddRead::GetVarName() const
+{
+	return VarName;
+}

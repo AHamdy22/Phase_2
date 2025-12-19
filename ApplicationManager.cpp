@@ -11,7 +11,14 @@
 #include "AddConnectors.h"
 #include "Save.h"
 #include "Load.h"
+#include "Copy.h"
+#include "Cut.h"
+#include "Paste.h"
+#include "Edit.h"
+#include "Select.h"
+#include "Delete.h"
 #include "Validate.h"
+#include "Run.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -25,10 +32,13 @@ ApplicationManager::ApplicationManager()
 	VarCount = 0;
 	StatCount = 0;
 	ConnCount = 0;
+	validated = false;
 	pSelectedStat = NULL;	//no Statement is selected yet
+	pSelectedConn = NULL;   //no connector is selected yet
 	pClipboard = NULL;
+	pNextStat = NULL;
 	
-	//Create an array of Statement pointers and set them to NULL		
+	//Create an array of Statement pointers and set them to NULL
 	for(int i = 0; i < MaxCount; i++)
 	{
 		StatList[i] = NULL;	
@@ -52,7 +62,6 @@ ActionType ApplicationManager::GetUserAction() const
 void ApplicationManager::ExecuteAction(ActionType ActType) 
 {
 	Action* pAct = NULL;
-	
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
@@ -98,8 +107,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 
 		case SELECT:
-			///create Select Action here
+			pAct = new Select(this);
+			break;
 
+		case DEL:
+			pAct = new Delete(this);
 			break;
 
 		case SAVE:
@@ -110,18 +122,41 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new Load(this);
 			break;
 
+		case COPY:
+			pAct = new Copy(this);
+			break;
+
+		case CUT:
+			pAct = new Cut(this);
+			break;
+
+		case PASTE:
+			pAct = new Paste(this);
+			break;
+
+		case EDIT_STAT:
+			pAct = new Edit(this);
+			break;
+
 		case SWITCH_SIM_MODE:
 			pOut->CreateSimulationToolBar();
 			UI.AppMode = SIMULATION;
 			break;
 
 		case SWITCH_DSN_MODE:
+			pOut->ClearOutputBar();
+			pOut->ClearStatusBar();
 			pOut->CreateDesignToolBar();
 			UI.AppMode = DESIGN;
 			break;
 
 		case VALIDATE:
+			pOut->ClearOutputBar();
 			pAct = new Validate(this);
+			break;
+
+		case RUN:
+			pAct = new Run(this);
 			break;
 
 		case EXIT:
@@ -156,12 +191,6 @@ void ApplicationManager::AddStatement(Statement *pStat)
 	
 }
 
-Statement* ApplicationManager::GetStatement(int index) const
-{
-	if (index >= 0 && index < StatCount)
-		return StatList[index];
-	return nullptr;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -173,23 +202,63 @@ Statement* ApplicationManager::GetStatement(int index) const
 	///WITHOUT breaking class responsibilities
 	
 	
+Statement* ApplicationManager::GetStatement(int index) const
+{
+	if (index >= 0 && index < StatCount)
+		return StatList[index];
+	return nullptr;
+}
 
 
 Statement* ApplicationManager::GetStatement(Point p) const
 {
 	for (int i = 0; i < StatCount; i++)
-	{
 		if (StatList[i] != nullptr && StatList[i]->InStatement(p))
-		{
 			return StatList[i];
-		}
-	}
 	return nullptr;
 }
+
 
 int ApplicationManager::GetStatementCount() const
 {
 	return StatCount;
+}
+
+Connector* ApplicationManager::GetSelectedConnector() const
+{
+	return pSelectedConn;
+}
+
+void ApplicationManager::SetSelectedConnector(Connector* pStat)
+{
+	pSelectedConn = pStat;
+}
+
+void ApplicationManager::DeleteConnector(Connector* pStat)
+{
+	if (pStat == pSelectedConn)
+		pSelectedConn = NULL;
+
+	for (int i = 0; i < StatCount; i++)
+	{
+		Connector* outConn = StatList[i]->getOutConnector();
+		if (outConn == pStat)
+			StatList[i]->setOutConnector(NULL);
+	}
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pStat)
+		{
+			delete ConnList[i];
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[ConnCount - 1] = NULL;
+			ConnCount--;
+			break;
+		}
+	}
 }
 
 void ApplicationManager::AddConnector(Connector* pConn)
@@ -203,6 +272,26 @@ Connector* ApplicationManager::GetConnector(int index) const
 	if (index >= 0 && index < ConnCount)
 		return ConnList[index];
 	return nullptr;
+}
+
+Connector* ApplicationManager::GetConnector(Point P) const
+{
+	for (int i = 0; i < ConnCount; i++)
+	{
+		const int Range = 5;
+
+		Point start = ConnList[i]->getStartPoint();
+		Point end = ConnList[i]->getEndPoint();
+
+		int minX = min(start.x, end.x) - Range;
+		int maxX = max(start.x, end.x) + Range;
+		int minY = min(start.y, end.y) - Range;
+		int maxY = max(start.y, end.y) + Range;
+
+		if (P.x >= minX && P.x <= maxX && P.y >= minY && P.y <= maxY)
+			return ConnList[i];
+	}
+	return NULL;
 }
 
 int ApplicationManager::GetConnectorCount() const
@@ -230,6 +319,46 @@ Statement *ApplicationManager::GetClipboard() const
 //Set the Clipboard
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
+
+void ApplicationManager::DeleteStatement(Statement* pStat)
+{
+	// Deselect the statement if it's selected
+	if (pStat == GetSelectedStatement())
+		SetSelectedStatement(NULL);
+
+	// First, delete all connectors associated with this statement
+	for (int i = 0; i < ConnCount; )
+	{
+		if (ConnList[i]->getSrcStat() == pStat || ConnList[i]->getDstStat() == pStat)
+		{
+			if (ConnList[i] == GetSelectedConnector())
+				SetSelectedConnector(NULL);
+			DeleteConnector(ConnList[i]);
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	// Now, delete the statement itself
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == pStat)
+		{
+			delete StatList[i];
+
+			for (int j = i; j < StatCount - 1; j++)
+				StatList[j] = StatList[j + 1];
+
+			StatCount--;
+			break;
+		}
+	}
+
+	// Finally, update GUI
+	UpdateInterface();
+}
 
 
 //==================================================================================//
@@ -351,6 +480,15 @@ bool ApplicationManager::IsVariableInitialized(string varName)
 	return false;
 }
 
+void ApplicationManager::SetVariableInitialized(string varName, bool initialized)
+{
+	int index = FindVariable(varName);
+	if (index != -1)
+	{
+		VarList[index].IsInitialized = initialized;
+	}
+}
+
 void ApplicationManager::ClearVariables()
 {
 	VarCount = 0;
@@ -362,6 +500,25 @@ void ApplicationManager::ClearVariables()
 		VarList[i].IsInitialized = false;
 	}
 }
+
+int ApplicationManager::GetStartCount() const
+{
+	int count = 0;
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i] && StatList[i]->GetType() == "START")
+			count++;
+	return count;
+}
+
+int ApplicationManager::GetEndCount() const
+{
+	int count = 0;
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i] && StatList[i]->GetType() == "END")
+			count++;
+	return count;
+}
+
 //Destructor
 ApplicationManager::~ApplicationManager()
 {
@@ -370,6 +527,25 @@ ApplicationManager::~ApplicationManager()
 	for(int i=0; i<StatCount; i++)
 		delete ConnList[i];
 	delete pIn;
-	delete pOut;
-	
+	delete pOut;	
+}
+
+void ApplicationManager::setValidated(bool val)
+{
+	validated = val;
+}
+
+bool ApplicationManager::isValidated() const
+{
+	return validated;
+}
+
+void ApplicationManager::SetNextStatement(Statement* pStat)
+{
+	pNextStat = pStat;
+}
+
+Statement* ApplicationManager::GetNextStatement() const
+{
+	return pNextStat;
 }

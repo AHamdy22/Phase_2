@@ -1,5 +1,6 @@
 #include "End.h"
 #include <fstream>
+#include "AddEnd.h"
 using namespace std;
 
 End::End(Point Lcorner)
@@ -81,5 +82,68 @@ bool End::validate(ApplicationManager* pApp) const
 		return false;
 	}
 	return true;
+}
 
+void End::Simulate(ApplicationManager* pApp)
+{
+}
+
+Point End::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void End::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void End::GetStatementCut(ApplicationManager* pApp) const
+{
+	End* E = new End(*this);
+	E->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(E);
+
+}
+
+
+void End::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	End* e = dynamic_cast<End*>(S);
+	if (e)
+	{
+		if (e->IsCopied())
+		{
+			e->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			e = new End(*e);
+			p.x -= UI.ASSGN_WDTH / 2;
+			e->SetPosition(p);
+			e->SetSelected(false);
+			pManager->AddStatement(e);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			e->SetPosition(p);
+			e->SetSelected(false);
+			pManager->AddStatement(e);
+		}
+	}
+
+}
+
+void End::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddEnd* D = new AddEnd(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	delete D;
 }

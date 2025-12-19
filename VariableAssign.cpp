@@ -1,10 +1,9 @@
 #include "VariableAssign.h"
 #include <sstream>
 #include <fstream>
+#include "AddVariableAssign.h"
 
 using namespace std;
-//window w;
-//window *pW = &w;
 VariableAssign::VariableAssign(Point Lcorner, string LeftHS, string RightHS)
 {
 
@@ -15,7 +14,6 @@ VariableAssign::VariableAssign(Point Lcorner, string LeftHS, string RightHS)
 
 	stringlength = 0;
 	stringheight = 0;
-	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
 
 	pOutConn = NULL;	//No connectors yet
@@ -42,7 +40,7 @@ void VariableAssign::setRHS(const string& R)
 bool VariableAssign::InStatement(Point P) const
 {
 	return (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
+			P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI);
 }
 Point VariableAssign::GetPosition() const
 {
@@ -62,62 +60,61 @@ void VariableAssign::UpdateStatementText()
 	Text = T.str();
 }
 
-//void VariableAssign::EditStatement(ApplicationManager* pApp, Point p)
-//{
-//
-//	AddVariableAssign* D = new AddVariableAssign(pApp);
-//
-//	D->SetPosition(p);
-//
-//	D->ReadActionParameters();
-//
-//	LHS = D->GetLHS();
-//
-//	RHS = D->GetRHS();
-//
-//	UpdateStatementText();
-//
-//	delete D;
-//}
-//void VariableAssign::GetStatementCut(ApplicationManager* pApp) const
-//{
-//	VariableAssign* V = new VariableAssign(*this);
-//	V->SetSelected(false);
-//	pApp->DeleteStatement(pApp->GetClipboard());
-//	pApp->SetSelectedStatement(nullptr);
-//	pApp->SetClipboard(V);
-//
-//}
+void VariableAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddVariableAssign* D = new AddVariableAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	RHS = D->GetRHS();
+
+	UpdateStatementText();
+
+	delete D;
+}
 
 
-//void VariableAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
-//{
-//
-//	VariableAssign* v = dynamic_cast<VariableAssign*>(S);
-//	if (v)
-//	{
-//		if (v->IsCopied())
-//		{
-//			v->SetSelected(false);
-//			pManager->SetSelectedStatement(NULL);
-//			v = new VariableAssign(*v);
-//			p.x -= UI.ASSGN_WDTH / 2;
-//			v->SetPosition(p);
-//			v->SetSelected(false);
-//			pManager->AddStatement(v);
-//			//pManager->SetClipboard(nullptr);
-//		}
-//		else
-//		{
-//			p.x -= UI.ASSGN_WDTH / 2;
-//			v->SetPosition(p);
-//			v->SetSelected(false);
-//			pManager->AddStatement(v);
-//			//pManager->SetClipboard(nullptr);
-//		}
-//	}
-//
-//}
+void VariableAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	VariableAssign* V = new VariableAssign(*this);
+	V->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(V);
+
+}
+
+void VariableAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	VariableAssign* v = dynamic_cast<VariableAssign*>(S);
+	if (v)
+	{
+		if (v->IsCopied())
+		{
+			v->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			v = new VariableAssign(*v);
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+		}
+	}
+
+}
 
 void VariableAssign::Draw(Output* pOut) const
 {
@@ -185,9 +182,19 @@ bool VariableAssign::validate(ApplicationManager* pApp) const
 		return false;
 	}
 
-	if (!pOutConn)
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
 	{
-		pOut->PrintMessage("Error: There is a statement without an output connector.");
-		return false;
+		pOut->PrintMessage("Error: There is a \"Variable Assign\" statement without an outgoing connector.");
+		return false; // No outgoing connector
 	}
+
+	pApp->SetVariableValue(LHS, pApp->GetVariableValue(RHS));
+	return true;
+}
+
+void VariableAssign::Simulate(ApplicationManager* pApp)
+{
+	// Already done in the simulation
 }

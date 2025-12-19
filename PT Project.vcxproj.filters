@@ -213,6 +213,30 @@
       <Filter>Action Classes</Filter>
     </ClCompile>
     <ClCompile Include="Var_info.cpp" />
+    <ClCompile Include="VariableAssign.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddVariableAssign.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorAssign.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="AddOperatorAssign.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Delete.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Edit.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Run.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -362,6 +386,30 @@
       <Filter>Action Classes</Filter>
     </ClInclude>
     <ClInclude Include="Var_info.h" />
+    <ClInclude Include="VariableAssign.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddVariableAssign.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorAssign.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="AddOperatorAssign.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Delete.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Run.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -4,7 +4,6 @@ int Statement::NextID = 1;
 
 Statement::Statement()	
 { 
-	//TODO: set the ID with a unique value
 	ID = NextID++;
 	Text = "";
 	Selected = false;
@@ -74,4 +73,24 @@ Connector* Statement::getInConnector(int index) const
 int Statement::getInConnectorCount() const
 {
     return ConnCount;
+}
+
+void Statement::SetCut(bool c)
+{
+    IsCutFlag = c;
+}
+
+bool Statement::IsCut() const
+{
+    return IsCutFlag;
+}
+
+void Statement::SetCopied(bool c)
+{
+    IsCopiedFlag = c;
+}
+
+bool Statement::IsCopied() const
+{
+    return IsCopiedFlag;
 }

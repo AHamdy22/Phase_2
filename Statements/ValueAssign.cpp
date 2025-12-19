@@ -1,22 +1,16 @@
 #include "ValueAssign.h"
 #include <sstream>
-
+#include "..\Actions\AddValueAssign.h"
 
 using namespace std;
-//window w;
-//window *pW = &w;
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
 {
-	// Note: The LeftHS and RightHS should be validated inside (AddValueAssign) action
-	//       before passing it to the constructor of ValueAssign
 	LHS = LeftHS;
 	RHS = RightHS;
 
 	UpdateStatementText();
 
-	//stringlength = 0;
-	//stringheight = 0;
-	//pW->GetStringSize(stringlength, stringheight, Text);
+
 	LeftCorner = Lcorner;
 
 	pOutConn = NULL;	//No connectors yet
@@ -99,7 +93,7 @@ string ValueAssign::GetType() const
 
 void ValueAssign::Save(std::ofstream& OutFile)
 {
-	OutFile << "VALUE ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
+	OutFile << "VALUE_ASSIGN " << ID << " " << LeftCorner.x << " " << LeftCorner.y << " " << LHS << " " << RHS << endl;
 }
 
 
@@ -125,10 +119,87 @@ bool ValueAssign::validate(ApplicationManager* pApp) const
 		return false;
 	}
 
-	if (!pOutConn)
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
 	{
-		pOut->PrintMessage("Error: There is a statement without an output connector.");
-		return false;
+		pOut->PrintMessage("Error: There is a \"Value Assign\" statement without an outgoing connector.");
+		return false; // No outgoing connector
 	}
+
+	pApp->SetVariableValue(LHS, RHS);
+
 	return true;
+}
+
+void ValueAssign::Simulate(ApplicationManager* pApp)
+{
+	// Already done in the validation
+}
+
+Point ValueAssign::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void ValueAssign::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void ValueAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	ValueAssign* V = new ValueAssign(*this);
+	V->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(V);
+
+}
+
+
+void ValueAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	ValueAssign* v = dynamic_cast<ValueAssign*>(S);
+	if (v)
+	{
+		if (v->IsCopied())
+		{
+			v->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			v = new ValueAssign(*v);
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			v->SetPosition(p);
+			v->SetSelected(false);
+			pManager->AddStatement(v);
+			//pManager->SetClipboard(nullptr);
+		}
+	}
+}
+
+void ValueAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddValueAssign* D = new AddValueAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	RHS = D->GetRHS();
+
+	UpdateStatementText();
+
+	delete D;
 }

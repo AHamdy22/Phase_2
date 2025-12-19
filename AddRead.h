@@ -22,6 +22,9 @@ public:
 	//Create and add a read statement to the list of statements
 	void Execute();
 
+	void SetPosition(Point p);
+
+	string GetVarName() const;
 };
 
 #endif

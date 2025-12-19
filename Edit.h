@@ -1,14 +1,14 @@
-#ifndef CUT_H
-#define CUT_H
+#ifndef EDIT_H
+#define EDIT_H
 
 #include "Actions\Action.h"
 
-class Cut : public Action
+class Edit : public Action
 {
 
 public:
 
-	Cut(ApplicationManager* pAppManager);
+	Edit(ApplicationManager* pAppManager);
 
 	void ReadActionParameters();
 

@@ -1,4 +1,5 @@
 #include "Conditional.h"
+#include "AddConditional.h"
 #include <sstream>
 #include <fstream>
 
@@ -6,8 +7,6 @@ using namespace std;
 
 Conditional::Conditional(Point Tcorner, string LeftHS, double ValueRightHS, string VariableRightHS, string Operator)
 {
-	// Note: The LeftHS and RightHS should be validated inside (AddValueAssign) action
-	//       before passing it to the constructor of ValueAssign
 	LHS = LeftHS;
 	ValueRHS = ValueRightHS;
 	VariableRHS = VariableRightHS;
@@ -15,7 +14,6 @@ Conditional::Conditional(Point Tcorner, string LeftHS, double ValueRightHS, stri
 
 	UpdateStatementText();
 
-	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Tcorner;  // LeftCorner here is considered the top corner point of the statement
 
 	pOutConn = NULL;	//No connectors yet
@@ -69,7 +67,7 @@ string Conditional::getVariableRHS() const
 
 void Conditional::Draw(Output* pOut) const
 {
-	//Call Output::DrawAssign function to draw assignment statement 	
+	//Call Output::DrawAssign function to draw assignment statement
 	pOut->DrawCondition(LeftCorner, UI.COND_WDTH, UI.COND_HI, Text, Selected);
 }
 
@@ -90,7 +88,7 @@ void Conditional::UpdateStatementText()
 bool Conditional::InStatement(Point P) const
 {
 	// Assume that the conditional statement is a square; as it is difficult to determine the positions inside it if it is rhombus
-	return (P.x >= LeftCorner.x - UI.COND_WDTH / 2 && P.x <= LeftCorner.x + UI.COND_WDTH / 2 + UI.ASSGN_WDTH
+	return (P.x >= LeftCorner.x - UI.COND_WDTH / 2 && P.x <= LeftCorner.x + UI.COND_WDTH / 2
 		&&  P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.COND_HI);
 }
 
@@ -173,13 +171,15 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		pOut->PrintMessage("Error: Variable '" + LHS + "' is not declared.");
 		return false;
 	}
-	// statement without incoming connector
-	Connector* inConn = getInConnector(0);
-	if (inConn == NULL)
+
+	// LHS variable is initialized
+	if (!(pApp->IsVariableInitialized(LHS)))
 	{
-		pOut->PrintMessage("Error: Conditional statement must have an incoming connector.");
+		pOut->PrintMessage("Error: Variable '" + LHS + "' is not initialized.");
+		pApp->SetVariableInitialized(LHS, false);
 		return false;
 	}
+
 	// statement without outgoing connectors
 	Connector* yesConn = getOutConnector();
 	Connector* noConn = getNoConnector();
@@ -188,5 +188,119 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		pOut->PrintMessage("Error: Conditional statement must have two outgoing connectors (Yes and No).");
 		return false;
 	}
+
+	// RHS is a value (not a variable)
+	if (VariableRHS == "")
+	{
+		return true;
+	}
+
+	// RHS variable not declared
+	if (!(pApp->IsVariableDeclared(VariableRHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not declared.");
+		return false;
+	}
+
+	// RHS variable is initialized
+	if (!(pApp->IsVariableInitialized(VariableRHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not initialized.");
+		pApp->SetVariableInitialized(VariableRHS, false);
+		return false;
+	}
+	pApp->SetVariableInitialized(LHS, true);
+	pApp->SetVariableInitialized(VariableRHS, true);
 	return true;
+}
+
+void Conditional::Simulate(ApplicationManager* pApp)
+{
+	double lhsValue = pApp->GetVariableValue(LHS);
+	double rhsValue = (VariableRHS == "") ? ValueRHS : pApp->GetVariableValue(VariableRHS);
+
+	bool cond = false;
+
+	if (CompOperator == ">")
+		cond = (lhsValue > rhsValue);
+	else if (CompOperator == "<")
+		cond = (lhsValue < rhsValue);
+	else if (CompOperator == ">=")
+		cond = (lhsValue >= rhsValue);
+	else if (CompOperator == "<=")
+		cond = (lhsValue <= rhsValue);
+	else if (CompOperator == "==")
+		cond = (lhsValue == rhsValue);
+	else if (CompOperator == "!=")
+		cond = (lhsValue != rhsValue);
+
+	Connector* nextConn = cond ? getOutConnector() : getNoConnector();
+
+	pApp->SetNextStatement(nextConn->getDstStat());
+}
+
+void Conditional::GetStatementCut(ApplicationManager* pApp) const
+{
+	Conditional* C = new Conditional(*this);
+	C->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(C);
+
+}
+
+Point Conditional::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void Conditional::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void Conditional::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Conditional* c = dynamic_cast<Conditional*>(S);
+	if (c)
+	{
+		if (c->IsCopied())
+		{
+			c->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			c = new Conditional(*c);
+			c->SetPosition(p);
+			c->SetSelected(false);
+			pManager->AddStatement(c);
+		}
+		else
+		{
+			c->SetPosition(p);
+			c->SetSelected(false);
+			pManager->AddStatement(c);
+		}
+	}
+}
+
+void Conditional::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddConditional* D = new AddConditional(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	ValueRHS = D->GetValueRHS();
+
+	VariableRHS = D->GetVariableRHS();
+
+	CompOperator = D->GetCompOperator();
+
+	UpdateStatementText();
+
+	delete D;
 }

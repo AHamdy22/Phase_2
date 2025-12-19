@@ -31,14 +31,20 @@ public:
 	void Save(ofstream& OutFile);
 
 	int GetID() const;		//returns the statement ID
-
 	string GetText() const;		//returns the statement text
-
 	string GetType() const;	//returns the statement type as a string
+
+	void SetPosition(Point p);
+	Point GetPosition() const;
+	void GetStatementCut(ApplicationManager* pApp) const;
+	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
+	void EditStatement(ApplicationManager* pApp, Point p);
 
 	void Move(int x, int y);
 
 	bool validate(ApplicationManager* pApp) const;
+	void Simulate(ApplicationManager* pApp);
+
 };
 
 #endif

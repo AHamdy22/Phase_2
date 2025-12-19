@@ -21,8 +21,8 @@ protected:
 	
 	virtual void UpdateStatementText() = 0;	//is called when any part of the stat. is edited	
 
-
-	/// Add more parameters if needed.
+	bool IsCutFlag;    //true if the statement is cut
+	bool IsCopiedFlag; //true if the statement is copied
 
 	Connector* pInConnList[2];		  // Array of incoming connectors 
 	int ConnCount;                    // Number of connectors
@@ -49,9 +49,7 @@ public:
 
 	virtual void Save(ofstream &OutFile) = 0;	//Save the Statement parameters to a file
 
-	//virtual void Edit() = 0;		//Edit the Statement parameter
-
-	//virtual void Simulate() = 0;	//Execute the statement in the simulation mode
+	virtual void Simulate(ApplicationManager* pApp) = 0;	//Execute the statement in the simulation mode
 
 	//[BONUS] virtual void GenerateCode(ofstream &OutFile) = 0;	//write the statement code to a file
 
@@ -70,6 +68,15 @@ public:
 
 	virtual bool validate(ApplicationManager* pApp) const = 0;
 
+	void SetCut(bool c);
+	bool IsCut() const;
+	void SetCopied(bool c);
+	bool IsCopied() const;
+	virtual void GetStatementCut(ApplicationManager* pApp) const = 0;
+	virtual void PasteStatement(Statement* D, Point P, Output* pOut, ApplicationManager* pManager) const = 0;
+	virtual void EditStatement(ApplicationManager* pApp, Point p) = 0;
+	virtual void SetPosition(Point p) = 0;
+	virtual Point GetPosition() const = 0;
 };
 
 #endif

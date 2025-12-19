@@ -1,5 +1,6 @@
 #include "Read.h"
 #include <fstream>
+#include "AddRead.h"
 
 void Read::UpdateStatementText()
 {
@@ -40,7 +41,7 @@ Point Read::getOutlet() const
 bool Read::InStatement(Point p) const
 {
 	return (p.x >= LeftCorner.x && p.x <= LeftCorner.x + UI.READ_WDTH &&
-		p.y >= LeftCorner.y && p.y <= LeftCorner.y + UI.READ_HI);
+			p.y >= LeftCorner.y && p.y <= LeftCorner.y + UI.READ_HI);
 }
 
 void Read::Save(std::ofstream& OutFile)
@@ -83,15 +84,8 @@ bool Read::validate(ApplicationManager* pApp) const
 	if (!pApp->IsVariableDeclared(VarName))
 	{
 		pOut->PrintMessage("Error: Variable '" + VarName + "' used in Read statement is not declared.");
+		pApp->SetVariableInitialized(VarName, false);
 		return false; // Variable not declared
-	}
-
-	// Check if there is an incoming connector
-	Connector* inConn = getInConnector(0);
-	if (inConn == nullptr)
-	{
-		pOut->PrintMessage("Error: Thre is a Read statement without an incoming connector.");
-		return false; // No incoming connector
 	}
 
 	// Check if there is an outgoing connector
@@ -99,7 +93,82 @@ bool Read::validate(ApplicationManager* pApp) const
 	if (outConn == nullptr)
 	{
 		pOut->PrintMessage("Error: There is a Read statement without an outgoing connector.");
+		pApp->SetVariableInitialized(VarName, false);
 		return false; // No outgoing connector
 	}
+	pApp->SetVariableInitialized(VarName, true);
 	return true; // Valid
+}
+
+void Read::Simulate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	Input* pIn = pApp->GetInput();
+	pOut->PrintMessage("Enter value for '" + VarName + "':");
+	double val = pIn->GetValue(pOut);
+	pApp->SetVariableValue(VarName, val);
+}
+
+Point Read::GetPosition() const
+{
+	return LeftCorner;
+}
+
+void Read::SetPosition(Point p)
+{
+	LeftCorner = p;
+}
+
+void Read::GetStatementCut(ApplicationManager* pApp) const
+{
+	Read* R = new Read(*this);
+	R->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(R);
+
+}
+
+
+void Read::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	Read* r = dynamic_cast<Read*>(S);
+	if (r)
+	{
+		if (r->IsCopied())
+		{
+			r->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			r = new Read(*r);
+			p.x -= UI.ASSGN_WDTH / 3;
+			r->SetPosition(p);
+			r->SetSelected(false);
+			pManager->AddStatement(r);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 3;
+			r->SetPosition(p);
+			r->SetSelected(false);
+			pManager->AddStatement(r);
+		}
+	}
+}
+
+
+void Read::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddRead* D = new AddRead(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	VarName = D->GetVarName();
+
+	UpdateStatementText();
+
+	delete D;
 }

@@ -54,6 +54,14 @@ public:
 	void Move(int x, int y);
 
 	bool validate(ApplicationManager* pApp) const;
+	void Simulate(ApplicationManager* pApp);
+
+	void SetPosition(Point p);
+	Point GetPosition() const;
+	void GetStatementCut(ApplicationManager* pApp) const;
+	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
+	void EditStatement(ApplicationManager* pApp, Point p);
+
 };
 
 #endif

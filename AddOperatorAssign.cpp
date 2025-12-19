@@ -44,7 +44,7 @@ void AddOperatorAssign::ReadActionParameters()
 
 
 
-	pOut->PrintMessage("Please enter the first operant of the operation");
+	pOut->PrintMessage("Please enter the first operand of the operation");
 	pIn->GetPointClicked(p3);
 	pOut->ClearStatusBar();
 
@@ -64,15 +64,15 @@ void AddOperatorAssign::ReadActionParameters()
 			break;
 		}
 		else
-			pOut->PrintMessage("Please enter a valid operant");
+			pOut->PrintMessage("Please enter a valid operand");
 	}
 
-	pOut->PrintMessage("Please enter the arthmetic operant of the operation");
+	pOut->PrintMessage("Please enter the arthmetic operator of the operation");
 	pIn->GetPointClicked(p3);
 	pOut->ClearStatusBar();
 
 	Operation = pIn->GetArithOperator(pOut);
-	pOut->PrintMessage("Please enter the second operant of the operation");
+	pOut->PrintMessage("Please enter the second operand of the operation");
 	pIn->GetPointClicked(p3);
 	pOut->ClearStatusBar();
 
@@ -93,7 +93,7 @@ void AddOperatorAssign::ReadActionParameters()
 			break;
 		}
 		else
-			pOut->PrintMessage("Please enter a valid operant");
+			pOut->PrintMessage("Please enter a valid operand");
 	}
 }
 

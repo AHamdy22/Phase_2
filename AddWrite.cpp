@@ -18,7 +18,6 @@ void AddWrite::ReadActionParameters()
 
 	//Read the (Position) parameter
 	pOut->PrintMessage("Write Statement: Click to add the statement");
-
 	pIn->GetPointClicked(Position);
 	pOut->ClearStatusBar();
 
@@ -38,4 +37,14 @@ void AddWrite::Execute()
 	Write* pWrite = new Write(Corner, VarName);
 
 	pManager->AddStatement(pWrite); // Adds the created statement to application manger's statement list
+}
+
+void AddWrite::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddWrite::GetVarName() const
+{
+	return VarName;
 }

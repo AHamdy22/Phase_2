@@ -23,24 +23,21 @@ void AddDeclare::ReadActionParameters()
 
 
 	pOut->PrintMessage("Please enter the variable name");
-	pOut->ClearStatusBar();
 	Var = pIn->GetVariable(pOut);
+	pOut->ClearStatusBar();
 }
 
-//void AddDeclare::SetPosition(Point p)
-//{
-//	Position = p;
-//}
-//
-//string AddDeclare::GetDataType() const
-//{
-//	return DataType;
-//}
-//
-//string AddDeclare::GetVar() const
-//{
-//	return Var;
-//}
+void AddDeclare::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddDeclare::GetVar() const
+{
+	return Var;
+}
+
+
 
 void AddDeclare::Execute()
 {

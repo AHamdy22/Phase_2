@@ -39,7 +39,7 @@ void Load::Execute()
         return;
     }
 
-    // TODO: Clear existing flowchart first
+    // Clearing existing flowchart first
     pManager->ClearAll();
 
     // Read number of statements

@@ -11,9 +11,8 @@ private:
 
 
 	Point Position;
-	string DataType;
 	string Var;
-
+	string DataType;
 
 
 public:
@@ -23,11 +22,10 @@ public:
 	virtual void ReadActionParameters();
 
 
-	/*void SetPosition(Point p);
+	void SetPosition(Point p);
 
-	string GetDataType() const;
 
-	string GetVar() const;*/
+	string GetVar() const;
 
 	virtual void Execute();
 

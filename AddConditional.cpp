@@ -77,8 +77,32 @@ void AddConditional::Execute()
 	Top.y = Position.y;
 
 	Conditional* pAssign = new Conditional(Top, LHS, ValueRHS, VariableRHS, CompOperator);
-	//TODO: should set the LHS and RHS of pAssign statement
-	//      with the data members set and validated before in ReadActionParameters()
+	
 
 	pManager->AddStatement(pAssign); // Adds the created statement to application manger's statement�list
+}
+
+void AddConditional::SetPosition(Point p)
+{
+	Position = p;
+}
+
+string AddConditional::GetLHS() const
+{
+	return LHS;
+}
+
+double AddConditional::GetValueRHS() const
+{
+	return ValueRHS;
+}
+
+string AddConditional::GetVariableRHS() const
+{
+	return VariableRHS;
+}
+
+string AddConditional::GetCompOperator() const
+{
+	return CompOperator;
 }

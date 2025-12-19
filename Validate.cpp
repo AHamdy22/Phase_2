@@ -1,63 +1,196 @@
 #include "Validate.h"
 #include "ApplicationManager.h"
-#include "Start.h"
-#include "End.h"
-#include "Conditional.h"
-#include "Declare.h"
-#include "Read.h"
-#include "Write.h"
-#include "Statements\ValueAssign.h"
 #include "GUI\Output.h"
-#include <string>
 
 Validate::Validate(ApplicationManager* pAppManager) : Action(pAppManager)
-{}
+{
+    pAppManager->ClearVariables();
+}
 
 void Validate::ReadActionParameters()
-{}
+{
+}
 
 void Validate::Execute()
 {
-	Output* pOut = pManager->GetOutput();
-	pOut->PrintMessage("Validating Flowchart...");
+    Output* pOut = pManager->GetOutput();
+    pOut->PrintMessage("Validating Flowchart...");
 
-	int startCount = 0;
-	int endCount = 0;
-	int statCount = pManager->GetStatementCount();
+    bool isValid = true;
 
-	if (statCount == 0)
-	{
-		pOut->PrintMessage("Validation Failed: Flowchart is empty.");
-		return;
-	}
-	/*bool valid = true;*/
-	for (int i = 0; i < statCount; ++i)
-	{
-		Statement* pStat = pManager->GetStatement(i);
-		if (dynamic_cast<Start*>(pStat)) startCount++;
-		else if (dynamic_cast<End*>(pStat)) endCount++;
-		else if (dynamic_cast<Read*>(pStat)) /*valid =*/ pStat->validate(pManager);
-		else if (dynamic_cast<Write*>(pStat)) /*valid =*/ pStat->validate(pManager);
-		else if (dynamic_cast<ValueAssign*>(pStat)) /*valid =*/ pStat->validate(pManager);
-		else if (dynamic_cast<Declare*>(pStat)) /*valid =*/ pStat->validate(pManager);
-		else if (dynamic_cast<Conditional*>(pStat)) /*valid =*/ pStat->validate(pManager);
-	}
-	/*if (!valid)
-	{
-		pOut->PrintMessage("Validation Failed: Flowchart contains invalid statements.");
-		return;
-	}*/
+    // 1. Check for exactly one Start statement
+    int startCount = pManager->GetStartCount();
+    if (startCount == 0)
+    {
+        pOut->PrintMessage("Error: No Start statement found!");
+        isValid = false;
+    }
+    else if (startCount > 1)
+    {
+        pOut->PrintMessage("Error: Multiple Start statements found!");
+        isValid = false;
+    }
 
-	if (startCount != 1)
-	{
-		pOut->PrintMessage("Validation Failed: Flowchart must have exactly one Start.");
-		return;
-	}
-	if (endCount != 1)
-	{
-		pOut->PrintMessage("Validation Failed: Flowchart must have exactly one End.");
-		return;
-	}
+    // 2. Check for exactly one End statement
+    int endCount = pManager->GetEndCount();
+    if (endCount == 0)
+    {
+        pOut->PrintMessage("Error: No End statement found!");
+        isValid = false;
+    }
+    else if (endCount > 1)
+    {
+        pOut->PrintMessage("Error: Multiple End statements found!");
+        isValid = false;
+    }
 
-	pOut->PrintMessage("Validation Successful! Flowchart is valid.");
+    //int statCount = pManager->GetStatCount();
+
+    // get the start statement from
+    Statement* startStat = NULL;
+    int statCount = pManager->GetStatementCount();
+    for (int i = 0; i < statCount; i++)
+    {
+        Statement* pStat = pManager->GetStatement(i);
+        if (pStat->GetType() == "START")
+        {
+            startStat = pStat;
+            break;
+        }
+    }
+
+    while (startStat != NULL)
+    {
+        Connector* outConn = startStat->getOutConnector();
+
+        if (outConn == nullptr)
+        {
+            if (startStat->GetType() != "END")
+            {
+                pOut->PrintMessage("Error: A statement has no outgoing connector.");
+                isValid = false;
+                break; // no outgoing connector, end of flowchart
+            }
+        }
+        Statement* nextStat = NULL;
+        if (outConn)
+        {
+            nextStat = outConn->getDstStat();
+            startStat = nextStat;
+        }
+        // if (nextStat == nullptr)
+         //{
+             //pOut->PrintMessage("Error: A connector has no destination statement.");
+             //isValid = false;
+             //break;
+         //}
+
+        if (nextStat)
+        {
+            bool isvalidated = nextStat->validate(pManager);
+            if (!isvalidated)
+            {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (nextStat->GetType() == "END")
+            break;
+    }
+    //// 3. Validate each statement individually
+    //for (int i = 0; i < statCount; ++i)
+    //{
+    //    Statement* pStat = pManager->GetStatement(i);
+    //    if (pStat && !pStat->Validate(pManager))
+    //        isValid = false;
+    //}
+
+    // 4. Final message
+    if (isValid)
+        pOut->PrintMessage("Validation Successful! Flowchart is valid.");
+
+    pManager->setValidated(isValid);
 }
+
+
+
+//#include "Validate.h"
+//#include "ApplicationManager.h"
+//#include "GUI\Output.h"
+//
+//Validate::Validate(ApplicationManager* pAppManager) : Action(pAppManager)
+//{
+//    pAppManager->ClearVariables();
+//}
+//
+//void Validate::ReadActionParameters()
+//{
+//}
+//
+//void Validate::Execute()
+//{
+//    Output* pOut = pManager->GetOutput();
+//    pOut->PrintMessage("Validating Flowchart...");
+//
+//    bool isValid = true;
+//
+//    // 1. Check for exactly one Start statement
+//    int startCount = pManager->GetStartCount();
+//    if (startCount == 0)
+//    {
+//        pOut->PrintMessage("Error: No Start statement found!");
+//        isValid = false;
+//    }
+//    else if (startCount > 1)
+//    {
+//        pOut->PrintMessage("Error: Multiple Start statements found!");
+//        isValid = false;
+//    }
+//
+//    // 2. Check for exactly one End statement
+//    int endCount = pManager->GetEndCount();
+//    if (endCount == 0)
+//    {
+//        pOut->PrintMessage("Error: No End statement found!");
+//        isValid = false;
+//    }
+//    else if (endCount > 1)
+//    {
+//        pOut->PrintMessage("Error: Multiple End statements found!");
+//        isValid = false;
+//    }
+//
+//    //int statCount = pManager->GetStatCount();
+//
+//    // get the start statement from
+//    Statement* startStat = NULL;
+//    int statCount = pManager->GetStatementCount();
+//    for (int i = 0; i < statCount; i++)
+//    {
+//        Statement* pStat = pManager->GetStatement(i);
+//        if (pStat->GetType() == "START")
+//        {
+//            startStat = pStat;
+//            break;
+//        }
+//    }
+//
+//    while (startStat != NULL)
+//    {
+//        Connector* outConn = startStat->getOutConnector();
+//        if (outConn == nullptr)
+//            break; // no outgoing connector, end of flowchart
+//        Statement* nextStat = outConn->getDstStat();
+//        if (nextStat == nullptr)
+//            break;
+//        startStat = nextStat;
+//        startStat->validate(pManager);
+//    }
+//
+//    // 4. Final message
+//    if (isValid)
+//        pOut->PrintMessage("Validation Successful! Flowchart is valid.");
+//
+//    pManager->setValidated(isValid);
+//}

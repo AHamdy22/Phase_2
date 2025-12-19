@@ -35,3 +35,8 @@ void AddEnd::Execute()
 
 	pManager->AddStatement(pEnd);
 }
+
+void AddEnd::SetPosition(Point p)
+{
+	Position = p;
+}

@@ -1,11 +1,10 @@
 #include "OperatorAssign.h"
 #include <sstream>
 #include <fstream>
+#include "AddOperatorAssign.h"
 
 
 using namespace std;
-//window w;
-//window *pW = &w;
 OperatorAssign::OperatorAssign(Point Lcorner, string LeftHS, double valop1, string varop1, double valop2, string varop2, char arthop)
 {
 
@@ -20,7 +19,6 @@ OperatorAssign::OperatorAssign(Point Lcorner, string LeftHS, double valop1, stri
 
 	stringlength = 0;
 	stringheight = 0;
-	//pW->GetStringSize(stringlength, stringheight, Text);
 	LeftCorner = Lcorner;
 
 	pOutConn = NULL;	//No connectors yet
@@ -78,69 +76,67 @@ void OperatorAssign::SetPosition(Point p)
 	LeftCorner = p;
 }
 
-//void OperatorAssign::EditStatement(ApplicationManager* pApp, Point p)
-//{
-//
-//	AddOperatorAssign* D = new AddOperatorAssign(pApp);
-//
-//	D->SetPosition(p);
-//
-//	D->ReadActionParameters();
-//
-//	LHS = D->GetLHS();
-//
-//	varOP1 = D->GetvarOP1();
-//
-//	valOP1 = D->GetvalOP1();
-//
-//	varOP2 = D->GetvarOP2();
-//
-//	valOP2 = D->GetvalOP2();
-//
-//	UpdateStatementText();
-//
-//	delete D;
-//}
-//
-//void OperatorAssign::GetStatementCut(ApplicationManager* pApp) const
-//{
-//	OperatorAssign* O = new OperatorAssign(*this);
-//	O->SetSelected(false);
-//	pApp->DeleteStatement(pApp->GetClipboard());
-//	pApp->SetSelectedStatement(nullptr);
-//	pApp->SetClipboard(O);
-//
-//}
-//
-//
-//void OperatorAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
-//{
-//
-//	OperatorAssign* o = dynamic_cast<OperatorAssign*>(S);
-//	if (o)
-//	{
-//		if (o->IsCopied())
-//		{
-//			o->SetSelected(false);
-//			pManager->SetSelectedStatement(NULL);
-//			o = new OperatorAssign(*o);
-//			p.x -= UI.ASSGN_WDTH / 2;
-//			o->SetPosition(p);
-//			o->SetSelected(false);
-//			pManager->AddStatement(o);
-//			//pManager->SetClipboard(nullptr);
-//		}
-//		else
-//		{
-//			p.x -= UI.ASSGN_WDTH / 2;
-//			o->SetPosition(p);
-//			o->SetSelected(false);
-//			pManager->AddStatement(o);
-//			//pManager->SetClipboard(nullptr);
-//		}
-//	}
-//
-//}
+void OperatorAssign::EditStatement(ApplicationManager* pApp, Point p)
+{
+
+	AddOperatorAssign* D = new AddOperatorAssign(pApp);
+
+	D->SetPosition(p);
+
+	D->ReadActionParameters();
+
+	LHS = D->GetLHS();
+
+	varOP1 = D->GetvarOP1();
+
+	valOP1 = D->GetvalOP1();
+
+	varOP2 = D->GetvarOP2();
+
+	valOP2 = D->GetvalOP2();
+
+	UpdateStatementText();
+
+	delete D;
+}
+
+void OperatorAssign::GetStatementCut(ApplicationManager* pApp) const
+{
+	OperatorAssign* O = new OperatorAssign(*this);
+	O->SetSelected(false);
+	pApp->DeleteStatement(pApp->GetClipboard());
+	pApp->SetSelectedStatement(nullptr);
+	pApp->SetClipboard(O);
+
+}
+
+
+void OperatorAssign::PasteStatement(Statement* S, Point p, Output* pOut, ApplicationManager* pManager) const
+{
+
+	OperatorAssign* o = dynamic_cast<OperatorAssign*>(S);
+	if (o)
+	{
+		if (o->IsCopied())
+		{
+			o->SetSelected(false);
+			pManager->SetSelectedStatement(NULL);
+			o = new OperatorAssign(*o);
+			p.x -= UI.ASSGN_WDTH / 2;
+			o->SetPosition(p);
+			o->SetSelected(false);
+			pManager->AddStatement(o);
+		}
+		else
+		{
+			p.x -= UI.ASSGN_WDTH / 2;
+			o->SetPosition(p);
+			o->SetSelected(false);
+			pManager->AddStatement(o);
+		}
+	}
+
+}
 
 void OperatorAssign::Draw(Output* pOut) const
 {
@@ -244,7 +240,7 @@ bool OperatorAssign::validate(ApplicationManager* pApp) const
 
 	if (varOP1 != "" && (pApp->IsVariableDeclared(varOP1)))
 	{
-		if ((pApp->IsVariableInitialized(varOP1)))
+		if (!(pApp->IsVariableInitialized(varOP1)))
 		{
 			pOut->PrintMessage("Error: Variable '" + varOP1 + "' is not initialized.");
 			return false;
@@ -259,16 +255,81 @@ bool OperatorAssign::validate(ApplicationManager* pApp) const
 
 	if (varOP2 != "" && (pApp->IsVariableDeclared(varOP2)))
 	{
-		if ((pApp->IsVariableInitialized(varOP2)))
+		if (!(pApp->IsVariableInitialized(varOP2)))
 		{
 			pOut->PrintMessage("Error: Variable '" + varOP2 + "' is not initialized.");
 			return false;
 		}
 	}
-	if (!pOutConn)
+	Connector* inConn = getInConnector(0);
+	if (inConn == nullptr)
 	{
-		pOut->PrintMessage("Error: There is a statement without an output connector.");
-		return false;
+		pOut->PrintMessage("Error: There is an \"Operator Assign\" statement without an incoming connector.");
+		return false; // No incoming connector
+	}
+
+	// Check if there is an outgoing connector
+	Connector* outConn = getOutConnector();
+	if (outConn == nullptr)
+	{
+		pOut->PrintMessage("Error: There is an \"Operator Assign\" statement without an outgoing connector.");
+		return false; // No outgoing connector
 	}
 	return true;
+}
+
+void OperatorAssign::Simulate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+
+	double op1 = 0.0;
+	double op2 = 0.0;
+
+	if (varOP1 != "")
+	{
+		if (!pApp->IsVariableDeclared(varOP1) || !pApp->IsVariableInitialized(varOP1))
+		{
+			pOut->PrintMessage("Runtime Error: Operand '" + varOP1 + "' is not ready (declared and initialized).");
+			return;
+		}
+		op1 = pApp->GetVariableValue(varOP1);
+	}
+	else
+	{
+		op1 = valOP1;
+	}
+
+	if (varOP2 != "")
+	{
+		if (!pApp->IsVariableDeclared(varOP2) || !pApp->IsVariableInitialized(varOP2))
+		{
+			pOut->PrintMessage("Runtime Error: Operand '" + varOP2 + "' is not ready (declared and initialized).");
+			return;
+		}
+		op2 = pApp->GetVariableValue(varOP2);
+	}
+	else
+	{
+		op2 = valOP2;
+	}
+
+	double result = 0.0;
+	switch (Operation)
+	{
+	case '+': result = op1 + op2; break;
+	case '-': result = op1 - op2; break;
+	case '*': result = op1 * op2; break;
+	case '/':
+		if (op2 == 0.0)
+		{
+			pOut->PrintMessage("Runtime Error: Division by zero.");
+			return;
+		}
+		result = op1 / op2; break;
+	default:
+		pOut->PrintMessage("Runtime Error: Unknown operator.");
+		return;
+	}
+
+	pApp->SetVariableValue(LHS, result);
 }

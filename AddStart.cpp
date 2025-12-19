@@ -33,3 +33,8 @@ void AddStart::Execute()
 	pManager->AddStatement(pStart);
 
 }
+
+void AddStart::SetPosition(Point p)
+{
+	Position = p;
+}
