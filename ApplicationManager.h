@@ -17,6 +17,7 @@ class ApplicationManager
 private:
 	int StatCount;		//Actual number of statements
 	int ConnCount;		//Actual number of connectors
+	bool validated;   //Flag to indicate whether the flowchart is validated or not
 	Statement* StatList[MaxCount];	//List of all statements (Array of pointers)
 	Connector* ConnList[MaxCount];	//List of all connectors (Array of pointers)
 
@@ -29,6 +30,8 @@ private:
 
 	Var_info VarList[MaxCount];			// Array to store variables
 	int VarCount;						// Number of variables
+
+	Statement* pNextStat;
 
 	//Pointers to Input and Output classes
 	Input *pIn;
@@ -57,6 +60,9 @@ public:
 	int GetConnectorCount() const;        //Returns the actual number of connectors
 	int GetStatCount() const;
 
+	void SetNextStatement(Statement* pStat);
+	Statement* GetNextStatement() const;
+
 	void ClearAll();                //Clears all statements and connectors from the flowchart
 
 	// Note: you should use the following 4 functions 
@@ -74,7 +80,11 @@ public:
 	Output *GetOutput() const;      //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window
 	
+	void setValidated(bool val);
+	bool isValidated() const;
+
 	int GetStartCount() const;
+	int GetEndCount() const;
 
 	void DeclareVariable(string varName);
 	void SetVariableValue(string varName, double value);
@@ -82,7 +92,8 @@ public:
 	bool IsVariableDeclared(string varName);
 	bool IsVariableInitialized(string varName);
 	int FindVariable(string varName);
-	void RemoveVariable(string varName);
+	//void RemoveVariable(string varName);
+	void SetVariableInitialized(string varName, bool initialized);
 	void ClearVariables();
 
 	

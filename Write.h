@@ -50,6 +50,8 @@ public:
 	virtual void PasteStatement(Statement* S, Point P, Output* pOut, ApplicationManager* pManager) const;
 
 	bool Validate(ApplicationManager* pApp);
+
+	virtual void Simulate(ApplicationManager* pApp);
 };
 
 #endif

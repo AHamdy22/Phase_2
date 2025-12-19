@@ -59,6 +59,7 @@ public:
 
 	void Move(int x, int y);
 
+	virtual void Simulate(ApplicationManager* pApp);
 };
 
 #endif

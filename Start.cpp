@@ -11,8 +11,8 @@ Start::Start(Point Lcorner)
 	pOutConn = NULL;	//No connectors yet
 
 
-	Outlet.x = LeftCorner.x + (UI.ASSGN_WDTH / 2);
-	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	Outlet.x = LeftCorner.x + (UI.START_WDTH / 2);
+	Outlet.y = LeftCorner.y + UI.START_HI;
 
 	CountStart++;
 
@@ -51,6 +51,8 @@ void Start::GetStatementCut(ApplicationManager* pApp) const
 {
 	Start* S = new Start(*this);
 	S->SetSelected(false);
+	S->addInConnector(nullptr);
+	S->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(S);
@@ -158,6 +160,11 @@ bool Start::Validate(ApplicationManager* pApp)
 		return false;
 	}
 	return true;
+}
+
+void Start::Simulate(ApplicationManager* pApp)
+{
+
 }
 
 

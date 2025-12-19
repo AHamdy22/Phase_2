@@ -58,6 +58,8 @@ void ValueAssign::GetStatementCut(ApplicationManager* pApp) const
 {
 	ValueAssign* V = new ValueAssign(*this);
 	V->SetSelected(false);
+	V->addInConnector(nullptr);
+	V->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(V);
@@ -123,6 +125,11 @@ bool ValueAssign::Validate(ApplicationManager* pApp)
 	 pApp->SetVariableValue(LHS, RHS);
 
 	 return true;
+}
+
+void ValueAssign::Simulate(ApplicationManager* pApp)
+{
+
 }
 
 Point ValueAssign::GetPosition() const

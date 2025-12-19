@@ -294,6 +294,7 @@
     <ClCompile Include="OperatorAssign.cpp" />
     <ClCompile Include="Paste.cpp" />
     <ClCompile Include="Read.cpp" />
+    <ClCompile Include="Run.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Start.cpp" />
@@ -358,6 +359,7 @@
     <ClInclude Include="OperatorAssign.h" />
     <ClInclude Include="Paste.h" />
     <ClInclude Include="Read.h" />
+    <ClInclude Include="Run.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Start.h" />

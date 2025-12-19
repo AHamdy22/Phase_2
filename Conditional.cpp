@@ -93,6 +93,8 @@ void Conditional::GetStatementCut(ApplicationManager* pApp) const
 {
 	Conditional* C = new Conditional(*this);
 	C->SetSelected(false);
+	C->addInConnector(nullptr);
+	C->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(C);
@@ -249,4 +251,29 @@ bool Conditional::Validate(ApplicationManager* pApp)
 		return false;
 	}
 	return true;
+}
+
+void Conditional::Simulate(ApplicationManager* pApp)
+{
+	double lhsValue = pApp->GetVariableValue(LHS);
+	double rhsValue = (VariableRHS == "") ? ValueRHS : pApp->GetVariableValue(VariableRHS);
+
+	bool cond = false;
+
+	if (CompOperator == ">")
+		cond = (lhsValue > rhsValue);
+	else if (CompOperator == "<")
+		cond = (lhsValue < rhsValue);
+	else if (CompOperator == ">=")
+		cond = (lhsValue >= rhsValue);
+	else if (CompOperator == "<=")
+		cond = (lhsValue <= rhsValue);
+	else if (CompOperator == "==")
+		cond = (lhsValue == rhsValue);
+	else if (CompOperator == "!=")
+		cond = (lhsValue != rhsValue);
+
+	Connector* nextConn = cond ? getOutConnector() : getNoConnector();
+
+	pApp->SetNextStatement(nextConn->getDstStat());
 }

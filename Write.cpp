@@ -108,6 +108,8 @@ void Write::GetStatementCut(ApplicationManager* pApp) const
 {
 	Write* W = new Write(*this);
 	W->SetSelected(false);
+	W->addInConnector(nullptr);
+	W->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(W);
@@ -176,4 +178,12 @@ bool Write::Validate(ApplicationManager* pApp)
 		return false; // No outgoing connector
 	}
 	return true; // Valid
+}
+
+void Write::Simulate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	double value = pApp->GetVariableValue(VarName);
+	pOut->PrintOutput(to_string(value) + " " );
+
 }

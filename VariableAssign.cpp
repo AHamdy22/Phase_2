@@ -76,6 +76,8 @@ void VariableAssign::GetStatementCut(ApplicationManager* pApp) const
 {
 	VariableAssign* V = new VariableAssign(*this);
 	V->SetSelected(false);
+	V->addInConnector(nullptr);
+	V->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(V);
@@ -200,6 +202,13 @@ bool VariableAssign::Validate(ApplicationManager* pApp)
 	pApp->SetVariableValue(LHS, pApp->GetVariableValue(RHS));
 	return true;
 }
+
+void VariableAssign::Simulate(ApplicationManager* pManager)
+{
+
+}
+
+
 
 
 

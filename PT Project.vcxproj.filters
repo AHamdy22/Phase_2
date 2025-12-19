@@ -184,6 +184,7 @@
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="Validate.cpp" />
+    <ClCompile Include="Run.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -304,6 +305,7 @@
     <ClInclude Include="Load.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Validate.h" />
+    <ClInclude Include="Run.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

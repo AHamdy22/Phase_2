@@ -67,6 +67,8 @@ void Read::GetStatementCut(ApplicationManager* pApp) const
 {
 	Read* R = new Read(*this);
 	R->SetSelected(false);
+	R->addInConnector(nullptr);
+	R->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(R);
@@ -171,6 +173,16 @@ bool Read::Validate(ApplicationManager* pApp)
 		pOut->PrintMessage("Error: There is a Read statement without an outgoing connector.");
 		return false; // No outgoing connector
 	}
+	pApp->SetVariableInitialized(VarName, true);
 	return true; // Valid
 	
+}
+
+void Read::Simulate(ApplicationManager* pApp)
+{
+	Output* pOut = pApp->GetOutput();
+	Input* pIn = pApp->GetInput();
+	pOut->PrintMessage("Enter value for '" + VarName + "':");
+	double val = pIn->GetValue(pOut);
+	pApp->SetVariableValue(VarName, val);
 }

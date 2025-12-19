@@ -65,8 +65,9 @@ public:
 
 	bool InStatement(Point P) const;
 
-	bool Validate(ApplicationManager* pApp) ;
+	bool Validate(ApplicationManager* pApp);
 
+	virtual void Simulate(ApplicationManager* pApp);
 };
 
 #endif

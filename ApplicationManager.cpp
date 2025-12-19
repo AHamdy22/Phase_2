@@ -14,6 +14,7 @@
 #include "Actions\..\Copy.h"
 #include "Actions\..\Cut.h"
 #include "Actions\..\Paste.h"
+#include "Actions\..\Run.h"
 #include "AddConnectors.h"
 #include "Save.h"
 #include "Load.h"
@@ -31,6 +32,7 @@ ApplicationManager::ApplicationManager()
 	StatCount = 0;
 	ConnCount = 0;
 	VarCount = 0;
+	validated = false;
 	pSelectedStat = NULL;	//no Statement is selected yet
 	pSelectedConn = NULL;   //no Connector is selected yet
 	pClipboard = NULL;
@@ -147,6 +149,10 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case SWITCH_DSN_MODE:
 			pOut->CreateDesignToolBar();
 			UI.AppMode = DESIGN;
+			break;
+
+		case RUN:
+			pAct = new Run(this);
 			break;
 
 		case EXIT:
@@ -365,11 +371,30 @@ void ApplicationManager::UpdateInterface() const
 
 }
 
+void ApplicationManager::setValidated(bool val)
+{
+	validated = val;
+}
+
+bool ApplicationManager::isValidated() const
+{
+	return validated;
+}
+
 int ApplicationManager::GetStartCount() const
 {
 	int count = 0;
 	for (int i = 0; i < StatCount; i++)
 		if (StatList[i] && StatList[i]->GetType() == "START")
+			count++;
+	return count;
+}
+
+int ApplicationManager::GetEndCount() const
+{
+	int count = 0;
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i] && StatList[i]->GetType() == "END")
 			count++;
 	return count;
 }
@@ -464,28 +489,48 @@ int ApplicationManager::FindVariable(string varName)
 	}
 	return -1;  // Variable not found
 }
-void ApplicationManager::RemoveVariable(string varName)
+
+void ApplicationManager::SetVariableInitialized(string varName, bool initialized)
 {
 	int index = FindVariable(varName);
 
-	if (index != -1)  // Variable found
+	if (index != -1)
 	{
-		// Shift all variables after this one to the left
-		for (int i = index; i < VarCount - 1; i++)
-		{
-			VarList[i] = VarList[i + 1];
-		}
-
-		// Clear the last element
-		VarList[VarCount - 1].VarName = "";
-		VarList[VarCount - 1].Value = 0.0;
-		VarList[VarCount - 1].IsDeclared = false;
-		VarList[VarCount - 1].IsInitialized = false;
-
-		// Decrement count
-		VarCount--;
+		VarList[index].IsInitialized = initialized;
 	}
 }
+//void ApplicationManager::RemoveVariable(string varName)
+//{
+//	int index = FindVariable(varName);
+//
+//	if (index != -1)  // Variable found
+//	{
+//		// Shift all variables after this one to the left
+//		for (int i = index; i < VarCount - 1; i++)
+//		{
+//			VarList[i] = VarList[i + 1];
+//		}
+//
+//		// Clear the last element
+//		VarList[VarCount - 1].VarName = "";
+//		VarList[VarCount - 1].Value = 0.0;
+//		VarList[VarCount - 1].IsDeclared = false;
+//		VarList[VarCount - 1].IsInitialized = false;
+//
+//		// Decrement count
+//		VarCount--;
+//	}
+//}
+void ApplicationManager::SetNextStatement(Statement* pStat)
+{
+	pNextStat = pStat;
+}
+
+Statement* ApplicationManager::GetNextStatement() const
+{
+	return pNextStat;
+}
+
 void ApplicationManager::ClearVariables()
 {
 	VarCount = 0;

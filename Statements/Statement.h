@@ -65,7 +65,7 @@ public:
 
 	virtual bool Validate(ApplicationManager* pApp) = 0;
 
-	//virtual void Simulate();	//Execute the statement in the simulation mode
+	virtual void Simulate(ApplicationManager* pManager);	//Execute the statement in the simulation mode
 
 	//[BONUS] virtual void GenerateCode(ofstream &OutFile) = 0;	//write the statement code to a file
 

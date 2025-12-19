@@ -180,6 +180,16 @@ void Output::PrintMessage(string msg)	//Prints a message on status bar
 	pWind->SetFont(25, BOLD , BY_NAME, "Cascadia Code");   
 	pWind->DrawString(10, UI.height - (int) (UI.StatusBarHeight/1.1), msg);
 }
+
+void Output::PrintOutput(string out)
+{
+	ClearOutputBar();	//First clear the Output bar
+
+	pWind->SetPen(UI.MsgColor, 50);
+	pWind->SetFont(20, BOLD, BY_NAME, "Cascadia Code");
+	pWind->DrawString(UI.DrawingAreaWidth + 8, UI.ToolBarHeight + 5, out);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void Output::DrawString(const int iX, const int iY, const string Text)

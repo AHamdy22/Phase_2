@@ -105,6 +105,8 @@ void OperatorAssign::GetStatementCut(ApplicationManager* pApp) const
 {
 	OperatorAssign* O = new OperatorAssign(*this);
 	O->SetSelected(false);
+	O->addInConnector(nullptr);
+	O->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(O);
@@ -222,7 +224,7 @@ bool OperatorAssign::Validate(ApplicationManager* pApp)
 
 	if (varOP1 != "" && (pApp->IsVariableDeclared(varOP1)))
 	{
-		if ((pApp->IsVariableInitialized(varOP1)))
+		if (!(pApp->IsVariableInitialized(varOP1)))
 		{
 			pOut->PrintMessage("Error: Variable '" + varOP1 + "' is not initialized.");
 			return false;
@@ -237,7 +239,7 @@ bool OperatorAssign::Validate(ApplicationManager* pApp)
 
 	if (varOP2 != "" && (pApp->IsVariableDeclared(varOP2)))
 	{
-		if ((pApp->IsVariableInitialized(varOP2)))
+		if (!(pApp->IsVariableInitialized(varOP2)))
 		{
 			pOut->PrintMessage("Error: Variable '" + varOP2 + "' is not initialized.");
 			return false;
@@ -339,6 +341,11 @@ bool OperatorAssign::Validate(ApplicationManager* pApp)
 	}
 
 	return true;
+}
+
+void OperatorAssign::Simulate(ApplicationManager* pApp)
+{
+
 }
 
 

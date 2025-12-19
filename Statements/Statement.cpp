@@ -24,6 +24,12 @@ void Statement::SetID(int id)
 	ID = id;
 }
 
+
+void Statement::Simulate(ApplicationManager* pManager)
+{
+
+}
+
 double Statement::getLeftCornerY() const
 {
 	return LeftCorner.y;

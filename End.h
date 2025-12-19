@@ -49,6 +49,8 @@ public:
 
 	bool Validate(ApplicationManager* pApp);
 
+	virtual void Simulate(ApplicationManager* pApp);
+
 	~End();
 };
 

@@ -71,6 +71,8 @@ void Declare::GetStatementCut(ApplicationManager* pApp) const
 {
 	Declare* D = new Declare(*this);
 	D->SetSelected(false);
+	D->addInConnector(nullptr);
+	D->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(D);
@@ -195,4 +197,9 @@ void Declare::Move(int x, int y)
 	Inlet.y += y;
 	Outlet.x += x;
 	Outlet.y += y;
+}
+
+void Declare::Simulate(ApplicationManager* pApp)
+{
+
 }

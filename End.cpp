@@ -8,7 +8,7 @@ End::End(Point Lcorner)
 
 	LeftCorner = Lcorner;
 
-	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.x = LeftCorner.x + UI.START_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 
 	CountEnd++;
@@ -42,6 +42,8 @@ void End::GetStatementCut(ApplicationManager* pApp) const
 {
 	End* E = new End(*this);
 	E->SetSelected(false);
+	E->addInConnector(nullptr);
+	E->setOutConnector(nullptr);
 	pApp->DeleteStatement(pApp->GetClipboard());
 	pApp->SetSelectedStatement(nullptr);
 	pApp->SetClipboard(E);
@@ -156,6 +158,11 @@ bool End::Validate(ApplicationManager* pApp)
 		return false;
 	}
 	return true;
+}
+
+void End::Simulate(ApplicationManager* pApp)
+{
+
 }
 
 End::~End()
