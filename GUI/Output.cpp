@@ -26,7 +26,7 @@ Output::Output()
 	UI.READ_WDTH = 100;
 	UI.READ_HI = 50;
 	UI.COND_WDTH = 180;
-	UI.COND_HI = 100;
+	UI.COND_HI = 60;
 
 	//Create the output window
 	pWind = CreateWind(UI.width, UI.height, UI.wx, UI.wy);
