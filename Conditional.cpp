@@ -224,6 +224,13 @@ bool Conditional::validate(ApplicationManager* pApp) const
 		return false;
 	}
 
+	// RHS variable is initialized
+	if (!(pApp->IsVariableInitialized(VariableRHS)))
+	{
+		pOut->PrintMessage("Error: Variable '" + VariableRHS + "' is not initialized.");
+		return false;
+	}
+
 
 
 	return true;
